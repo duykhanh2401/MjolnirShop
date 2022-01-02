@@ -1,0 +1,61 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(http-equiv='X-UA-Compatible' content='IE=edge')
+  link(rel='stylesheet' href='/css/bootstrap.min.css')
+  link(href='/css/chosen.min.css' rel='stylesheet')
+
+  link(rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css')
+  link(rel='stylesheet' href='/css/admin.css')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  title Admin Dashboard
+.navbar
+  .navbar-top
+    a.brand-link(href='/admin') Spider
+    .btn-minimize
+      i.bi.bi-list
+  nav
+    ul.menu
+      li.menu-item
+        a.menu-link(href='/admin')
+          i.bi.bi-house
+          | T&#x1ED5;ng quan
+      li.menu-item
+        a.menu-link(href='/admin/product')
+          i.bi.bi-box-seam
+          | S&#x1EA3;n ph&#x1EA9;m
+      li.menu-item
+        a.menu-link(href='/admin/category')
+          i.bi.bi-card-checklist
+          | Danh m&#x1EE5;c
+      li.menu-item
+        a.menu-link(href='/admin/ship')
+          i.bi.bi-truck
+          | V&#x1EAD;n chuy&#x1EC3;n
+      li.menu-item
+        a.menu-link(href='/admin/user')
+          i.bi.bi-people
+          | Ng&#x1B0;&#x1EDD;i d&ugrave;ng
+      li.menu-item
+        a.menu-link(href='/admin/order')
+          i.bi.bi-cart-dash
+          | &Dstrok;&#x1A1;n h&agrave;ng
+.main-wrap
+  header.main-header
+    .dropdown
+      #dropdownMenuLink.avatar(data-bs-toggle='dropdown' aria-expanded='false')
+        | K
+      ul.dropdown-menu(aria-labelledby='dropdownMenuLink')
+        li
+          a.dropdown-item(href='#') &Dstrok;&abreve;ng xu&#x1EA5;t
+        li
+          a.dropdown-item(href='#') Another action
+        li
+          a.dropdown-item(href='#') Something else here
+  block content
+script(type='text/javascript' src='/js/bootstrap.bundle.min.js')
+script(type='text/javascript' src='/js/jquery-3.6.0.min.js')
+script(type='text/javascript' src='/js/bootstrap-select.js')
+script(type='text/javascript' src='/js/main.js')
+script(type='text/javascript' src='/js/axios.min.js')
+script(src='/js/chosen.jquery.min.js')

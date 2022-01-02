@@ -1,0 +1,65 @@
+extends base
+
+block content
+
+   section.content-main
+    .content-header
+      h2.content-title Danh s&aacute;ch s&#x1EA3;n ph&#x1EA9;m
+      button.btn-new(type='button' data-bs-toggle='modal' data-bs-target='#addNewModal')
+        | Th&ecirc;m m&#x1EDB;i
+      #addNewModal.modal.fade(tabindex='-1' aria-labelledby='addNewModalLabel' aria-hidden='true')
+        .modal-dialog
+          .modal-content
+            .modal-header
+              h5#exampleModalLabel.modal-title
+                | Th&ecirc;m s&#x1EA3;n ph&#x1EA9;m
+              button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+            .modal-body
+              .mb-3
+                label.form-label(for='exampleFormControlInput1') T&ecirc;n s&#x1EA3;n ph&#x1EA9;m
+                input#exampleFormControlInput1.form-control(type='text')
+              .mb-3
+                label.form-label(for='price') Gi&aacute; s&#x1EA3;n ph&#x1EA9;m
+                input#price.form-control(type='number')
+              .mb-3
+                label.form-label(for='quantity') S&#x1ED1; l&#x1B0;&#x1EE3;ng
+                input#quantity.form-control(type='number')
+              .mb-3
+                label.form-label(for='author') T&aacute;c gi&#x1EA3;
+                input#author.form-control(type='text')
+              div
+                select.chosen-select(data-placeholder='Chọn tên phân loại' multiple='' name='test')
+                  option(value='')
+                  option American Black Bear
+                  option Asiatic Black Bear
+                  option Brown Bear
+              .mb-3
+                label.form-label(for='exampleFormControlTextarea1') M&ocirc; t&#x1EA3;
+                textarea#exampleFormControlTextarea1.form-control(rows='3')
+            .modal-footer
+              button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                | Close
+              button.btn.btn-primary(type='button')
+                | Save changes
+    .cart-body
+      each product in products
+        .item-list
+          .row.align-items-center
+            .col-lg-4.col-sm-4.col-8.flex-grow-1.col-name
+              .itemside
+                .image-product
+                  img(src='https://product.hstatic.net/200000343865/product/3_175_b1a57e2b904e4515b4f4bdf003301155_c22ddb9432a54dfa8f18341d7c74ddc0_compact.jpg' alt='')
+                .info= product.name
+            .col-lg-2.col-sm-2.col-4.col-price
+              span= `${product.price} đ`
+            .col-lg-2.col-sm-2.col-4.col-status
+              span= `${product.qty} `
+            .col-lg-1.col-sm-2.col-4.col-date
+              span= `${product.createdAt.toLocaleDateString()}`
+            .col-lg-2.col-sm-2.col-4.col-action.text-end
+              .btn.btn-sm.font-sm.rounded.btn-brand 
+                i.bi.bi-pencil
+                | Sửa
+              .btn.btn-sm.font-sm.btn-light.rounded.btn.btn-sm
+                i.bi.bi-trash
+                | Xoá

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<link rel="stylesheet" href="../public/css/bootstrap.min.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css"
+		/>
+		<link rel="stylesheet" href="../public/css/admin.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Admin Dashboard</title>
+	</head>
+	<body>
+		<div class="navbar">
+			<div class="navbar-top">
+				<a href="/admin" class="brand-link">Spider</a>
+				<div class="btn-minimize"><i class="bi bi-list"></i></div>
+			</div>
+			<nav>
+				<ul class="menu">
+					<li class="menu-item active">
+						<a href="" class="menu-link"
+							><i class="bi bi-house"></i>Tổng quan</a
+						>
+					</li>
+					<li class="menu-item">
+						<a href="" class="menu-link"
+							><i class="bi bi-box-seam"></i>Sản phẩm</a
+						>
+					</li>
+					<li class="menu-item">
+						<a href="" class="menu-link"
+							><i class="bi bi-card-checklist"></i>Danh mục</a
+						>
+					</li>
+					<li class="menu-item">
+						<a href="" class="menu-link"
+							><i class="bi bi-truck"></i>Vận chuyển</a
+						>
+					</li>
+					<li class="menu-item">
+						<a href="" class="menu-link"
+							><i class="bi bi-people"></i>Người dùng</a
+						>
+					</li>
+					<li class="menu-item">
+						<a href="" class="menu-link"
+							><i class="bi bi-cart-dash"></i>Đơn hàng</a
+						>
+					</li>
+				</ul>
+			</nav>
+		</div>
+		<div class="main-wrap">
+			<header class="main-header">
+				<div class="dropdown">
+					<div
+						class="avatar"
+						id="dropdownMenuLink"
+						data-bs-toggle="dropdown"
+						aria-expanded="false"
+					>
+						K
+					</div>
+
+					<ul
+						class="dropdown-menu"
+						aria-labelledby="dropdownMenuLink"
+					>
+						<li><a class="dropdown-item" href="#">Đăng xuất</a></li>
+						<li>
+							<a class="dropdown-item" href="#">Another action</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="#"
+								>Something else here</a
+							>
+						</li>
+					</ul>
+				</div>
+			</header>
+			<section class="content-main">
+				<div class="content-header">
+					<h2 class="content-title">Danh sách sản phẩm</h2>
+
+					<button
+						type="button"
+						class="btn-new"
+						data-bs-toggle="modal"
+						data-bs-target="#addNewModal"
+					>
+						Thêm mới
+					</button>
+					<div
+						class="modal fade"
+						id="addNewModal"
+						tabindex="-1"
+						aria-labelledby="addNewModalLabel"
+						aria-hidden="true"
+					>
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5
+										class="modal-title"
+										id="exampleModalLabel"
+									>
+										Thêm sản phẩm
+									</h5>
+									<button
+										type="button"
+										class="btn-close"
+										data-bs-dismiss="modal"
+										aria-label="Close"
+									></button>
+								</div>
+								<div class="modal-body">
+									<div class="mb-3">
+										<label
+											for="exampleFormControlInput1"
+											class="form-label"
+											>Tên sản phẩm</label
+										>
+										<input
+											type="text"
+											class="form-control"
+											id="exampleFormControlInput1"
+										/>
+									</div>
+									<div class="mb-3">
+										<label for="price" class="form-label"
+											>Giá sản phẩm</label
+										>
+										<input
+											type="number"
+											class="form-control"
+											id="price"
+										/>
+									</div>
+									<div class="mb-3">
+										<label for="quantity" class="form-label"
+											>Số lượng</label
+										>
+										<input
+											type="number"
+											class="form-control"
+											id="quantity"
+										/>
+									</div>
+									<div class="mb-3">
+										<label for="author" class="form-label"
+											>Tác giả</label
+										>
+										<input
+											type="text"
+											class="form-control"
+											id="author"
+										/>
+									</div>
+									<div>
+										<select
+											data-placeholder="Chọn tên phân loại"
+											multiple
+											class="chosen-select"
+											name="test"
+										>
+											<option value=""></option>
+											<option>American Black Bear</option>
+											<option>Asiatic Black Bear</option>
+											<option>Brown Bear</option>
+									
+										</select>
+										</select>
+									</div>
+									<div class="mb-3">
+										<label
+											for="exampleFormControlTextarea1"
+											class="form-label"
+											>Mô tả</label
+										>
+										<textarea
+											class="form-control"
+											id="exampleFormControlTextarea1"
+											rows="3"
+										></textarea>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button
+										type="button"
+										class="btn btn-secondary"
+										data-bs-dismiss="modal"
+									>
+										Close
+									</button>
+									<button
+										type="button"
+										class="btn btn-primary"
+									>
+										Save changes
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="cart-body">
+					<div class="item-list">
+						<div class="row align-items-center">
+							<div
+								class="
+									col-lg-4 col-sm-4 col-8
+									flex-grow-1
+									col-name
+								"
+							>
+								<div class="itemside">
+									<div class="image-product">
+										<img
+											src="https://product.hstatic.net/200000343865/product/3_175_b1a57e2b904e4515b4f4bdf003301155_c22ddb9432a54dfa8f18341d7c74ddc0_compact.jpg"
+											alt=""
+										/>
+									</div>
+									<div class="info">Doraemon</div>
+								</div>
+							</div>
+							<div class="col-lg-2 col-sm-2 col-4 col-price">
+								100.000đ
+							</div>
+							<div class="col-lg-2 col-sm-2 col-4 col-status">
+								100
+							</div>
+							<div class="col-lg-1 col-sm-2 col-4 col-date">
+								20/10/2021
+							</div>
+							<div
+								class="
+									col-lg-2 col-sm-2 col-4 col-action
+									text-end
+								"
+							>
+								<div
+									class="btn btn-sm font-sm rounded btn-brand"
+								>
+									<i class="bi bi-pencil"></i>
+									Sửa
+								</div>
+								<div
+									class="
+										btn btn-sm
+										font-sm
+										btn-light
+										rounded
+										btn btn-sm
+									"
+								>
+									<i class="bi bi-trash"></i>
+									Xoá
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</section>
+		</div>
+		<script
+			type="text/javascript"
+			src="../public/js/bootstrap.bundle.min.js"
+		></script>
+		<script
+			type="text/javascript"
+			src="../public/js/jquery-3.6.0.min.js"
+		></script>
+		<script
+			type="text/javascript"
+			src="../public/js/bootstrap-select.js"
+		></script>
+		<script type="text/javascript" src="../public/js/main.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script src="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.jquery.min.js"></script>
+		<link
+			href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css"
+			rel="stylesheet"
+		/>
+	</body>
+</html>

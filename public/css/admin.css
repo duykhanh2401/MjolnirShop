@@ -1,0 +1,264 @@
+* {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+.navbar {
+	max-width: 250px;
+	display: block;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	width: 100%;
+	overflow-y: auto;
+	background-color: #fff;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	z-index: 10;
+	border-right: 1px solid #eee;
+	padding: 0;
+}
+
+.navbar-top {
+	padding: 12px 0.5rem;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	border-bottom: 1px solid #eee;
+	min-height: 72px;
+}
+
+.navbar-top a {
+	text-decoration: none;
+}
+
+.brand-link {
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+	display: inline-block;
+	display: inline-block;
+}
+
+.btn-minimize {
+	text-align: center;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+	cursor: pointer;
+	display: inline-block;
+	font-weight: 400;
+	line-height: 1.5;
+	color: #141432;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: middle;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	background-color: transparent;
+	border: 1px solid transparent;
+	padding: 0.5rem 0.75rem;
+	font-size: 1rem;
+	border-radius: 0.25rem;
+}
+
+.menu {
+	list-style: none;
+	margin: 1rem;
+	padding: 0;
+	color: #4f5d77;
+}
+
+.menu-item {
+	margin-bottom: 5px;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+.menu-item .menu-link {
+	padding: 10px;
+	font-weight: 500;
+	font-size: 16px;
+	color: #292f46;
+	border-radius: 0.3rem;
+	position: relative;
+	display: block;
+	text-decoration: none;
+	display: flex;
+	align-items: center;
+}
+
+.menu-item.active .menu-link {
+	background-color: rgba(8, 129, 120, 0.2);
+}
+
+.menu-item .menu-link i {
+	color: #adb5bd;
+	margin-right: 10px;
+	font-size: 24px;
+	height: 24px;
+}
+
+.menu-item .menu-link i::before {
+	vertical-align: 4px;
+}
+
+.menu-item.active .menu-link i {
+	color: #088178;
+}
+.main-wrap {
+	margin-left: 250px;
+	background-color: #f8f9fa;
+	position: relative;
+}
+
+.main-header {
+	padding-left: 3%;
+	padding-right: 3%;
+	min-height: 72px;
+	background-color: #fff;
+	-webkit-box-shadow: 0 0.75rem 1.5rem rgb(18 38 63 / 3%);
+	box-shadow: 0 0.75rem 1.5rem rgb(18 38 63 / 3%);
+	border-bottom: 1px solid #eee;
+	position: relative;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+}
+
+.dropdown {
+	margin-left: auto;
+}
+
+.avatar {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	background-color: #ccc;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+}
+
+.content-main {
+	padding: 30px 3%;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #f8f9fa;
+}
+
+.content-header {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	margin-bottom: 30px;
+}
+
+.btn-new {
+	font-size: 14px;
+	font-weight: 500;
+	padding: 10px 40px;
+	color: #ffffff;
+	border: none;
+	background-color: #088178;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.cart-body {
+	flex: 1 1 auto;
+	padding: 1.3rem 1.3rem;
+}
+
+.item-list {
+	border-bottom: 1px solid #eee;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	width: 100%;
+	padding: 0.5rem 0.5rem;
+}
+
+.itemside {
+	position: relative;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	width: 100%;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+}
+
+.image-product img {
+	padding: 0.25rem;
+	background-color: transparent;
+	border: none;
+	border-radius: 0.25rem;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	max-width: 60px;
+	height: auto;
+}
+
+.info {
+	margin-left: 12px;
+}
+.btn-brand {
+	background-color: #088178;
+	color: #fff;
+}
+/* Check out later: https://bbbootstrap.com/snippets/accordion-hover-effect-26103860 */
+
+.mt-100 {
+	margin-top: 50px;
+}
+
+#css-dropdown {
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+	width: 300px;
+	height: 42px;
+	margin: 100px auto 0 auto;
+}
+
+.chosen-choices,
+.chosen-drop,
+.chosen-choices,
+.chosen-container {
+	width: 100% !important;
+}
