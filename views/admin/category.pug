@@ -2,15 +2,18 @@ extends base
 
 block content
 
-   section.content-main
+   section.content-main#category
     .content-header
       h2.content-title Danh sách danh mục
       button.btn-new(type='button' data-bs-toggle='modal' data-bs-target='#addNewModal')
-        | Th&ecirc;m m&#x1EDB;i
-      #addNewModal.modal.fade(tabindex='-1' aria-labelledby='addNewModalLabel' aria-hidden='true')
+        | Thêm mới
+      
+    .cart-body
+      #table
+
+    #addNewModal.modal.fade(tabindex='-1' aria-labelledby='addNewModalLabel' aria-hidden='true')
         .modal-dialog
           .modal-content
-            form.form--category
               .modal-header
                 h5#exampleModalLabel.modal-title
                   | Thêm mới
@@ -22,26 +25,43 @@ block content
                 
               .modal-footer
                 button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
-                  | Close
-                button.btn.btn-primary(type='submit')
+                  | Đóng
+                button.btn.btn-primary.btn-addCategory(type='submit')
                   | Đăng
-    .cart-body
-      each product in products
-        .item-list
-          .row.align-items-center
-            .col-lg-4.col-sm-4.col-8.flex-grow-1.col-name
-              .itemside
-                .info= product.name
-            .col-lg-2.col-sm-2.col-4.col-price
-              span= `${product.slug}`
-            .col-lg-2.col-sm-2.col-4.col-status
-              //- span= `${product.qty} `
-            .col-lg-1.col-sm-2.col-4.col-date
-              span= `${product.createdAt.toLocaleDateString()}`
-            .col-lg-2.col-sm-2.col-4.col-action.text-end
-              .btn.btn-sm.font-sm.rounded.btn-brand 
-                i.bi.bi-pencil
-                | Sửa
-              .btn.btn-sm.font-sm.btn-light.rounded.btn.btn-sm
-                i.bi.bi-trash
-                | Xoá
+
+    #deleteModal.modal.fade(tabindex='-1' aria-labelledby='deleteModalLabel' aria-hidden='true')
+        .modal-dialog
+          .modal-content
+              .modal-header
+                h5#exampleModalLabel.modal-title
+                  | Bạn có chắc chắn muốn xoá danh mục này
+                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+     
+              .modal-footer
+                button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                  | Đóng
+                button.btn.btn-danger.btn-delete
+                  | Xoá
+
+    #updateModal.modal.fade(tabindex='-1' aria-labelledby='updateModalLabel' aria-hidden='true')
+        .modal-dialog
+          .modal-content
+              .modal-header
+                h5#exampleModalLabel.modal-title
+                  | Cập nhật
+                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+              .modal-body
+                .mb-3
+                  label.form-label(for='nameCategoryUpdate') Tên Danh Mục
+                  input#nameCategoryUpdate.form-control(type='text')
+                .mb-3
+                  label.form-label(for='slugUpdate') Slug
+                  input#slugUpdate.form-control(type='text')
+                
+              .modal-footer
+                button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                  | Đóng
+                button.btn.btn-primary.btn-update-category(type='submit')
+                  | Cập nhật
+
+

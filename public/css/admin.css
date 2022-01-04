@@ -262,3 +262,8 @@
 .chosen-container {
 	width: 100% !important;
 }
+
+.bi-trash,
+.bi-pencil {
+	padding-right: 4px;
+}
