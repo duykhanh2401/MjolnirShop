@@ -200,6 +200,11 @@
 .cart-body {
 	flex: 1 1 auto;
 	padding: 1.3rem 1.3rem;
+	border: 1px solid #eee;
+	transition-duration: 0.3s;
+	overflow: hidden;
+	margin-bottom: 1.5rem;
+	background-color: #fff;
 }
 
 .item-list {

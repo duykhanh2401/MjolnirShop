@@ -8,7 +8,9 @@ exports.getProduct = async (req, res, next) => {
 };
 
 exports.getCategory = async (req, res, next) => {
-	const products = await Category.find();
-	res.status(200).render('admin/category', { products });
-	// res.status(200).json({ products: products });
+	res.status(200).render('admin/category');
+};
+
+exports.getAuthor = async (req, res, next) => {
+	res.status(200).render('admin/author');
 };

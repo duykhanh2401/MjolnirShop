@@ -25,7 +25,13 @@ const productSchema = mongoose.Schema(
 				require: [true, 'Vui lòng nhập danh mục sản phẩm'],
 			},
 		],
-
+		author: [
+			{
+				type: mongoose.Schema.ObjectId,
+				ref: 'Author',
+				require: [true, 'Vui lòng nhập tác giả'],
+			},
+		],
 		createdAt: {
 			type: Date,
 			default: Date.now,
@@ -35,7 +41,6 @@ const productSchema = mongoose.Schema(
 			require: [true, 'Vui lòng nhập số lượng sản phẩm'],
 			min: 0,
 		},
-		author: String,
 		slug: { type: String, slug: 'name', unique: true },
 	},
 	{

@@ -1,14 +1,10 @@
-import {
-	createCategory,
-	deleteCategory,
-	updateCategory,
-	renderCategory,
-} from './category';
+import { renderCategory } from './category';
+import { renderAuthor } from './author';
 
 $(document).ready(function () {
 	// Phân loại các trang
-	const category = $('#category');
-
+	const category = document.querySelector('#category');
+	const author = document.querySelector('#author');
 	//-----------------------------------------
 	$('.chosen-select').chosen({
 		no_results_text: 'Oops, nothing found!',
@@ -22,8 +18,8 @@ $(document).ready(function () {
 
 	if (category) {
 		renderCategory();
-		// Add new category
-
-		// ------------------------------
+	}
+	if (author) {
+		renderAuthor();
 	}
 });

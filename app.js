@@ -16,6 +16,7 @@ const productRoutes = require(`${__dirname}/routes/productRoutes`);
 const categoryRoutes = require(`${__dirname}/routes/categoryRoutes`);
 const cartRoutes = require(`${__dirname}/routes/cartRoutes`);
 const viewRoutes = require(`${__dirname}/routes/viewRoutes`);
+const authorRoutes = require(`${__dirname}/routes/authorRoutes`);
 const adminRoutes = require(`${__dirname}/routes/adminRoutes`);
 
 // 1. MIDDLEWARE
@@ -66,6 +67,7 @@ app.use('/api', limiter);
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/product', productRoutes);
 app.use('/api/v1/category', categoryRoutes);
+app.use('/api/v1/author', authorRoutes);
 app.use('/api/v1/cart', cartRoutes);
 app.use('/admin', adminRoutes);
 app.use('/', viewRoutes);

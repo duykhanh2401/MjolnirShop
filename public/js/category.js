@@ -3,8 +3,8 @@ import {
 	deleteDataAPI,
 	patchDataAPI,
 	getDataAPI,
-} from './fetchAPI';
-
+} from './util/fetchAPI';
+import { pagination } from './util/pagination';
 const createCategory = async (name) => {
 	try {
 		const res = await postDataAPI('category', { name });
@@ -40,17 +40,18 @@ const updateCategory = async (id, data) => {
 	}
 };
 
-const buildPage = () => {};
-
 const renderCategory = async () => {
 	const tableList = $('#table')[0];
 
-	const buildList = async () => {
+	const BuildPage = async () => {
 		const { data } = await getDataAPI('category');
 		const listCategory = data.data;
-		tableList.innerHTML = listCategory
-			.map((category) => {
-				return `
+
+		const buildList = async (buildPagination, min, max) => {
+			tableList.innerHTML = listCategory
+				.slice(min, max)
+				.map((category) => {
+					return `
 			<div class="item-list" data-id=${category._id}>
 			<div class="row align-items-center">
 				<div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
@@ -71,10 +72,16 @@ const renderCategory = async () => {
 			</div>
 		</div>
 			`;
-			})
-			.join('');
+				})
+				.join('');
+
+			buildPagination(listCategory.length);
+		};
+
+		pagination(buildList);
 	};
 
+	// Add New Category
 	$('#addNewModal').on('shown.bs.modal', function (e) {
 		const addCategoryButton = $('.btn-addCategory')[0];
 
@@ -85,7 +92,7 @@ const renderCategory = async () => {
 			if (isSuccess) {
 				document.querySelector('#nameCategory').value = '';
 				$('#addNewModal').modal('hide');
-				buildList();
+				BuildPage();
 			}
 		};
 	});
@@ -106,7 +113,7 @@ const renderCategory = async () => {
 			const isSuccess = await deleteCategory(deleteId);
 			if (isSuccess) {
 				$('#deleteModal').modal('hide');
-				buildList();
+				BuildPage();
 			}
 		};
 	});
@@ -137,12 +144,12 @@ const renderCategory = async () => {
 
 			if (isSuccess) {
 				$('#updateModal').modal('hide');
-				buildList();
+				BuildPage();
 			}
 		};
 	});
 
-	buildList();
+	BuildPage();
 };
 
-export { createCategory, deleteCategory, updateCategory, renderCategory };
+export { renderCategory };

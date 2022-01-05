@@ -2,9 +2,9 @@ extends base
 
 block content
 
-   section.content-main#category
+   section.content-main#author
     .content-header
-      h2.content-title Danh sách danh mục
+      h2.content-title Danh sách tác giả
       button.btn-new(type='button' data-bs-toggle='modal' data-bs-target='#addNewModal')
         | Thêm mới
       
@@ -21,13 +21,13 @@ block content
                 button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
               .modal-body
                 .mb-3
-                  label.form-label(for='nameCategory') Tên Danh Mục
-                  input#nameCategory.form-control(type='text')
+                  label.form-label(for='nameAuthor') Tên Tác Giả
+                  input#nameAuthor.form-control(type='text')
                 
               .modal-footer
                 button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
                   | Đóng
-                button.btn.btn-primary.btn-addCategory(type='submit')
+                button.btn.btn-primary.btn-addAuthor(type='submit')
                   | Đăng
 
     #deleteModal.modal.fade(tabindex='-1' aria-labelledby='deleteModalLabel' aria-hidden='true')
@@ -35,7 +35,7 @@ block content
           .modal-content
               .modal-header
                 h5#exampleModalLabel.modal-title
-                  | Bạn có chắc chắn muốn xoá danh mục này
+                  | Bạn có chắc chắn muốn xoá Tác giả này
                 button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
      
               .modal-footer
@@ -53,8 +53,8 @@ block content
                 button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
               .modal-body
                 .mb-3
-                  label.form-label(for='nameCategoryUpdate') Tên Danh Mục
-                  input#nameCategoryUpdate.form-control(type='text')
+                  label.form-label(for='nameAuthorUpdate') Tên Tác Giả
+                  input#nameAuthorUpdate.form-control(type='text')
                 .mb-3
                   label.form-label(for='slugUpdate') Slug
                   input#slugUpdate.form-control(type='text')
@@ -62,7 +62,7 @@ block content
               .modal-footer
                 button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
                   | Đóng
-                button.btn.btn-primary.btn-update-category(type='submit')
+                button.btn.btn-primary.btn-update-author(type='submit')
                   | Cập nhật
 
 
