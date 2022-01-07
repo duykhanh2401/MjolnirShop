@@ -9,6 +9,7 @@ head
   link(rel='stylesheet' href='/css/admin.css')
   meta(name='viewport' content='width=device-width, initial-scale=1.0')
   title Admin Dashboard
+.msg.animate.slide-in-down
 .navbar
   .navbar-top
     a.brand-link(href='/admin') Spider
@@ -19,15 +20,15 @@ head
       li.menu-item
         a.menu-link(href='/admin')
           i.bi.bi-house
-          | T&#x1ED5;ng quan
+          | Tổng Quan
       li.menu-item
         a.menu-link(href='/admin/product')
           i.bi.bi-box-seam
-          | S&#x1EA3;n ph&#x1EA9;m
+          | Sản Phẩm
       li.menu-item
         a.menu-link(href='/admin/category')
           i.bi.bi-card-checklist
-          | Danh m&#x1EE5;c
+          | Danh Mục
       li.menu-item
         a.menu-link(href='/admin/author')
           i.bi.bi-book
@@ -35,15 +36,15 @@ head
       li.menu-item
         a.menu-link(href='/admin/ship')
           i.bi.bi-truck
-          | V&#x1EAD;n chuy&#x1EC3;n
+          | Vận Chuyển
       li.menu-item
         a.menu-link(href='/admin/user')
           i.bi.bi-people
-          | Ng&#x1B0;&#x1EDD;i d&ugrave;ng
+          | Người Dùng
       li.menu-item
         a.menu-link(href='/admin/order')
           i.bi.bi-cart-dash
-          | &Dstrok;&#x1A1;n h&agrave;ng
+          | Đơn Hàng
 .main-wrap
   header.main-header
     .dropdown
@@ -59,7 +60,8 @@ head
   block content
 script(type='text/javascript' src='/js/static/bootstrap.bundle.min.js')
 script(type='text/javascript' src='/js/static/jquery-3.6.0.min.js')
-script(type='text/javascript' src='/js/static/bootstrap-select.js')
 script(type='text/javascript' src='/js/static/axios.min.js')
 script(type='text/javascript' src='/js/static/chosen.jquery.min.js')
+//- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js" integrity="sha512-yDlE7vpGDP7o2eftkCiPZ+yuUyEcaBwoJoIhdXv71KZWugFqEphIS3PU60lEkFaz8RxaVsMpSvQxMBaKVwA5xg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+script(type='text/javascript' src='/js/static/bootstrap-select.min.js')
 script(type='text/javascript' src='/js/bundle.js')

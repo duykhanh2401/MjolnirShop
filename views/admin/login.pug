@@ -1,0 +1,30 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(http-equiv='X-UA-Compatible' content='IE=edge')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  title Document
+  link(href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet')
+  link(rel='preconnect' href='https://fonts.googleapis.com')
+  link(rel='preconnect' href='https://fonts.gstatic.com' crossorigin='')
+  link(href='https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap' rel='stylesheet')
+  link(rel='stylesheet' href='/css/admin/login.css')
+  link(rel='stylesheet' href='/css/toastify.css')
+.msg.animate.slide-in-down
+.container#loginPage
+  .top-header
+    h3 Welcome back
+  form(action='')
+    .user
+      i.bx.bxs-user-circle
+      input.email(type='text' placeholder='Enter your username')
+    .pass
+      i.bx.bxs-lock-alt
+      input.password(type='password' placeholder='Enter your password')
+  .btn.loginSubmit
+    button Sign in
+
+script(type='text/javascript' src='/js/static/axios.min.js')
+script(type='text/javascript' src='/js/static/jquery-3.6.0.min.js')
+script(type='text/javascript' src='/js/bundle.js')
+

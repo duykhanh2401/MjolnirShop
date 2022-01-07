@@ -1,6 +1,6 @@
 export const pagination = (buildList) => {
 	let currentPage = 1;
-	let namesPerPage = 12;
+	let namesPerPage = 5;
 
 	const calcPages = (number) => {
 		return Math.ceil(number / namesPerPage);
@@ -26,7 +26,6 @@ export const pagination = (buildList) => {
 		let prevButton, nextButton;
 
 		pages = calcPages(number);
-		console.log(pages);
 		if (currentPage === 1) {
 			prevButton = false;
 		} else {

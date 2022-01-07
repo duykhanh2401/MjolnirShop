@@ -2,64 +2,121 @@ extends base
 
 block content
 
-   section.content-main
+   section.content-main#product
     .content-header
-      h2.content-title Danh s&aacute;ch s&#x1EA3;n ph&#x1EA9;m
+      h2.content-title Danh Mục Sản Phẩm
       button.btn-new(type='button' data-bs-toggle='modal' data-bs-target='#addNewModal')
-        | Th&ecirc;m m&#x1EDB;i
-      #addNewModal.modal.fade(tabindex='-1' aria-labelledby='addNewModalLabel' aria-hidden='true')
+        | Thêm Mới
+      
+    .cart-body
+      #table
+
+    .pagination
+    #addNewModal.modal.fade(tabindex='-1' aria-labelledby='addNewModalLabel' aria-hidden='true')
         .modal-dialog
           .modal-content
             .modal-header
               h5#exampleModalLabel.modal-title
-                | Th&ecirc;m s&#x1EA3;n ph&#x1EA9;m
+                | Thêm Sản Phẩm
               button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
             .modal-body
               .mb-3
-                label.form-label(for='exampleFormControlInput1') T&ecirc;n s&#x1EA3;n ph&#x1EA9;m
-                input#exampleFormControlInput1.form-control(type='text')
+                label.form-label(for='imageProduct') Ảnh Sản Phẩm
+                .wrap
+                  input#imageProduct.form-control(type='file')
+                  img.imgShow
+                button.btn.btn-secondary.uploadButton
+                  | Upload IMG
               .mb-3
-                label.form-label(for='price') Gi&aacute; s&#x1EA3;n ph&#x1EA9;m
-                input#price.form-control(type='number')
+                label.form-label(for='nameProduct') Tên Sản Phẩm
+                input#nameProduct.form-control(type='text')
               .mb-3
-                label.form-label(for='quantity') S&#x1ED1; l&#x1B0;&#x1EE3;ng
-                input#quantity.form-control(type='number')
+                label.form-label(for='priceProduct') Giá Sản Phẩm
+                input#priceProduct.form-control(type='number')
               .mb-3
-                label.form-label(for='author') T&aacute;c gi&#x1EA3;
-                input#author.form-control(type='text')
-              div
-                select.chosen-select(data-placeholder='Chọn tên phân loại' multiple='' name='test')
+                label.form-label(for='quantityProduct') Số Lượng
+                input#quantityProduct.form-control(type='number')
+              .mb-3
+                label.form-label(for='authorSelect') Tác Giả
+                select#authorSelect.chosen-select(data-placeholder='Chọn tên phân loại' multiple='' name='test')
                   option(value='')
-                  option(selected ) American Black Bear
-                  option Asiatic Black Bear
-                  option Brown Bear
+                  each author in authors
+                    option(value= author.id)= author.name
+                    
               .mb-3
-                label.form-label(for='exampleFormControlTextarea1') M&ocirc; t&#x1EA3;
-                textarea#exampleFormControlTextarea1.form-control(rows='3')
+                label.form-label(for='categorySelect') Danh Mục
+                select#categorySelect.chosen-select(data-placeholder='Chọn tên phân loại' multiple='' name='test')
+                  option(value='')
+                  each category in categories
+                    option(value= category.id)= category.name
+              .mb-3
+                label.form-label(for='description') Mô tả
+                textarea#description.form-control(rows='3')
             .modal-footer
               button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
                 | Close
-              button.btn.btn-primary(type='button')
+              button.btn.btn-primary.btn-addProduct(type='button')
                 | Save changes
-    .cart-body
-      each product in products
-        .item-list
-          .row.align-items-center
-            .col-lg-4.col-sm-4.col-8.flex-grow-1.col-name
-              .itemside
-                .image-product
-                  img(src='https://product.hstatic.net/200000343865/product/3_175_b1a57e2b904e4515b4f4bdf003301155_c22ddb9432a54dfa8f18341d7c74ddc0_compact.jpg' alt='')
-                .info= product.name
-            .col-lg-2.col-sm-2.col-4.col-price
-              span= `${product.price} đ`
-            .col-lg-2.col-sm-2.col-4.col-status
-              span= `${product.qty} `
-            .col-lg-1.col-sm-2.col-4.col-date
-              span= `${product.createdAt.toLocaleDateString()}`
-            .col-lg-2.col-sm-2.col-4.col-action.text-end
-              .btn.btn-sm.font-sm.rounded.btn-brand 
-                i.bi.bi-pencil
-                | Sửa
-              .btn.btn-sm.font-sm.btn-light.rounded.btn.btn-sm
-                i.bi.bi-trash
-                | Xoá
+
+    #deleteModal.modal.fade(tabindex='-1' aria-labelledby='deleteModalLabel' aria-hidden='true')
+        .modal-dialog
+          .modal-content
+              .modal-header
+                h5#exampleModalLabel.modal-title
+                  | Bạn có chắc chắn muốn xoá Tác giả này
+                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+     
+              .modal-footer
+                button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                  | Đóng
+                button.btn.btn-danger.btn-delete
+                  | Xoá
+
+    #updateModal.modal.fade(tabindex='-1' aria-labelledby='updateModalLabel' aria-hidden='true')
+        .modal-dialog
+          .modal-content
+            .modal-header
+              h5#exampleModalLabel.modal-title
+                | Sửa Sản Phẩm
+              button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+            .modal-body
+              .mb-3
+                label.form-label(for='imageProductUpdate') Ảnh Sản Phẩm
+                .wrap
+                  input#imageProductUpdate.form-control(type='file')
+                  img.imgShowUpdate
+                button.btn.btn-secondary.uploadButtonUpdate
+                  | Upload IMG
+              .mb-3
+                label.form-label(for='nameProductUpdate') Tên Sản Phẩm
+                input#nameProductUpdate.form-control(type='text')
+              .mb-3
+                label.form-label(for='priceProductUpdate') Giá Sản Phẩm
+                input#priceProductUpdate.form-control(type='number')
+              .mb-3
+                label.form-label(for='quantityProductUpdate') Số Lượng
+                input#quantityProductUpdate.form-control(type='number')
+              .mb-3
+                label.form-label(for='slugProductUpdate') Slug
+                input#slugProductUpdate.form-control(type='text')
+              .mb-3
+                label.form-label(for='authorSelectUpdate') Tác Giả
+                select#authorSelectUpdate.chosen-select(data-placeholder='Chọn tên phân loại' multiple='' name='test')
+                  option(value='')
+                  each author in authors
+                    option(value= author.id)= author.name
+                    
+              .mb-3
+                label.form-label(for='categorySelectUpdate') Danh Mục
+                select#categorySelectUpdate.chosen-select(data-placeholder='Chọn tên phân loại' multiple='' name='test')
+                  option(value='')
+                  each category in categories
+                    option(value= category.id)= category.name
+              .mb-3
+                label.form-label(for='descriptionProductUpdate') Mô tả
+                textarea#descriptionProductUpdate.form-control(rows='3')
+            .modal-footer
+              button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                | Đóng
+              button.btn.btn-primary.btn-update-product(type='button')
+                | Cập nhật

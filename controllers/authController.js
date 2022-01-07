@@ -141,3 +141,40 @@ exports.updateMyPassword = catchAsync(async (req, res, next) => {
 
 	createSendToken(user, 200, res);
 });
+
+exports.loginAdmin = catchAsync(async function (req, res, next) {
+	const { email, password } = req.body;
+
+	// 1) Check Email Password nhập vào
+	if (!email || !password)
+		return next(new AppError('Please provide email or password', 400));
+
+	// 2) Check Email Password đúng hay k
+	const user = await User.findOne({ email }).select('+password');
+	// console.log(user);
+	if (!user || !(await user.correctPassword(password))) {
+		return next(new AppError('Incorrect email or password', 400));
+	}
+	if (user.role !== 'admin') {
+		return next(
+			new AppError('Bạn không có quyền truy cập đường dẫn này', 400),
+		);
+	}
+
+	const token = createToken(user._id);
+
+	res.cookie('jwt', token, {
+		httpOnly: true,
+		secure: process.env.NODE_ENV === 'production',
+		expires: new Date(
+			Date.now() +
+				process.env.JWT_COOKIE_EXPIRES_IN * 60 * 24 * 60 * 1000,
+		),
+	});
+
+	user.password = undefined;
+	res.status(200).json({
+		status: 'success',
+		token,
+	});
+});

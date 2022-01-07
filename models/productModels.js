@@ -36,7 +36,7 @@ const productSchema = mongoose.Schema(
 			type: Date,
 			default: Date.now,
 		},
-		qty: {
+		quantity: {
 			type: Number,
 			require: [true, 'Vui lòng nhập số lượng sản phẩm'],
 			min: 0,
@@ -52,6 +52,9 @@ const productSchema = mongoose.Schema(
 productSchema.pre(/^find/, function (next) {
 	this.populate({
 		path: 'category',
+		select: 'name',
+	}).populate({
+		path: 'author',
 		select: 'name',
 	});
 
