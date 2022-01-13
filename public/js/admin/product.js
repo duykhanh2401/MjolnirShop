@@ -3,10 +3,10 @@ import {
 	deleteDataAPI,
 	patchDataAPI,
 	getDataAPI,
-} from './util/fetchAPI';
-import { pagination } from './util/pagination';
-import { toast } from './util/toastify';
-import { uploadImage } from './util/uploadImage';
+} from '../util/fetchAPI';
+import { pagination } from '../util/pagination';
+import { toast } from '../util/toastify';
+import { uploadImage } from '../util/uploadImage';
 
 const createProduct = async (data) => {
 	try {

@@ -1,0 +1,16 @@
+extends base
+
+block content
+
+    .new-products
+        each product in products
+            .product-item
+                .product-item-wrapper
+                    a.link-product(href=`category/${product.category[0].slug}/${product.slug}`)
+                        .image-container
+                            img.img-product(src=`${product.image}` alt=`${product.name}`)
+                        .product-container
+                            .product-name
+                                span= product.name
+                            .product-price
+                                span= product.priceFormat

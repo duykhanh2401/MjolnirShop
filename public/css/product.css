@@ -1,0 +1,141 @@
+.product-single {
+	display: flex;
+	padding: 16px;
+	margin: 24px auto 0;
+	background-color: #fff;
+	border-radius: 15px;
+}
+.product-single-image {
+	width: 484px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 400px;
+	width: 400px;
+}
+.image-product {
+	/* width: 90%; */
+	max-height: 392px;
+	max-width: 100%;
+	height: auto;
+	width: auto;
+}
+.product-single-info {
+	flex: 2;
+	padding-left: 32px;
+}
+.product-content {
+}
+.product-header {
+	font-size: 24px;
+	font-weight: 500;
+	padding-bottom: 16px;
+}
+
+.product-author span,
+.product-category span {
+	color: #c92127;
+	cursor: pointer;
+	margin: 0 4px;
+}
+
+.product-author,
+.product-category {
+	padding: 4px 0;
+}
+
+.product-single-price {
+	font-size: 32px;
+	color: #c92127;
+	font-family: 'Roboto', sans-serif !important;
+	font-weight: 700;
+	padding: 8px 0 16px 0;
+}
+.product-quantity {
+	display: flex;
+	align-items: center;
+}
+
+.quantity-control {
+	margin-left: 16px;
+	border: 1px solid #dee2e6;
+	border-radius: 8px;
+	padding: 8px 0;
+}
+
+.quantity-control i {
+	padding: 0 12px;
+	cursor: pointer;
+}
+
+.qty {
+	padding: 0 4px;
+}
+
+.product-control {
+	display: flex;
+	margin-top: 24px;
+}
+.product-add-to-cart {
+	margin-left: 0;
+	color: #c92127;
+	cursor: pointer;
+	user-select: none;
+	background: #fff;
+	border: 2px solid #c92127;
+	width: 220px;
+	height: 44px;
+	border-radius: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 700;
+	margin-right: 16px;
+}
+.product-order {
+	margin-left: 0;
+	color: #fff;
+	cursor: pointer;
+	user-select: none;
+	background: #c92127;
+	width: 220px;
+	height: 44px;
+	border-radius: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 700;
+}
+
+.description {
+	margin-top: 16px;
+	background-color: #fff;
+	border-radius: 15px;
+	padding: 16px;
+}
+.description-header {
+	font-weight: 600;
+	font-size: 24px;
+	color: #c92127;
+	padding-left: 16px;
+}
+.description-body {
+	padding: 16px;
+	color: #000;
+}
+
+.rating {
+	margin-top: 16px;
+	background-color: #fff;
+	border-radius: 15px;
+	padding: 16px;
+}
+.rating-header {
+	font-weight: 600;
+	font-size: 24px;
+	color: #c92127;
+	padding-left: 16px;
+}
+.rating-body {
+	padding: 16px;
+}

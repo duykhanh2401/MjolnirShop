@@ -3,8 +3,8 @@ import {
 	deleteDataAPI,
 	patchDataAPI,
 	getDataAPI,
-} from './util/fetchAPI';
-import { pagination } from './util/pagination';
+} from '../util/fetchAPI';
+import { pagination } from '../util/pagination';
 
 const createAuthor = async (name) => {
 	try {

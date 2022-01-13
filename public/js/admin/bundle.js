@@ -1,10 +1,10 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./public/js/author.js":
-/*!*****************************!*\
-  !*** ./public/js/author.js ***!
-  \*****************************/
+/***/ "./public/js/admin/author.js":
+/*!***********************************!*\
+  !*** ./public/js/admin/author.js ***!
+  \***********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -12,8 +12,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "renderAuthor": () => (/* binding */ renderAuthor)
 /* harmony export */ });
-/* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util/fetchAPI */ "./public/js/util/fetchAPI.js");
-/* harmony import */ var _util_pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util/pagination */ "./public/js/util/pagination.js");
+/* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/fetchAPI */ "./public/js/util/fetchAPI.js");
+/* harmony import */ var _util_pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/pagination */ "./public/js/util/pagination.js");
 
 
 
@@ -167,10 +167,10 @@ const renderAuthor = async () => {
 
 /***/ }),
 
-/***/ "./public/js/category.js":
-/*!*******************************!*\
-  !*** ./public/js/category.js ***!
-  \*******************************/
+/***/ "./public/js/admin/category.js":
+/*!*************************************!*\
+  !*** ./public/js/admin/category.js ***!
+  \*************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -178,8 +178,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "renderCategory": () => (/* binding */ renderCategory)
 /* harmony export */ });
-/* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util/fetchAPI */ "./public/js/util/fetchAPI.js");
-/* harmony import */ var _util_pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util/pagination */ "./public/js/util/pagination.js");
+/* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/fetchAPI */ "./public/js/util/fetchAPI.js");
+/* harmony import */ var _util_pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/pagination */ "./public/js/util/pagination.js");
 
 
 const createCategory = async (name) => {
@@ -334,14 +334,14 @@ const renderCategory = async () => {
 
 /***/ }),
 
-/***/ "./public/js/login.js":
-/*!****************************!*\
-  !*** ./public/js/login.js ***!
-  \****************************/
+/***/ "./public/js/admin/login.js":
+/*!**********************************!*\
+  !*** ./public/js/admin/login.js ***!
+  \**********************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-const { postDataAPI } = __webpack_require__(/*! ./util/fetchAPI */ "./public/js/util/fetchAPI.js");
-const { toast } = __webpack_require__(/*! ./util/toastify */ "./public/js/util/toastify.js");
+const { postDataAPI } = __webpack_require__(/*! ../util/fetchAPI */ "./public/js/util/fetchAPI.js");
+const { toast } = __webpack_require__(/*! ../util/toastify */ "./public/js/util/toastify.js");
 
 exports.login = async () => {
 	document
@@ -367,10 +367,10 @@ exports.login = async () => {
 
 /***/ }),
 
-/***/ "./public/js/product.js":
-/*!******************************!*\
-  !*** ./public/js/product.js ***!
-  \******************************/
+/***/ "./public/js/admin/product.js":
+/*!************************************!*\
+  !*** ./public/js/admin/product.js ***!
+  \************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -378,10 +378,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "renderProduct": () => (/* binding */ renderProduct)
 /* harmony export */ });
-/* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util/fetchAPI */ "./public/js/util/fetchAPI.js");
-/* harmony import */ var _util_pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util/pagination */ "./public/js/util/pagination.js");
-/* harmony import */ var _util_toastify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./util/toastify */ "./public/js/util/toastify.js");
-/* harmony import */ var _util_uploadImage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./util/uploadImage */ "./public/js/util/uploadImage.js");
+/* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/fetchAPI */ "./public/js/util/fetchAPI.js");
+/* harmony import */ var _util_pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/pagination */ "./public/js/util/pagination.js");
+/* harmony import */ var _util_toastify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util/toastify */ "./public/js/util/toastify.js");
+/* harmony import */ var _util_uploadImage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../util/uploadImage */ "./public/js/util/uploadImage.js");
 
 
 
@@ -716,7 +716,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 const pagination = (buildList) => {
 	let currentPage = 1;
-	let namesPerPage = 5;
+	let namesPerPage = 12;
 
 	const calcPages = (number) => {
 		return Math.ceil(number / namesPerPage);
@@ -960,14 +960,16 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
-/*!****************************!*\
-  !*** ./public/js/index.js ***!
-  \****************************/
+/*!**********************************!*\
+  !*** ./public/js/admin/index.js ***!
+  \**********************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _category__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./category */ "./public/js/category.js");
-/* harmony import */ var _author__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./author */ "./public/js/author.js");
-/* harmony import */ var _product__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./product */ "./public/js/product.js");
-/* harmony import */ var _login__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./login */ "./public/js/login.js");
+/* harmony import */ var _category__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./category */ "./public/js/admin/category.js");
+/* harmony import */ var _author__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./author */ "./public/js/admin/author.js");
+/* harmony import */ var _product__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./product */ "./public/js/admin/product.js");
+/* harmony import */ var _login__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./login */ "./public/js/admin/login.js");
+/* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../util/fetchAPI */ "./public/js/util/fetchAPI.js");
+
 
 
 
@@ -979,7 +981,19 @@ $(document).ready(function () {
 	const author = document.querySelector('#author');
 	const product = document.querySelector('#product');
 	const loginPage = document.querySelector('#loginPage');
+	const mainPage = document.querySelector('#main');
+
 	//-----------------------------------------
+
+	if (mainPage) {
+		$('.logout')[0].addEventListener('click', async () => {
+			const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_4__.getDataAPI)('user/logout');
+
+			if (res.status === 200) {
+				location.reload();
+			}
+		});
+	}
 
 	$('.menu-link').each((index, el) => {
 		if (window.location.pathname === el.pathname) {

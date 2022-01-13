@@ -178,3 +178,31 @@ exports.loginAdmin = catchAsync(async function (req, res, next) {
 		token,
 	});
 });
+
+exports.isLoggedIn = async (req, res, next) => {
+	try {
+		if (req.cookies.jwt) {
+			// Verification token
+			const decode = await promisify(jwt.verify)(
+				req.cookies.jwt,
+				process.env.JWT_SECRET,
+			);
+
+			// Check if user still exists || Kiểm tra người dùng tồn tại hay k
+			const currentUser = await User.findById(decode.id);
+			if (!currentUser) {
+				return next();
+			}
+
+			// Kiểm tra người dùng thay đổi mật khẩu sau khi token được tạo
+			// if (currentUser.changedPasswordAfter(decode.iat)) {
+			// 	return next();
+			// }
+			res.locals.user = currentUser;
+			return next();
+		}
+	} catch (err) {
+		return next();
+	}
+	next();
+};

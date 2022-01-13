@@ -1,6 +1,6 @@
 export const pagination = (buildList) => {
 	let currentPage = 1;
-	let namesPerPage = 5;
+	let namesPerPage = 12;
 
 	const calcPages = (number) => {
 		return Math.ceil(number / namesPerPage);

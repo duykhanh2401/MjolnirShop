@@ -1,5 +1,5 @@
-const { postDataAPI } = require('./util/fetchAPI');
-const { toast } = require('./util/toastify');
+const { postDataAPI } = require('../util/fetchAPI');
+const { toast } = require('../util/toastify');
 
 exports.login = async () => {
 	document

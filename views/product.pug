@@ -1,0 +1,44 @@
+
+extends base
+
+
+
+block content
+
+    .product-single
+        .product-single-image
+            img.image-product(src=`${product.image}` alt=`${product.name}`)
+        .product-single-info
+            .product-content
+                .product-header
+                    span= `${product.name}`
+                .product-single-price= product.priceFormat
+                .product-author
+                    | Tác giả: 
+                    each author in product.author
+                        span= author.name
+                .product-category
+                    | Danh mục: 
+                    each category in product.category
+                        span= category.name
+                .product-quantity
+                    span Số lượng
+                    .quantity-control
+                        i.bi.bi-dash-lg
+                        span.qty 1
+                        i.bi.bi-plus-lg
+                .product-control
+                    .product-add-to-cart
+                        | Thêm vào giỏ hàng
+                    .product-order Thanh toán
+    .description
+        .description-header Mô tả
+        pre.description-body= `${product.description}`
+               
+    .rating
+        .rating-header &Dstrok;&aacute;nh gi&aacute; s&#x1EA3;n ph&#x1EA9;m
+        .rating-body
+                | Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                | Sapiente ullam corporis dolor temporibus reprehenderit
+                | molestias dolorem dignissimos voluptas cum cumque ab, nam
+                | pariatur vero ut assumenda fugit est modi adipisci!
