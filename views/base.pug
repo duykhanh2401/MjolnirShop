@@ -33,15 +33,15 @@ header#header
                 | Đăng Xuất
           else
             .login-button
-              div(data-bs-toggle='modal' data-bs-target='#exampleModal')
+              div(data-bs-toggle='modal' data-bs-target='#FormLoginRegister')
                 i.bi.bi-box-arrow-right
                 | Đăng Nhập
                 
             .register-button
-              div(data-bs-toggle='modal' data-bs-target='#exampleModal')
+              div(data-bs-toggle='modal' data-bs-target='#FormLoginRegister')
                 i.bi.bi-box-arrow-left
                 | Đăng Ký
-        .cart
+        .cart(data-bs-toggle='modal' data-bs-target='#cartModal')
           i.bi.bi-bag-x
 .page-container
     block content
@@ -84,7 +84,7 @@ footer#footer
         li
           i.bi.bi-twitter
           | Twitter
-#exampleModal.modal.fade(tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true')
+#FormLoginRegister.modal.fade(tabindex='-1' aria-labelledby='FormLoginRegisterLabel' aria-hidden='true')
   .modal-dialog.modal-dialog-centered
     .modal-content
       .popup-form-user
@@ -107,6 +107,36 @@ footer#footer
             input.user-password-confirm-register(type='password' placeholder='Nhập lại mật khẩu' required)
             button.button-register Đăng ký
         button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+
+#cartModal.modal.fade(tabindex='-1'  aria-labelledby='FormLoginRegisterLabel' aria-hidden='true')
+  .modal-dialog.modal-lg.modal-dialog-centered
+    .modal-content
+      .modal-header.border-bottom-0
+        h5#FormLoginRegisterLabel.modal-title
+          | Giỏ Hàng Của Bạn
+        button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+          
+      .modal-body
+        table.table.table-image
+          thead
+            tr
+              th(scope='col')
+              th(scope='col') Tên Sản Phẩm
+              th(scope='col') Giá
+              th(scope='col') Số Lượng
+              th(scope='col') 
+          tbody.table-cart
+       
+        .d-flex.justify-content-end
+          h5
+            | Total: 
+            span.price.text-success 89$
+      .modal-footer.border-top-0.d-flex.justify-content-between
+        button.btn.btn-secondary(type='button' data-dismiss='modal') Close
+        button.btn.btn-success(type='button') Checkout
+
+
+
 script(type='text/javascript' src='/js/static/bootstrap.bundle.min.js')
 script(type='text/javascript' src='/js/static/jquery-3.6.0.min.js')
 script(type='text/javascript' src='/js/static/axios.min.js')

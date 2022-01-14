@@ -5,7 +5,7 @@ extends base
 
 block content
 
-    .product-single
+    .product-single(data-id=`${product.id}`)
         .product-single-image
             img.image-product(src=`${product.image}` alt=`${product.name}`)
         .product-single-info

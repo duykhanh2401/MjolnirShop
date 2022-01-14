@@ -117,6 +117,7 @@ body {
 .cart {
 	margin-left: 16px;
 	font-size: 26px;
+	cursor: pointer;
 }
 
 .popup-form-user {
@@ -326,3 +327,23 @@ pre {
 	white-space: -o-pre-wrap; /* Opera 7 */
 	word-wrap: break-word; /* Internet Explorer 5.5+ */
 }
+
+/* Modal */
+
+.table-image thead td, .table-image thead th {
+	border: 0;
+	color: #666;
+	font-size: 0.8rem;
+  }
+  .table-image td, .table-image th {
+	vertical-align: middle;
+	text-align: center;
+  }
+  .table-image td.qty, .table-image th.qty {
+	width: 1rem;
+  }
+  
+  .price {
+	margin-left: 1rem;
+  }
+/*-------------------------------------------------  
