@@ -234,8 +234,9 @@ const addProductAnonymous = () => {
 		.innerText.replace(/\D/g, '');
 	const image = document.querySelector('.image-product').getAttribute('src');
 	let products = [];
-	products = JSON.parse(localStorage.getItem('cart'));
-	if (products.length) {
+	const getProducts = JSON.parse(localStorage.getItem('cart'));
+	if (getProducts) {
+		products = getProducts;
 		let inCart = false;
 		products.forEach((product) => {
 			if (product.productID === productID) {
