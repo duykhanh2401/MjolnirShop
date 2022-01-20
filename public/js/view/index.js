@@ -84,7 +84,9 @@ $(document).ready(async () => {
 		// Render Cart
 		if (!checkCheckout) {
 			const products = JSON.parse(localStorage.getItem('cart'));
-			renderCart(products);
+			if (products) {
+				renderCart(products);
+			}
 
 			//------------------------------
 			if (document.querySelector('.product-add-to-cart')) {

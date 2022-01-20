@@ -40,7 +40,6 @@ const removeProduct = async (e, isUser) => {
 const renderCart = (products, isUser) => {
 	const cartRender = document.querySelectorAll('.table.table-cart');
 	let totalPrice = 0;
-	console.log(products);
 
 	if (products.length) {
 		cartRender.forEach((el) => {
