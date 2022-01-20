@@ -31,7 +31,6 @@ const createAuthor = async (name) => {
 const deleteAuthor = async (id) => {
 	try {
 		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.deleteDataAPI)(`author/${id}`);
-		console.log(res);
 		if (res.status === 204) {
 			return true;
 		}
@@ -60,30 +59,37 @@ const renderAuthor = async () => {
 		const listAuthor = data.data;
 
 		const buildList = async (buildPagination, min, max) => {
-			tableList.innerHTML = listAuthor
-				.slice(min, max)
-				.map((author) => {
-					return `
-				<div class="item-list" data-id=${author._id}>
-				<div class="row align-items-center">
-					<div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
-						<div class="itemside">
-							<div class="info">${author.name}</div>
-						</div>
-					</div>
-					<div class="col-lg-4 col-sm-4 col-8 col-slug"><span>${author.slug}</span></div>
-					<div class="col-lg-1 col-sm-2 col-4 col-date"><span>${new Date(
+			tableList.innerHTML =
+				`<thead>
+					<tr>
+						<th class="col">Tên Tác Giả</th>
+						<th class="col">Slug</th>
+						<th class="col">Ngày Đăng</th>
+						<th class="col"></th>
+					</tr>
+				</thead>
+		<tbody >` +
+				listAuthor
+					.slice(min, max)
+					.map((author) => {
+						return `
+				<tr class="item-list" data-id=${author._id}>
+				
+					<td class="info">${author.name}</td>
+					<td class="slug"><span>${author.slug}</span></td>
+					<td class="date"><span>${new Date(
 						author.createdAt,
-					).toLocaleDateString()}</span></div>
-					<div class="col-lg-2 col-sm-2 col-4 col-action text-end">
+					).toLocaleDateString()}</span></td>
+					<td class="col-lg-2 col-sm-2 col-4 col-action text-end">
 						<div class="btn btn-sm font-sm rounded btn-brand" data-bs-toggle="modal" data-bs-target="#updateModal"><i class="bi bi-pencil"></i>Sửa</div>
 						<div class="btn btn-sm font-sm btn-light rounded btn btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i>Xoá</div>
-					</div>
-				</div>
-			</div>
+					</td>
+			
+			</tr>
 				`;
-				})
-				.join('');
+					})
+					.join('') +
+				`</tbody>`;
 
 			buildPagination(listAuthor.length);
 		};
@@ -135,8 +141,8 @@ const renderAuthor = async () => {
 		// get row
 		const item = $(e.relatedTarget).closest('.item-list');
 		const itemId = item.attr('data-id');
-		const itemName = item.find('.col-name .info')[0].innerText;
-		const itemSlug = item.find('.col-slug span')[0].innerText;
+		const itemName = item.find('.info')[0].innerText;
+		const itemSlug = item.find('.slug')[0].innerText;
 
 		// Set giá trị khi hiện modal update
 		$('#nameAuthorUpdate')[0].value = itemName;
@@ -225,32 +231,32 @@ const renderCategory = async () => {
 		const listCategory = data.data;
 
 		const buildList = async (buildPagination, min, max) => {
-			tableList.innerHTML = listCategory
-				.slice(min, max)
-				.map((category) => {
-					return `
-			<div class="item-list" data-id=${category._id}>
-			<div class="row align-items-center">
-				<div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
-					<div class="itemside">
-						<div class="info">${category.name}</div>
-					</div>
-				</div>
-				<div class="col-lg-4 col-sm-4 col-8 col-slug"><span>${
-					category.slug
-				}</span></div>
-				<div class="col-lg-1 col-sm-2 col-4 col-date"><span>${new Date(
-					category.createdAt,
-				).toLocaleDateString()}</span></div>
-				<div class="col-lg-2 col-sm-2 col-4 col-action text-end">
-					<div class="btn btn-sm font-sm rounded btn-brand" data-bs-toggle="modal" data-bs-target="#updateModal"><i class="bi bi-pencil"></i>Sửa</div>
-					<div class="btn btn-sm font-sm btn-light rounded btn btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i>Xoá</div>
-				</div>
-			</div>
-		</div>
-			`;
-				})
-				.join('');
+			tableList.innerHTML =
+				`<thead>
+					<tr>
+						<th class="col">Tên Danh Mục</th>
+						<th class="col">Slug</th>
+						<th class="col">Ngày Đăng</th>
+						<th class="col"></th>
+					</tr>
+				</thead>
+				<tbody >` +
+				listCategory
+					.slice(min, max)
+					.map((category) => {
+						return `
+							<tr class="item-list" data-id=${category._id}>
+								<td class="info">${category.name}</td>
+								<td class="slug">${category.slug}</td>
+								<td class="date">${new Date(category.createdAt).toLocaleDateString()}</td>
+								<td class="col-lg-2 col-sm-2 col-4 col-action text-end">
+									<div class="btn btn-sm font-sm rounded btn-brand" data-bs-toggle="modal" data-bs-target="#updateModal"><i class="bi bi-pencil"></i>Sửa</div>
+									<div class="btn btn-sm font-sm btn-light rounded btn btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i>Xoá</div>
+								</td>
+							</tr>`;
+					})
+					.join('') +
+				`</tbody>`;
 
 			buildPagination(listCategory.length);
 		};
@@ -302,8 +308,8 @@ const renderCategory = async () => {
 		// get row
 		const item = $(e.relatedTarget).closest('.item-list');
 		const itemId = item.attr('data-id');
-		const itemName = item.find('.col-name .info')[0].innerText;
-		const itemSlug = item.find('.col-slug span')[0].innerText;
+		const itemName = item.find('.info')[0].innerText;
+		const itemSlug = item.find('.slug')[0].innerText;
 
 		// Set giá trị khi hiện modal update
 		$('#nameCategoryUpdate')[0].value = itemName;
@@ -363,6 +369,222 @@ exports.login = async () => {
 			}
 		});
 };
+
+
+/***/ }),
+
+/***/ "./public/js/admin/order.js":
+/*!**********************************!*\
+  !*** ./public/js/admin/order.js ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "renderOrder": () => (/* binding */ renderOrder)
+/* harmony export */ });
+/* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/fetchAPI */ "./public/js/util/fetchAPI.js");
+/* harmony import */ var _util_pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/pagination */ "./public/js/util/pagination.js");
+
+
+
+const formatter = new Intl.NumberFormat('vi-VN', {
+	style: 'currency',
+	currency: 'VND',
+});
+
+const getStatus = (input) => {
+	switch (input) {
+		case 'Order Placed':
+			return 'Chờ xác nhận';
+		case 'Order Confirmed':
+			return 'Đã xác nhận';
+		case 'Shipped Out':
+			return 'Đang vận chuyển';
+		case 'Order Received':
+			return 'Đã nhận hàng';
+		case 'Cancel The Order':
+			return 'Huỷ đơn hàng';
+	}
+};
+
+const deleteOrder = async (id) => {
+	try {
+		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.deleteDataAPI)(`order/${id}`);
+		console.log(res);
+		if (res.status === 204) {
+			return true;
+		}
+	} catch (error) {
+		console.log('error');
+	}
+};
+
+const updateOrder = async (id, data) => {
+	try {
+		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.patchDataAPI)(`order/${id}`, data);
+		if (res.status === 200) {
+			return true;
+		}
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+const renderOrder = async () => {
+	const tableList = $('#table')[0];
+
+	const BuildPage = async () => {
+		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)('order');
+		const listOrder = data.data;
+
+		const buildList = async (buildPagination, min, max) => {
+			tableList.innerHTML =
+				`<thead>
+					<tr>
+						<th class="col">Tên người dùng</th>
+						<th class="col">Email</th>
+						<th class="col">Tổng số tiền</th>
+						<th class="col">Trạng thái</th>
+						<th class="col"></th>
+						<th class="col"></th>
+					</tr>
+				</thead>
+				<tbody >` +
+				listOrder
+					.slice(min, max)
+					.map((order) => {
+						let price = 0;
+						order.products.forEach((product) => {
+							price += product.product.price * product.quantity;
+						});
+						return `
+							<tr class="item-list" data-id=${order._id}>
+								<td class="info">${order.name}</td>
+								<td class="email">${order.email}</td>
+								<td class="price">${formatter.format(price + 30000)}</td>
+								<td class="status" value="${order.status}">${getStatus(order.status)}</td>
+								<td class="show-info" data-bs-toggle="modal" data-bs-target="#showInfoModal">Chi tiết</td>
+								
+								<td class="col-lg-2 col-sm-2 col-4 col-action text-end">
+									<div class="btn btn-sm font-sm rounded btn-brand" data-bs-toggle="modal" data-bs-target="#updateModal"><i class="bi bi-pencil"></i>Cập nhật</div>
+									<div class="btn btn-sm font-sm btn-light rounded btn btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i>Xoá</div>
+								</td>
+							</tr>`;
+					})
+					.join('') +
+				`</tbody>`;
+
+			buildPagination(listOrder.length);
+		};
+
+		(0,_util_pagination__WEBPACK_IMPORTED_MODULE_1__.pagination)(buildList);
+	};
+
+	//----------------------------------------
+
+	// Delete order
+	const deleteUserButton = $('.btn-delete')[0];
+	$('#deleteModal').on('show.bs.modal', function (e) {
+		// get row
+		const item = $(e.relatedTarget).closest('.item-list');
+		const itemId = item.attr('data-id');
+
+		deleteUserButton.setAttribute('delete-id', itemId);
+
+		deleteUserButton.onclick = async (e) => {
+			const deleteId = deleteUserButton.getAttribute('delete-id');
+			const isSuccess = await deleteUser(deleteId);
+			if (isSuccess) {
+				$('#deleteModal').modal('hide');
+				BuildPage();
+			}
+		};
+	});
+
+	//------------------------------
+
+	// Update order
+	$('#updateModal').on('show.bs.modal', function (e) {
+		// get row
+		const item = $(e.relatedTarget).closest('.item-list');
+		const itemId = item.attr('data-id');
+
+		const statusValue = item.find('.status')[0].getAttribute('value');
+		console.log(statusValue);
+
+		// Set giá trị khi hiện modal update
+
+		document.querySelector('#statusOrder').value = statusValue;
+		const updateOrderButton = $('.btn-update-order')[0];
+
+		updateOrderButton.setAttribute('update-id', itemId);
+		updateOrderButton.onclick = async (e) => {
+			const updateId = updateOrderButton.getAttribute('update-id');
+			const status = document.querySelector('#statusOrder').value;
+
+			const isSuccess = await updateOrder(updateId, { status });
+
+			if (isSuccess) {
+				$('#updateModal').modal('hide');
+				BuildPage();
+			}
+		};
+	});
+
+	// Get info order
+	$('#showInfoModal').on('shown.bs.modal', async function (e) {
+		const item = $(e.relatedTarget).closest('.item-list');
+		const itemId = item.attr('data-id');
+		console.log(itemId);
+
+		try {
+			const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`order/${itemId}`);
+			const infoRender = document.querySelector('.body-info');
+			let totalPrice = 0;
+			const { products } = res.data.data;
+			console.log(res);
+
+			infoRender.innerHTML = products
+				.map((product) => {
+					totalPrice += product.product.price * product.quantity;
+					return `
+								<tr>
+									<td class="w-25"><img class="img-fluid img-thumbnail" style="width:100px" src=${
+										product.product.image
+									} alt="Sheep" /></td>
+									<td>${product.product.name}</td>
+									<td class="qty">${product.quantity} </td>
+									<td>${formatter.format(product.product.price)}</td>
+							</tr>`;
+				})
+				.join('');
+
+			document.querySelector(
+				'.order-total-price ',
+			).innerHTML = `${formatter.format(totalPrice + 30000)}`;
+
+			document.querySelector('.name-order span').innerHTML =
+				res.data.data.name;
+
+			document.querySelector('.email-order span').innerHTML =
+				res.data.data.email;
+
+			document.querySelector('.address-order span').innerHTML =
+				res.data.data.address;
+
+			document.querySelector('.phone-number-order span').innerHTML =
+				res.data.data.phone;
+		} catch (error) {
+			console.log(error);
+		}
+	});
+
+	BuildPage();
+};
+
+
 
 
 /***/ }),
@@ -435,44 +657,43 @@ const renderProduct = () => {
 			const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)('product');
 			const listProduct = data.data;
 			const buildList = async (buildPagination, min, max) => {
-				tableList.innerHTML = listProduct
-					.slice(min, max)
-					.map((product) => {
-						return `
-						<div class="item-list" data-id=${product._id}>
-						<div class="row align-items-center">
-							<div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
-								<div class="itemside">
-									<div class="image-product"><img src=${product.image} alt=${
-							product.name
-						} /></div>
-									<div class="info">${product.name}</div>
-								</div>
-							</div>
+				tableList.innerHTML =
+					`<thead>
+				<tr>
+					<th class="col"></th>
+					<th class="col">Tên sản phẩm</th>
+					<th class="col">Giá sản phẩm</th>
+					<th class="col">Số lượng</th>
+					<th class="col"></th>
+				</tr>
+			</thead>
+	<tbody >` +
+					listProduct
+						.slice(min, max)
+						.map((product) => {
+							return `
+						<tr class="item-list" data-id=${product._id}>
+							<td class="image-product"><img src=${product.image} alt=${product.name} /></td>
+							<td class="info">${product.name}
 							<div class="d-none author-value">${product.author
 								.map((e) => e.id)
 								.join(',')}</div>
 							<div class="d-none category-value">${product.category
 								.map((e) => e.id)
 								.join(',')}</div>
-							<div class="d-none col-slug"><span>${product.slug}</span></div>
-							<div class="d-none col-description"><span>${product.description}</span></div>
-							<div class="col-lg-2 col-sm-2 col-4 col-price"><span>${formatter.format(
-								product.price,
-							)} </span></div>
-							<div class="col-lg-2 col-sm-2 col-4 col-quantity"><span>${
-								product.quantity
-							}</span></div>
-							<div class="col-lg-1 col-sm-2 col-4 col-date"><span></span></div>
-							<div class="col-lg-2 col-sm-2 col-4 col-action text-end">
-							<div class="btn btn-sm font-sm rounded btn-brand" data-bs-toggle="modal" data-bs-target="#updateModal"><i class="bi bi-pencil"></i>Sửa</div>
-							<div class="btn btn-sm font-sm btn-light rounded btn btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i>Xoá</div>
-						</div>
-						</div>
-					</div>
+									<div class="d-none slug">${product.slug}</div>
+								<div class="d-none description">${product.description}</div>
+								<div class="col-lg-1 col-sm-2 col-4 col-date"></div></td>
+							
+							<td class="price">${formatter.format(product.price)} </td>
+							<td class="quantity">${product.quantity}</td>
+							<td class="btn btn-sm font-sm rounded btn-brand" data-bs-toggle="modal" data-bs-target="#updateModal"><i class="bi bi-pencil"></i>Sửa</td>
+							<td class="btn btn-sm font-sm btn-light rounded btn btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i>Xoá</td>
+							
+					</tr>
 					`;
-					})
-					.join('');
+						})
+						.join('');
 
 				buildPagination(listProduct.length);
 			};
@@ -568,17 +789,17 @@ const renderProduct = () => {
 	$('#updateModal').on('show.bs.modal', function (e) {
 		const item = $(e.relatedTarget).closest('.item-list');
 		const itemId = item.attr('data-id');
-		const itemName = item.find('.col-name .info')[0].innerText;
-		const itemSlug = item.find('.col-slug span')[0].innerText;
-		const itemPrice = item
-			.find('.col-price span')[0]
-			.innerText.replace(/\D/g, '');
-		const itemQuantity = item.find('.col-quantity span')[0].innerText;
-		const itemAuthor = item.find('.author-value')[0].innerText.split(',');
-		const itemCategory = item
-			.find('.category-value')[0]
+		const itemName = item.find('.info')[0].innerText;
+		const itemSlug = item.find('.info .slug')[0].innerText;
+		const itemPrice = item.find('.price')[0].innerText.replace(/\D/g, '');
+		const itemQuantity = item.find('.quantity')[0].innerText;
+		const itemAuthor = item
+			.find('.info .author-value')[0]
 			.innerText.split(',');
-		const itemDescription = item.find('.col-description span')[0].innerText;
+		const itemCategory = item
+			.find('.info .category-value')[0]
+			.innerText.split(',');
+		const itemDescription = item.find('.info .description')[0].innerText;
 		const image = item.find('.image-product img').attr('src');
 
 		// Set giá trị khi hiện modal update
@@ -660,6 +881,195 @@ const renderProduct = () => {
 
 /***/ }),
 
+/***/ "./public/js/admin/user.js":
+/*!*********************************!*\
+  !*** ./public/js/admin/user.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "renderUser": () => (/* binding */ renderUser)
+/* harmony export */ });
+/* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/fetchAPI */ "./public/js/util/fetchAPI.js");
+/* harmony import */ var _util_pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/pagination */ "./public/js/util/pagination.js");
+
+
+const createUser = async (data) => {
+	try {
+		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.postDataAPI)('user', data);
+		if (res.data.status === 'success') {
+			return true;
+		}
+	} catch (error) {
+		toast('danger', 'Có lỗi xảy ra. Vui lòng thử lại sau');
+	}
+};
+const deleteUser = async (id) => {
+	try {
+		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.deleteDataAPI)(`user/${id}`);
+		console.log(res);
+		if (res.status === 204) {
+			return true;
+		}
+	} catch (error) {
+		console.log('error');
+	}
+};
+
+const updateUser = async (id, data) => {
+	try {
+		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.patchDataAPI)(`user/${id}`, data);
+		if (res.status === 200) {
+			return true;
+		}
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+const renderUser = async () => {
+	const tableList = $('#table')[0];
+
+	const BuildPage = async () => {
+		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)('user');
+		const listUser = data.data;
+
+		const buildList = async (buildPagination, min, max) => {
+			tableList.innerHTML =
+				`<thead>
+					<tr>
+						<th class="col">Tên người dùng</th>
+						<th class="col">Email</th>
+						<th class="col">Chức vụ</th>
+						<th class="col">Trạng thái</th>
+						<th class="col"></th>
+					</tr>
+				</thead>
+				<tbody >` +
+				listUser
+					.slice(min, max)
+					.map((user) => {
+						return `
+							<tr class="item-list" data-id=${user._id}>
+								<td class="info">${user.name}</td>
+								<td class="email">${user.email}</td>
+								<td class="role" value=${user.role}>${
+							user.role === 'admin'
+								? 'Quản trị viên'
+								: 'Người dùng'
+						}</td>
+								<td class="role">${
+									user.active === true
+										? 'Đang hoạt động'
+										: 'Không hoạt động'
+								}</td>
+								<td class="col-lg-2 col-sm-2 col-4 col-action text-end">
+									<div class="btn btn-sm font-sm rounded btn-brand" data-bs-toggle="modal" data-bs-target="#updateModal"><i class="bi bi-pencil"></i>Sửa</div>
+									<div class="btn btn-sm font-sm btn-light rounded btn btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i>Xoá</div>
+								</td>
+							</tr>`;
+					})
+					.join('') +
+				`</tbody>`;
+
+			buildPagination(listUser.length);
+		};
+
+		(0,_util_pagination__WEBPACK_IMPORTED_MODULE_1__.pagination)(buildList);
+	};
+
+	// Add New Category
+	$('#addNewModal').on('shown.bs.modal', function (e) {
+		const addCategoryButton = $('.btn-addUser')[0];
+
+		addCategoryButton.onclick = async (e) => {
+			const name = document.querySelector('#nameUser').value;
+			const email = document.querySelector('#emailUser').value;
+			const password = document.querySelector('#passwordUser').value;
+			const role = document.querySelector('#roleUser').value;
+
+			const isSuccess = await createUser({
+				name,
+				email,
+				password,
+				role,
+				passwordConfirm: password,
+			});
+			if (isSuccess) {
+				document.querySelector('#nameUser').value = '';
+				document.querySelector('#emailUser').value = '';
+				document.querySelector('#passwordUser').value = '';
+				$('#addNewModal').modal('hide');
+				BuildPage();
+			}
+		};
+	});
+
+	//----------------------------------------
+
+	// Delete category
+	const deleteUserButton = $('.btn-delete')[0];
+	$('#deleteModal').on('show.bs.modal', function (e) {
+		// get row
+		const item = $(e.relatedTarget).closest('.item-list');
+		const itemId = item.attr('data-id');
+
+		deleteUserButton.setAttribute('delete-id', itemId);
+
+		deleteUserButton.onclick = async (e) => {
+			const deleteId = deleteUserButton.getAttribute('delete-id');
+			const isSuccess = await deleteUser(deleteId);
+			if (isSuccess) {
+				$('#deleteModal').modal('hide');
+				BuildPage();
+			}
+		};
+	});
+
+	//------------------------------
+
+	// Update category
+	$('#updateModal').on('show.bs.modal', function (e) {
+		// get row
+		const item = $(e.relatedTarget).closest('.item-list');
+		const itemId = item.attr('data-id');
+		const itemName = item.find('.info')[0].innerText;
+		const itemEmail = item.find('.email')[0].innerText;
+		const itemRole = item.find('.role')[0].getAttribute('value');
+
+		// Set giá trị khi hiện modal update
+
+		document.querySelector('#nameUserUpdate').value = itemName;
+		document.querySelector('#emailUserUpdate').value = itemEmail;
+		document.querySelector('#roleUserUpdate').value = itemRole;
+		const updateUserButton = $('.btn-update-user')[0];
+
+		updateUserButton.setAttribute('update-id', itemId);
+		updateUserButton.onclick = async (e) => {
+			const updateId = updateUserButton.getAttribute('update-id');
+			const name = document.querySelector('#nameUserUpdate').value;
+			const email = document.querySelector('#emailUserUpdate').value;
+			const role = document.querySelector('#roleUserUpdate').value;
+
+			const isSuccess = await updateUser(updateId, { name, email, role });
+
+			if (isSuccess) {
+				$('#updateModal').modal('hide');
+				BuildPage();
+			}
+		};
+	});
+
+	BuildPage();
+};
+
+
+
+
+/***/ }),
+
 /***/ "./public/js/util/fetchAPI.js":
 /*!************************************!*\
   !*** ./public/js/util/fetchAPI.js ***!
@@ -696,7 +1106,7 @@ const putDataAPI = async (url, data) => {
 };
 
 const deleteDataAPI = async (url, data) => {
-	const res = await axios.delete(`http://localhost:8000/api/v1/${url}`);
+	const res = await axios.delete(`http://localhost:8000/api/v1/${url}`, data);
 	return res;
 };
 
@@ -969,6 +1379,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _product__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./product */ "./public/js/admin/product.js");
 /* harmony import */ var _login__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./login */ "./public/js/admin/login.js");
 /* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../util/fetchAPI */ "./public/js/util/fetchAPI.js");
+/* harmony import */ var _user__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./user */ "./public/js/admin/user.js");
+/* harmony import */ var _order__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./order */ "./public/js/admin/order.js");
+
+
 
 
 
@@ -982,6 +1396,8 @@ $(document).ready(function () {
 	const product = document.querySelector('#product');
 	const loginPage = document.querySelector('#loginPage');
 	const mainPage = document.querySelector('#main');
+	const user = document.querySelector('#user');
+	const order = document.querySelector('#order');
 
 	//-----------------------------------------
 
@@ -1006,6 +1422,14 @@ $(document).ready(function () {
 	}
 	if (author) {
 		(0,_author__WEBPACK_IMPORTED_MODULE_1__.renderAuthor)();
+	}
+
+	if (user) {
+		(0,_user__WEBPACK_IMPORTED_MODULE_5__.renderUser)();
+	}
+
+	if (order) {
+		(0,_order__WEBPACK_IMPORTED_MODULE_6__.renderOrder)();
 	}
 
 	if (product) {

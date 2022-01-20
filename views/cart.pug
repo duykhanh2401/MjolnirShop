@@ -1,0 +1,12 @@
+extends base
+
+block content
+    table.table.table-cart
+
+    .d-flex.justify-content-end
+        h5.total-price
+        span.text-success 
+    .modal-footer.border-top-0.d-flex.justify-content-between.navigation-cart
+        button.btn.btn-secondary(type='button' data-dismiss='modal' onclick="history.back()") Quay Lại
+        a(href='/checkout')
+            button.btn.btn-success(type='button') Thanh Toán

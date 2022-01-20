@@ -3,6 +3,8 @@ import { renderAuthor } from './author';
 import { renderProduct } from './product';
 import { login } from './login';
 import { getDataAPI } from '../util/fetchAPI';
+import { renderUser } from './user';
+import { renderOrder } from './order';
 
 $(document).ready(function () {
 	// Phân loại các trang
@@ -11,6 +13,8 @@ $(document).ready(function () {
 	const product = document.querySelector('#product');
 	const loginPage = document.querySelector('#loginPage');
 	const mainPage = document.querySelector('#main');
+	const user = document.querySelector('#user');
+	const order = document.querySelector('#order');
 
 	//-----------------------------------------
 
@@ -35,6 +39,14 @@ $(document).ready(function () {
 	}
 	if (author) {
 		renderAuthor();
+	}
+
+	if (user) {
+		renderUser();
+	}
+
+	if (order) {
+		renderOrder();
 	}
 
 	if (product) {

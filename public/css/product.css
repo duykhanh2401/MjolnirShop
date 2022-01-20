@@ -95,7 +95,7 @@
 }
 .product-order {
 	margin-left: 0;
-	color: #fff;
+	color: #fff !important;
 	cursor: pointer;
 	user-select: none;
 	background: #c92127;
@@ -106,6 +106,12 @@
 	align-items: center;
 	justify-content: center;
 	font-weight: 700;
+	text-decoration: none;
+}
+
+.product-order:hover,
+.product-add-to-cart:hover {
+	opacity: 0.8;
 }
 
 .description {

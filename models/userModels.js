@@ -33,22 +33,15 @@ const userSchema = mongoose.Schema(
 				messages: 'Vui lòng nhập mật khẩu giống nhau',
 			},
 		},
-		photo: {
-			type: String,
-			default: 'default.jpg',
-		},
-		phoneNumber: {
-			type: Number,
-			length: 10,
-		},
 
 		role: {
 			type: String,
 			enum: ['admin', 'user'],
 			default: 'user',
 		},
-		address: {
-			type: String,
+		createdAt: {
+			type: Date,
+			default: Date.now,
 		},
 		passwordChangeAt: Date,
 		passwordResetToken: String,
@@ -87,7 +80,6 @@ userSchema.pre(/^find/, async function (next) {
 
 //Check Password
 userSchema.methods.correctPassword = async function (userPassword) {
-	console.log(this.password, userPassword);
 	return await bcrypt.compare(userPassword, this.password);
 };
 

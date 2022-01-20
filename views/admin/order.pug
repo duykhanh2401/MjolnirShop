@@ -1,0 +1,87 @@
+extends base
+
+block content
+
+   section.content-main#order
+    .content-header
+      h2.content-title Danh sách đơn hàng
+    
+      
+    .cart-body
+      table#table
+
+    .pagination
+
+
+    #deleteModal.modal.fade(tabindex='-1' aria-labelledby='deleteModalLabel' aria-hidden='true')
+        .modal-dialog
+          .modal-content
+              .modal-header
+                h5#exampleModalLabel.modal-title
+                  | Bạn có chắc chắn muốn xoá đơn hàng này
+                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+     
+              .modal-footer
+                button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                  | Đóng
+                button.btn.btn-danger.btn-delete
+                  | Xoá
+
+    #updateModal.modal.fade(tabindex='-1' aria-labelledby='updateModalLabel' aria-hidden='true')
+        .modal-dialog
+          .modal-content
+              .modal-header
+                h5#exampleModalLabel.modal-title
+                  | Cập nhật trạng thái đơn hàng
+                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+              .modal-body
+                .mb-3
+                  label.form-label(for='statusOrder') Chức Vụ
+                  select#statusOrder.form-control
+                    option(value='Order Placed') Chờ xác nhận
+                    option(value='Order Confirmed') Đã xác nhận
+                    option(value='Shipped Out') Đang vận chuyển
+                    option(value='Order Received') Đã nhận hàng
+                    option(value='Cancel The Order') Huỷ đơn hàng
+              .modal-footer
+                button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                  | Đóng
+                button.btn.btn-primary.btn-update-order(type='submit')
+                  | Cập nhật
+
+
+    #showInfoModal.modal.fade(tabindex='-1' aria-labelledby='updateModalLabel' aria-hidden='true')
+        .modal-dialog.info-show
+          .modal-content
+              .modal-header
+                h5#exampleModalLabel.modal-title
+                  | Thông tin đơn hàng
+                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+              .modal-body
+                .information-order
+                  .name-order Tên người đặt hàng: 
+                    span Vũ Duy Khánh
+                  .email-order Email đặt hàng: 
+                    span
+                  .address-order Địa chỉ đặt hàng: 
+                    span
+                  .phone-number-order Số điện thoại đặt hàng: 
+                    span
+                  .cart-order Thông tin giỏ hàng: 
+
+                table.product-table(style="text-align:center")
+                  thead
+                    th
+                    th Tên sản phẩm
+                    th Số lượng
+                    th Giá
+                  tbody.body-info
+                
+                .order-total
+                  .order-total-name Tổng cộng
+                  .order-total-price 
+              .modal-footer
+                button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                  | Đóng
+                
+

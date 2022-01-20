@@ -8,5 +8,6 @@ router.get('/product', adminController.getProduct);
 router.get('/category', adminController.getCategory);
 router.get('/author', adminController.getAuthor);
 router.get('/user', adminController.getUser);
+router.get('/order', adminController.getOrder);
 router.get('/', adminController.getOverview);
 module.exports = router;

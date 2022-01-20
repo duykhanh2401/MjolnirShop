@@ -1,0 +1,80 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(http-equiv='X-UA-Compatible' content='IE=edge')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  link(rel='stylesheet' href='/css/bootstrap.min.css')
+  link(rel='stylesheet' href='/css/checkout.css')
+  title Thanh toán đơn hàng
+.container#checkout
+  .slidebar
+    .order-product-list
+      table.product-table
+        thead
+          th
+          th Tên sản phẩm
+          th Số lượng
+          th Giá
+        tbody
+       
+    .order-product-info
+      .subtotal
+        .subtotal-name Tạm tính
+        .subtotal-price 
+      .total-shipping
+        .total-shipping-name Phí vận chuyển
+        .total-shipping-price 30.000 &#x20AB;
+    .order-total
+      .order-total-name Tổng cộng
+      .order-total-price 
+  .main
+    .main-header
+      a.logo(href='/')
+        img(src='/img/logo.png' alt='')
+    .main-content
+      .content-header Th&ocirc;ng tin giao h&agrave;ng
+      .content-main
+        .section-content
+          .form-floating.mb-3
+            input#nameUser.form-control(type='text' placeholder='Họ và Tên')
+            label(for='nameUser') Họ và Tên
+          if user
+            .form-floating.mb-3
+                    input#emailUser.isLogin.form-control(type='email' disabled placeholder='Email' data-id-user=`${user.id}` value=`${user.email}`)
+                    label(for='emailUser') Email
+          else
+            .form-floating.mb-3
+                input#emailUser.form-control(type='email' placeholder='Email')
+                label(for='emailUser') Email
+          .form-floating.mb-3
+            input#phoneNumberUser.form-control(type='text' placeholder='Số điện thoại')
+            label(for='phoneNumberUser') Số điện thoại
+          .form-floating.mb-3
+            input#addressUser.form-control(type='text' placeholder='Địa chỉ')
+            label(for='addressUser') Địa chỉ
+        .section-content
+          .section-header
+            | Phương thức vận chuyển
+          .form-check
+            input#type-shippng.form-check-input(type='radio' name='type-shippng' checked='')
+            label.form-check-label(for='type-shippng')
+              | Giao hàng tận nơi
+        .section-content
+          .section-header
+            | Phương thúc thanh toán
+          .form-check
+            input#type-payload.form-check-input(type='radio' name='type-payload' checked='')
+            label.form-check-label(for='type-payload')
+              | Thanh toán khi giao hành(COD)
+      .content-footer
+        .go-back-cart
+          a.link-to-cart(href='/cart') Giỏ hàng
+        .success-oder Hoàn tất đơn hàng
+
+script(type='text/javascript' src='/js/static/bootstrap.bundle.min.js')
+script(type='text/javascript' src='/js/static/jquery-3.6.0.min.js')
+script(type='text/javascript' src='/js/static/axios.min.js')
+script(type='text/javascript' src='/js/static/chosen.jquery.min.js')
+//- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js" integrity="sha512-yDlE7vpGDP7o2eftkCiPZ+yuUyEcaBwoJoIhdXv71KZWugFqEphIS3PU60lEkFaz8RxaVsMpSvQxMBaKVwA5xg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+script(type='text/javascript' src='/js/static/bootstrap-select.min.js')
+script(type='text/javascript' src='/js/view/bundle.js')

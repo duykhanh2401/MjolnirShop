@@ -29,9 +29,9 @@ const createSendToken = (user, statusCode, res) => {
 	});
 };
 
-exports.signup = catchAsync(async (req, res, next) => {
+exports.register = catchAsync(async (req, res, next) => {
 	const newUser = await User.create({
-		name: req.body.name,
+		name: req.body.name.trim(),
 		email: req.body.email,
 		password: req.body.password,
 		passwordConfirm: req.body.passwordConfirm,
@@ -52,6 +52,7 @@ exports.login = catchAsync(async function (req, res, next) {
 	if (!user || !(await user.correctPassword(password, user.password))) {
 		return next(new AppError('Incorrect email or password', 400));
 	}
+
 	createSendToken(user, 200, res);
 });
 

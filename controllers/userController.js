@@ -49,7 +49,7 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
 	});
 });
 
-exports.getAllUsers = factory.getAll(User);
+exports.getAllUsers = factory.getAll(User, '+active');
 exports.getUser = factory.getOne(User);
 exports.createUser = factory.createOne(User);
 exports.updateUser = factory.updateOne(User);

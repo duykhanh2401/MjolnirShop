@@ -19,6 +19,6 @@ export const putDataAPI = async (url, data) => {
 };
 
 export const deleteDataAPI = async (url, data) => {
-	const res = await axios.delete(`http://localhost:8000/api/v1/${url}`);
+	const res = await axios.delete(`http://localhost:8000/api/v1/${url}`, data);
 	return res;
 };

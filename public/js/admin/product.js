@@ -56,44 +56,43 @@ const renderProduct = () => {
 			const { data } = await getDataAPI('product');
 			const listProduct = data.data;
 			const buildList = async (buildPagination, min, max) => {
-				tableList.innerHTML = listProduct
-					.slice(min, max)
-					.map((product) => {
-						return `
-						<div class="item-list" data-id=${product._id}>
-						<div class="row align-items-center">
-							<div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
-								<div class="itemside">
-									<div class="image-product"><img src=${product.image} alt=${
-							product.name
-						} /></div>
-									<div class="info">${product.name}</div>
-								</div>
-							</div>
+				tableList.innerHTML =
+					`<thead>
+				<tr>
+					<th class="col"></th>
+					<th class="col">Tên sản phẩm</th>
+					<th class="col">Giá sản phẩm</th>
+					<th class="col">Số lượng</th>
+					<th class="col"></th>
+				</tr>
+			</thead>
+	<tbody >` +
+					listProduct
+						.slice(min, max)
+						.map((product) => {
+							return `
+						<tr class="item-list" data-id=${product._id}>
+							<td class="image-product"><img src=${product.image} alt=${product.name} /></td>
+							<td class="info">${product.name}
 							<div class="d-none author-value">${product.author
 								.map((e) => e.id)
 								.join(',')}</div>
 							<div class="d-none category-value">${product.category
 								.map((e) => e.id)
 								.join(',')}</div>
-							<div class="d-none col-slug"><span>${product.slug}</span></div>
-							<div class="d-none col-description"><span>${product.description}</span></div>
-							<div class="col-lg-2 col-sm-2 col-4 col-price"><span>${formatter.format(
-								product.price,
-							)} </span></div>
-							<div class="col-lg-2 col-sm-2 col-4 col-quantity"><span>${
-								product.quantity
-							}</span></div>
-							<div class="col-lg-1 col-sm-2 col-4 col-date"><span></span></div>
-							<div class="col-lg-2 col-sm-2 col-4 col-action text-end">
-							<div class="btn btn-sm font-sm rounded btn-brand" data-bs-toggle="modal" data-bs-target="#updateModal"><i class="bi bi-pencil"></i>Sửa</div>
-							<div class="btn btn-sm font-sm btn-light rounded btn btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i>Xoá</div>
-						</div>
-						</div>
-					</div>
+									<div class="d-none slug">${product.slug}</div>
+								<div class="d-none description">${product.description}</div>
+								<div class="col-lg-1 col-sm-2 col-4 col-date"></div></td>
+							
+							<td class="price">${formatter.format(product.price)} </td>
+							<td class="quantity">${product.quantity}</td>
+							<td class="btn btn-sm font-sm rounded btn-brand" data-bs-toggle="modal" data-bs-target="#updateModal"><i class="bi bi-pencil"></i>Sửa</td>
+							<td class="btn btn-sm font-sm btn-light rounded btn btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i>Xoá</td>
+							
+					</tr>
 					`;
-					})
-					.join('');
+						})
+						.join('');
 
 				buildPagination(listProduct.length);
 			};
@@ -189,17 +188,17 @@ const renderProduct = () => {
 	$('#updateModal').on('show.bs.modal', function (e) {
 		const item = $(e.relatedTarget).closest('.item-list');
 		const itemId = item.attr('data-id');
-		const itemName = item.find('.col-name .info')[0].innerText;
-		const itemSlug = item.find('.col-slug span')[0].innerText;
-		const itemPrice = item
-			.find('.col-price span')[0]
-			.innerText.replace(/\D/g, '');
-		const itemQuantity = item.find('.col-quantity span')[0].innerText;
-		const itemAuthor = item.find('.author-value')[0].innerText.split(',');
-		const itemCategory = item
-			.find('.category-value')[0]
+		const itemName = item.find('.info')[0].innerText;
+		const itemSlug = item.find('.info .slug')[0].innerText;
+		const itemPrice = item.find('.price')[0].innerText.replace(/\D/g, '');
+		const itemQuantity = item.find('.quantity')[0].innerText;
+		const itemAuthor = item
+			.find('.info .author-value')[0]
 			.innerText.split(',');
-		const itemDescription = item.find('.col-description span')[0].innerText;
+		const itemCategory = item
+			.find('.info .category-value')[0]
+			.innerText.split(',');
+		const itemDescription = item.find('.info .description')[0].innerText;
 		const image = item.find('.image-product img').attr('src');
 
 		// Set giá trị khi hiện modal update

@@ -53,14 +53,14 @@ exports.getOne = (Model, popOptions) =>
 		});
 	});
 
-exports.getAll = (Model) =>
+exports.getAll = (Model, select) =>
 	catchAsync(async (req, res, next) => {
 		const features = new APIFeatures(Model.find(), req.query)
 			.filter()
 			.sort()
 			.limitFields()
 			.paginate();
-		const data = await features.query;
+		const data = await features.query.select(select);
 		// 		console.log(features.query);
 
 		// RESPONSE

@@ -20,7 +20,6 @@ const createAuthor = async (name) => {
 const deleteAuthor = async (id) => {
 	try {
 		const res = await deleteDataAPI(`author/${id}`);
-		console.log(res);
 		if (res.status === 204) {
 			return true;
 		}
@@ -49,30 +48,37 @@ const renderAuthor = async () => {
 		const listAuthor = data.data;
 
 		const buildList = async (buildPagination, min, max) => {
-			tableList.innerHTML = listAuthor
-				.slice(min, max)
-				.map((author) => {
-					return `
-				<div class="item-list" data-id=${author._id}>
-				<div class="row align-items-center">
-					<div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
-						<div class="itemside">
-							<div class="info">${author.name}</div>
-						</div>
-					</div>
-					<div class="col-lg-4 col-sm-4 col-8 col-slug"><span>${author.slug}</span></div>
-					<div class="col-lg-1 col-sm-2 col-4 col-date"><span>${new Date(
+			tableList.innerHTML =
+				`<thead>
+					<tr>
+						<th class="col">Tên Tác Giả</th>
+						<th class="col">Slug</th>
+						<th class="col">Ngày Đăng</th>
+						<th class="col"></th>
+					</tr>
+				</thead>
+		<tbody >` +
+				listAuthor
+					.slice(min, max)
+					.map((author) => {
+						return `
+				<tr class="item-list" data-id=${author._id}>
+				
+					<td class="info">${author.name}</td>
+					<td class="slug"><span>${author.slug}</span></td>
+					<td class="date"><span>${new Date(
 						author.createdAt,
-					).toLocaleDateString()}</span></div>
-					<div class="col-lg-2 col-sm-2 col-4 col-action text-end">
+					).toLocaleDateString()}</span></td>
+					<td class="col-lg-2 col-sm-2 col-4 col-action text-end">
 						<div class="btn btn-sm font-sm rounded btn-brand" data-bs-toggle="modal" data-bs-target="#updateModal"><i class="bi bi-pencil"></i>Sửa</div>
 						<div class="btn btn-sm font-sm btn-light rounded btn btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i>Xoá</div>
-					</div>
-				</div>
-			</div>
+					</td>
+			
+			</tr>
 				`;
-				})
-				.join('');
+					})
+					.join('') +
+				`</tbody>`;
 
 			buildPagination(listAuthor.length);
 		};
@@ -124,8 +130,8 @@ const renderAuthor = async () => {
 		// get row
 		const item = $(e.relatedTarget).closest('.item-list');
 		const itemId = item.attr('data-id');
-		const itemName = item.find('.col-name .info')[0].innerText;
-		const itemSlug = item.find('.col-slug span')[0].innerText;
+		const itemName = item.find('.info')[0].innerText;
+		const itemSlug = item.find('.slug')[0].innerText;
 
 		// Set giá trị khi hiện modal update
 		$('#nameAuthorUpdate')[0].value = itemName;

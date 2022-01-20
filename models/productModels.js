@@ -17,7 +17,7 @@ const productSchema = mongoose.Schema(
 			type: String,
 			require: [true, 'Vui lòng nhập mô tả sản phẩm'],
 		},
-		image: [String],
+		image: String,
 		category: [
 			{
 				type: mongoose.Schema.ObjectId,
@@ -32,6 +32,15 @@ const productSchema = mongoose.Schema(
 				require: [true, 'Vui lòng nhập tác giả'],
 			},
 		],
+		ratingsAverage: {
+			type: Number,
+			default: 0,
+			set: (val) => Math.round(val * 10) / 10,
+		},
+		ratingsQuantity: {
+			type: Number,
+			default: 0,
+		},
 		createdAt: {
 			type: Date,
 			default: Date.now,
@@ -59,6 +68,12 @@ productSchema.pre(/^find/, function (next) {
 	});
 
 	next();
+});
+
+productSchema.virtual('reviews', {
+	ref: 'Review', // Model muốn tham chiếu
+	foreignField: 'product', // Trường muốn tham chiếu
+	localField: '_id', // Trường đối chiếu của Model hiện tại
 });
 const Product = mongoose.model('Product', productSchema);
 module.exports = Product;

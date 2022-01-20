@@ -13,7 +13,8 @@ head
 .msg.animate.slide-in-down
 #main.navbar
   .navbar-top
-    a.brand-link(href='/admin') Spider
+    a.brand-link(href='/admin') 
+      img(style="width:50px").logo(src='/img/logo.png' alt='')
     .btn-minimize
       i.bi.bi-list
   nav
@@ -34,10 +35,10 @@ head
         a.menu-link(href='/admin/author')
           i.bi.bi-book
           | Tác giả
-      li.menu-item
-        a.menu-link(href='/admin/ship')
-          i.bi.bi-truck
-          | Vận Chuyển
+      //- li.menu-item
+      //-   a.menu-link(href='/admin/ship')
+      //-     i.bi.bi-truck
+      //-     | Vận Chuyển
       li.menu-item
         a.menu-link(href='/admin/user')
           i.bi.bi-people

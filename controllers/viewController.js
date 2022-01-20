@@ -14,7 +14,18 @@ exports.getOverview = async (req, res, next) => {
 };
 
 exports.getProduct = async (req, res, next) => {
-	const product = await Product.findOne({ slug: req.params.id });
+	const product = await Product.findOne({ slug: req.params.id }).populate(
+		'reviews',
+	);
 	product.priceFormat = formatter.format(product.price);
+
 	res.status(200).render('product', { product });
+};
+
+exports.getCart = async (req, res, next) => {
+	res.status(200).render('cart');
+};
+
+exports.checkOut = async (req, res, next) => {
+	res.status(200).render('checkout');
 };

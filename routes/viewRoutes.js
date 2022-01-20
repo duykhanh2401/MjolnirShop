@@ -10,7 +10,9 @@ const authController = require(`${__dirname}/../controllers/authController`);
 router.use(authController.isLoggedIn);
 
 router.get('/product/:id', viewController.getProduct);
+router.get('/cart', viewController.getCart);
 router.get('/category/:category/:id', viewController.getProduct);
+router.get('/checkout', viewController.checkOut);
 router.get('/', viewController.getOverview);
 
 module.exports = router;

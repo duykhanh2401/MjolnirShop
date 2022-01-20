@@ -23,9 +23,11 @@ exports.getAuthor = async (req, res, next) => {
 };
 
 exports.getUser = async (req, res, next) => {
-	// res.status(200).render('admin/user');
-	const user = await User.find();
-	res.status(200).json({ user });
+	res.status(200).render('admin/user');
+};
+
+exports.getOrder = async (req, res, next) => {
+	res.status(200).render('admin/order');
 };
 
 exports.getOverview = async (req, res, next) => {
@@ -84,8 +86,6 @@ exports.login = async (req, res, next) => {
 		if (currentUser.role !== 'admin') {
 			return res.status(200).render('admin/login');
 		}
-
-		console.log(req.query);
 	} catch (error) {
 		return res.status(200).render('admin/login');
 	}

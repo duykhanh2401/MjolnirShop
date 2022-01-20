@@ -3,7 +3,7 @@ const cartController = require(`${__dirname}/../controllers/cartController`);
 const authController = require(`${__dirname}/../controllers/authController`);
 
 router.post('/addProduct', authController.protect, cartController.addProduct);
-router.delete(
+router.post(
 	'/removeProduct',
 	authController.protect,
 	cartController.removeProduct,

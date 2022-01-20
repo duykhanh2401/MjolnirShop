@@ -18,6 +18,8 @@ const cartRoutes = require(`${__dirname}/routes/cartRoutes`);
 const viewRoutes = require(`${__dirname}/routes/viewRoutes`);
 const authorRoutes = require(`${__dirname}/routes/authorRoutes`);
 const adminRoutes = require(`${__dirname}/routes/adminRoutes`);
+const orderRoutes = require(`${__dirname}/routes/orderRoutes`);
+const reviewRoutes = require(`${__dirname}/routes/reviewRoutes`);
 
 // 1. MIDDLEWARE
 console.log(process.env.NODE_ENV);
@@ -69,6 +71,8 @@ app.use('/api/v1/product', productRoutes);
 app.use('/api/v1/category', categoryRoutes);
 app.use('/api/v1/author', authorRoutes);
 app.use('/api/v1/cart', cartRoutes);
+app.use('/api/v1/order', orderRoutes);
+app.use('/api/v1/review', reviewRoutes);
 app.use('/admin', adminRoutes);
 app.use('/', viewRoutes);
 

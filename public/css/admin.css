@@ -238,10 +238,12 @@
 	box-shadow: none;
 	max-width: 60px;
 	height: auto;
+	margin-right: 12px;
 }
 
 .info {
 	margin-left: 12px;
+	padding: 12px 0;
 }
 .btn-brand {
 	background-color: #088178;
@@ -281,4 +283,25 @@
 .imgShow,
 .imgShowUpdate {
 	width: 100px;
+}
+
+#table {
+	width: 100%;
+	padding: 12px;
+}
+
+.col {
+	padding: 12px 0;
+	border-bottom: 1px solid #eee;
+}
+
+.show-info:hover {
+	cursor: pointer;
+	color: red;
+}
+
+@media (min-width: 576px) {
+	.modal-dialog.info-show {
+		max-width: 800px;
+	}
 }
