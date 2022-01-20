@@ -19,7 +19,6 @@ const reviewSchema = new mongoose.Schema(
 		email: {
 			type: String,
 			required: [true, 'Vui lòng nhập email của bạn'],
-			unique: true,
 			lowercase: true,
 			validate: [validator.isEmail, 'Đây không phải là email'],
 		},
@@ -39,7 +38,7 @@ const reviewSchema = new mongoose.Schema(
 	},
 );
 
-reviewSchema.index({ product: 1, user: 1 }, { unique: true });
+reviewSchema.index({ product: 1, email: 1 }, { unique: true });
 
 // this trong static method là tên class
 reviewSchema.statics.calcAverageRatings = async function (ProductID) {

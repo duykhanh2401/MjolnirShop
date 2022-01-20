@@ -43,11 +43,14 @@ exports.protect = async (req, res, next) => {
 		if (!token) {
 			return res.redirect(`/admin/login`);
 		}
+		console.log(process.env.JWT_SECRET);
+
 		const decode = await promisify(jwt.verify)(
 			token,
 			process.env.JWT_SECRET,
 		);
 		const currentUser = await User.findById(decode.id);
+		console.log(decode);
 		if (!currentUser) {
 			return res.redirect(`/admin/login`);
 		}
