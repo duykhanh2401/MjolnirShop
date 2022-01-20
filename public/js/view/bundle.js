@@ -17,27 +17,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "deleteDataAPI": () => (/* binding */ deleteDataAPI)
 /* harmony export */ });
 const getDataAPI = async (url) => {
-	const res = await axios.get(`http://localhost:8000/api/v1/${url}`);
+	const res = await axios.get(`/api/v1/${url}`);
 	return res;
 };
 
 const postDataAPI = async (url, data) => {
-	const res = await axios.post(`http://localhost:8000/api/v1/${url}`, data);
+	const res = await axios.post(`/api/v1/${url}`, data);
 	return res;
 };
 
 const patchDataAPI = async (url, data) => {
-	const res = await axios.patch(`http://localhost:8000/api/v1/${url}`, data);
+	const res = await axios.patch(`/api/v1/${url}`, data);
 	return res;
 };
 
 const putDataAPI = async (url, data) => {
-	const res = await axios.put(`http://localhost:8000/api/v1/${url}`, data);
+	const res = await axios.put(`/api/v1/${url}`, data);
 	return res;
 };
 
 const deleteDataAPI = async (url, data) => {
-	const res = await axios.delete(`http://localhost:8000/api/v1/${url}`, data);
+	const res = await axios.delete(`/api/v1/${url}`, data);
 	return res;
 };
 
@@ -155,7 +155,6 @@ const removeProduct = async (e, isUser) => {
 const renderCart = (products, isUser) => {
 	const cartRender = document.querySelectorAll('.table.table-cart');
 	let totalPrice = 0;
-	console.log(products);
 
 	if (products.length) {
 		cartRender.forEach((el) => {
@@ -595,7 +594,9 @@ $(document).ready(async () => {
 		// Render Cart
 		if (!checkCheckout) {
 			const products = JSON.parse(localStorage.getItem('cart'));
-			(0,_cart__WEBPACK_IMPORTED_MODULE_2__.renderCart)(products);
+			if (products) {
+				(0,_cart__WEBPACK_IMPORTED_MODULE_2__.renderCart)(products);
+			}
 
 			//------------------------------
 			if (document.querySelector('.product-add-to-cart')) {

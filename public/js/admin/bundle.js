@@ -1086,27 +1086,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "deleteDataAPI": () => (/* binding */ deleteDataAPI)
 /* harmony export */ });
 const getDataAPI = async (url) => {
-	const res = await axios.get(`http://localhost:8000/api/v1/${url}`);
+	const res = await axios.get(`/api/v1/${url}`);
 	return res;
 };
 
 const postDataAPI = async (url, data) => {
-	const res = await axios.post(`http://localhost:8000/api/v1/${url}`, data);
+	const res = await axios.post(`/api/v1/${url}`, data);
 	return res;
 };
 
 const patchDataAPI = async (url, data) => {
-	const res = await axios.patch(`http://localhost:8000/api/v1/${url}`, data);
+	const res = await axios.patch(`/api/v1/${url}`, data);
 	return res;
 };
 
 const putDataAPI = async (url, data) => {
-	const res = await axios.put(`http://localhost:8000/api/v1/${url}`, data);
+	const res = await axios.put(`/api/v1/${url}`, data);
 	return res;
 };
 
 const deleteDataAPI = async (url, data) => {
-	const res = await axios.delete(`http://localhost:8000/api/v1/${url}`, data);
+	const res = await axios.delete(`/api/v1/${url}`, data);
 	return res;
 };
 
