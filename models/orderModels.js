@@ -18,7 +18,7 @@ const orderSchema = mongoose.Schema(
 			required: [true, 'Nhập địa chỉ của bạn'],
 		},
 		phone: {
-			type: Number,
+			type: String,
 			required: [true, 'Nhập số điện thoại của bạn'],
 		},
 		idUser: {

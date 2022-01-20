@@ -83,3 +83,14 @@ exports.getCart = catchAsync(async (req, res, next) => {
 		data: cartUser.products,
 	});
 });
+
+exports.removeAllProducts = catchAsync(async (req, res, next) => {
+	const cartUser = await Cart.findOne({ user: req.user._id });
+
+	cartUser.products = [];
+
+	await cartUser.save();
+	res.status(204).json({
+		status: 'success',
+	});
+});

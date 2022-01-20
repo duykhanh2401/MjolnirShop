@@ -39,6 +39,8 @@ const reviewSchema = new mongoose.Schema(
 	},
 );
 
+reviewSchema.index({ product: 1, user: 1 }, { unique: true });
+
 // this trong static method là tên class
 reviewSchema.statics.calcAverageRatings = async function (ProductID) {
 	const stats = await this.aggregate([

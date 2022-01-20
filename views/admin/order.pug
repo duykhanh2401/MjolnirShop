@@ -13,19 +13,6 @@ block content
     .pagination
 
 
-    #deleteModal.modal.fade(tabindex='-1' aria-labelledby='deleteModalLabel' aria-hidden='true')
-        .modal-dialog
-          .modal-content
-              .modal-header
-                h5#exampleModalLabel.modal-title
-                  | Bạn có chắc chắn muốn xoá đơn hàng này
-                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
-     
-              .modal-footer
-                button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
-                  | Đóng
-                button.btn.btn-danger.btn-delete
-                  | Xoá
 
     #updateModal.modal.fade(tabindex='-1' aria-labelledby='updateModalLabel' aria-hidden='true')
         .modal-dialog

@@ -8,6 +8,11 @@ router.post(
 	authController.protect,
 	cartController.removeProduct,
 );
+router.delete(
+	'/removeAllProducts',
+	authController.protect,
+	cartController.removeAllProducts,
+);
 router.get('/', authController.protect, cartController.getCart);
 
 module.exports = router;

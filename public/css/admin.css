@@ -305,3 +305,12 @@
 		max-width: 800px;
 	}
 }
+
+.order-total {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.order-total-name {
+	margin-right: 16px;
+}

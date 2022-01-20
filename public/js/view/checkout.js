@@ -1,4 +1,4 @@
-import { getDataAPI, postDataAPI } from './../util/fetchAPI';
+import { getDataAPI, postDataAPI, deleteDataAPI } from './../util/fetchAPI';
 import { toast } from './../util/toastify';
 
 const formatter = new Intl.NumberFormat('vi-VN', {
@@ -41,8 +41,8 @@ const checkout = async () => {
 	const checkLogin = document.querySelector('.isLogin');
 
 	if (checkLogin) {
-		const res = await getDataAPI('cart');
-		const productsRender = res.data.data.map((productItem) => {
+		const cartData = await getDataAPI('cart');
+		const productsRender = cartData.data.data.map((productItem) => {
 			const { product } = productItem;
 			product.qty = productItem.quantity;
 			product.productID = product._id;
@@ -84,6 +84,8 @@ const checkout = async () => {
 						).innerHTML = `<div class="success-checkout">
 							Bạn đã đặt hàng thành công. <a href="/">Quay về trang chủ</a>
 							</div>`;
+
+						await deleteDataAPI('cart/removeAllProducts');
 					}
 				} catch (error) {
 					toast('danger', error);
@@ -123,6 +125,7 @@ const checkout = async () => {
 						).innerHTML = `<div class="success-checkout">
 							Bạn đã đặt hàng thành công. <a href="/">Quay về trang chủ</a>
 							</div>`;
+						localStorage.setItem('cart', JSON.stringify([]));
 					}
 				} catch (error) {
 					toast('danger', error);

@@ -42,7 +42,9 @@ $(document).ready(async () => {
 					review,
 					product,
 				});
-				console.log(res);
+				if (res.status === 200) {
+					location.reload();
+				}
 			});
 	}
 

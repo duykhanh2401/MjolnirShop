@@ -347,8 +347,8 @@ const checkout = async () => {
 	const checkLogin = document.querySelector('.isLogin');
 
 	if (checkLogin) {
-		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)('cart');
-		const productsRender = res.data.data.map((productItem) => {
+		const cartData = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)('cart');
+		const productsRender = cartData.data.data.map((productItem) => {
 			const { product } = productItem;
 			product.qty = productItem.quantity;
 			product.productID = product._id;
@@ -390,6 +390,8 @@ const checkout = async () => {
 						).innerHTML = `<div class="success-checkout">
 							Bạn đã đặt hàng thành công. <a href="/">Quay về trang chủ</a>
 							</div>`;
+
+						await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.deleteDataAPI)('cart/removeAllProducts');
 					}
 				} catch (error) {
 					(0,_util_toastify__WEBPACK_IMPORTED_MODULE_1__.toast)('danger', error);
@@ -429,6 +431,7 @@ const checkout = async () => {
 						).innerHTML = `<div class="success-checkout">
 							Bạn đã đặt hàng thành công. <a href="/">Quay về trang chủ</a>
 							</div>`;
+						localStorage.setItem('cart', JSON.stringify([]));
 					}
 				} catch (error) {
 					(0,_util_toastify__WEBPACK_IMPORTED_MODULE_1__.toast)('danger', error);
@@ -553,7 +556,9 @@ $(document).ready(async () => {
 					review,
 					product,
 				});
-				console.log(res);
+				if (res.status === 200) {
+					location.reload();
+				}
 			});
 	}
 
