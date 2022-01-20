@@ -1,6 +1,7 @@
 
 extends base
-
+block head
+    title Mjolnir Shop | #{`${product.name}`}
 
 block content
 
@@ -53,6 +54,7 @@ block content
                             if review.rating*1 >= star
                                 i.bi.bi-star-fill(style="color: #FFDF00")
                         .rating-text= review.review
+                        
     #addNewModal.modal.fade(tabindex='-1' aria-labelledby='addNewModalLabel' aria-hidden='true')
         .modal-dialog
           .modal-content
