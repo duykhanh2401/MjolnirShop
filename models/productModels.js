@@ -64,7 +64,7 @@ productSchema.pre(/^find/, function (next) {
 		select: 'name slug',
 	}).populate({
 		path: 'author',
-		select: 'name',
+		select: 'name slug',
 	});
 
 	next();

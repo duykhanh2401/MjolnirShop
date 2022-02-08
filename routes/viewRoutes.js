@@ -11,8 +11,11 @@ router.use(authController.isLoggedIn);
 
 router.get('/product/:id', viewController.getProduct);
 router.get('/cart', viewController.getCart);
+router.get('/category/:category', viewController.getCategory);
+router.get('/category/author/:author', viewController.getAuthor);
 router.get('/category/:category/:id', viewController.getProduct);
 router.get('/checkout', viewController.checkOut);
+router.get('/me', viewController.getMe);
 router.get('/', viewController.getOverview);
 
 module.exports = router;

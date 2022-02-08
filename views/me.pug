@@ -1,0 +1,98 @@
+extends base
+block head
+    title Mjolnir Shop | Thông tin tài khoản}
+    link(rel='stylesheet' href='/css/admin.css')
+block content
+    #me
+    .container
+        ul.container__list
+            li.container__item.container__item_active
+                span.container__link Th&ocirc;ng tin t&agrave;i kho&#x1EA3;n
+            li.container__item
+                span.container__link L&#x1ECB;ch s&#x1EED; mua h&agrave;ng
+        .container__inner
+            h2.content__subtitle Thông Tin Tài Khoản
+            h3.name_user= `Họ Và Tên: ${user.name}`
+            h3.name_user= `Email: ${user.email}`
+        .container__inner.container__inner_hidden
+            h2.content__subtitle Đơn hàng của tôi
+            
+            .order-product-list
+                table.product-table
+                    thead
+                        th Đơn hàng
+                        th Ngày
+                        th Tình trạng đơn hàng
+                        th Tổng
+                        th
+                        th
+                    tbody
+                        each item in order
+                            tr.item-list(data-id=`${item._id}`)
+                                td= `${item.idOrder}`
+                                td= `${item.time}`
+                                td= `${item.statusText}`
+                                td= `${item.priceFormat}`
+                                td.detail(data-bs-toggle="modal" data-bs-target="#showInfoModal") Chi tiết
+                                td.review(data-bs-toggle='modal' data-bs-target='#addNewModal')= `${item.status === 'Order Received' ? 'Đánh giá': ''}`
+        #showInfoModal.modal.fade(tabindex='-1' aria-labelledby='updateModalLabel' aria-hidden='true')
+            .modal-dialog.info-show
+                .modal-content
+                    .modal-header
+                        h5#exampleModalLabel.modal-title
+                            | Thông tin đơn hàng
+                        button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                    .modal-body
+                        .information-order
+                            .name-order Tên người đặt hàng: 
+                                span 
+                            .email-order Email đặt hàng: 
+                                span
+                            .address-order Địa chỉ đặt hàng: 
+                                span
+                            .phone-number-order Số điện thoại đặt hàng: 
+                                span
+                            .cart-order Thông tin giỏ hàng: 
+
+                        table.product-table(style="text-align:center")
+                            thead
+                                th
+                                th Tên sản phẩm
+                                th Số lượng
+                                th Giá
+                            tbody.body-info
+                        
+                        .order-total
+                            .order-total-name Tổng cộng
+                            .order-total-price 
+                    .modal-footer
+                        button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                            | Đóng
+
+    #addNewModal.modal.fade(tabindex='-1' aria-labelledby='addNewModalLabel' aria-hidden='true')
+        .modal-dialog
+          .modal-content
+              .modal-header
+                h5#exampleModalLabel.modal-title
+                  | Viết đánh giá
+                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+              .modal-body
+
+                .mb-3
+                  label.form-label(for='ratingReview') Số sao
+                  select#ratingReview.form-control
+                    option(value=5) 5
+                    option(value=4) 4
+                    option(value=3) 3
+                    option(value=2) 2
+                    option(value=1) 1
+                .mb-3
+                  label.form-label(for='content') Nội dung
+                  textarea#content.form-control(type='')
+              .modal-footer
+                button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                  | Đóng
+                button.btn.btn-primary.btn-add-review
+                  | Đăng
+
+//- &#x20AB;

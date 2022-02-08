@@ -52,7 +52,10 @@ const userSchema = mongoose.Schema(
 			select: false,
 		},
 	},
-	{ toJson: { virtual: true }, toObject: { virtual: true } },
+	{
+		toJSON: { virtuals: true },
+		toObject: { virtuals: true },
+	},
 );
 
 // Mã hoá mật khẩu

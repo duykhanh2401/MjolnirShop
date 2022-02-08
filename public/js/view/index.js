@@ -1,10 +1,16 @@
 import { getDataAPI, postDataAPI } from '../util/fetchAPI';
 import { toast } from './../util/toastify';
-import { renderCart, addProductAnonymous, addProductUser } from './cart';
+import { renderCart, addProductUser } from './cart';
 import { checkout } from './checkout';
+const formatter = new Intl.NumberFormat('vi-VN', {
+	style: 'currency',
+	currency: 'VND',
+});
+
 $(document).ready(async () => {
 	const checkLogin = document.querySelector('#isLogin');
 	const checkCheckout = document.querySelector('#checkout');
+	const checkMePage = document.querySelector('#me');
 	// handle change quantity
 	if (document.querySelector('.product-single')) {
 		let quantity = document.querySelector('.qty').innerText;
@@ -23,29 +29,77 @@ $(document).ready(async () => {
 				document.querySelector('.qty').innerText = quantity * 1 + 1;
 				quantity++;
 			});
+	}
 
-		document
-			.querySelector('.btn-add-review')
-			.addEventListener('click', async () => {
-				const name = document.querySelector('#nameReview').value;
-				const email = document.querySelector('#emailReview').value;
-				const rating = document.querySelector('#ratingReview').value;
-				const review = document.querySelector('#content').value;
-				const product = document
-					.querySelector('.product-single')
-					.getAttribute('data-id');
+	if (checkMePage) {
+		let tabContent = document.querySelectorAll('.container__inner');
+		let tabItem = document.querySelectorAll('.container__item');
 
-				const res = await postDataAPI('review', {
-					name,
-					email,
-					rating,
-					review,
-					product,
+		// For each element with class 'container__item'
+		for (let i = 0; i < tabItem.length; i++) {
+			// if the element was hovered
+			//you can replace mouseover with click
+			tabItem[i].addEventListener('click', () => {
+				// Add to all containers class 'container__inner_hidden'
+				tabContent.forEach((item) => {
+					item.classList.add('container__inner_hidden');
 				});
-				if (res.status === 200) {
-					location.reload();
-				}
+				// Clean all links from class 'container__item_active'
+				tabItem.forEach((item) => {
+					item.classList.remove('container__item_active');
+				});
+				// Make visible correct tab content and add class to item
+				tabContent[i].classList.remove('container__inner_hidden');
+				tabItem[i].classList.add('container__item_active');
 			});
+		}
+
+		$('#showInfoModal').on('shown.bs.modal', async function (e) {
+			const item = $(e.relatedTarget).closest('.item-list');
+			const itemId = item.attr('data-id');
+			console.log(itemId);
+
+			try {
+				const res = await getDataAPI(`order/${itemId}`);
+				const infoRender = document.querySelector('.body-info');
+				let totalPrice = 0;
+				const { products } = res.data.data;
+				console.log(res);
+
+				infoRender.innerHTML = products
+					.map((product) => {
+						totalPrice += product.product.price * product.quantity;
+						return `
+									<tr>
+										<td class="w-25"><img class="img-fluid img-thumbnail" style="width:100px" src=${
+											product.product.image
+										} alt="Sheep" /></td>
+										<td>${product.product.name}</td>
+										<td class="qty">${product.quantity} </td>
+										<td>${formatter.format(product.product.price)}</td>
+								</tr>`;
+					})
+					.join('');
+
+				document.querySelector(
+					'.order-total-price ',
+				).innerHTML = `${formatter.format(totalPrice + 30000)}`;
+
+				document.querySelector('.name-order span').innerHTML =
+					res.data.data.name;
+
+				document.querySelector('.email-order span').innerHTML =
+					res.data.data.email;
+
+				document.querySelector('.address-order span').innerHTML =
+					res.data.data.address;
+
+				document.querySelector('.phone-number-order span').innerHTML =
+					res.data.data.phone;
+			} catch (error) {
+				console.log(error);
+			}
+		});
 	}
 
 	if (checkCheckout) {
@@ -81,15 +135,10 @@ $(document).ready(async () => {
 			return product;
 		});
 
-		renderCart(productsRender, true);
+		renderCart(productsRender);
 	} else {
 		// Render Cart
 		if (!checkCheckout) {
-			const products = JSON.parse(localStorage.getItem('cart'));
-			if (products) {
-				renderCart(products);
-			}
-
 			//------------------------------
 			if (document.querySelector('.product-add-to-cart')) {
 				document
@@ -116,11 +165,11 @@ $(document).ready(async () => {
 					activeForm('register-active ');
 				});
 
-			document
-				.querySelector('.login-button')
-				.addEventListener('click', (e) => {
+			document.querySelectorAll('.login-button').forEach((el) =>
+				el.addEventListener('click', (e) => {
 					activeForm('login-active ');
-				});
+				}),
+			);
 
 			document
 				.querySelector('.register-button')

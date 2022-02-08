@@ -3,6 +3,7 @@ const catchAsync = require(`${__dirname}/../utils/catchAsync`);
 const AppError = require(`${__dirname}/../utils/appError`);
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
+const Category = require('../models/categoryModels');
 
 const createToken = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -181,6 +182,8 @@ exports.loginAdmin = catchAsync(async function (req, res, next) {
 });
 
 exports.isLoggedIn = async (req, res, next) => {
+	const category = await Category.find().select('slug name');
+	res.locals.category = category;
 	try {
 		if (req.cookies.jwt) {
 			// Verification token
@@ -200,6 +203,7 @@ exports.isLoggedIn = async (req, res, next) => {
 			// 	return next();
 			// }
 			res.locals.user = currentUser;
+			req.user = currentUser;
 			return next();
 		}
 	} catch (err) {

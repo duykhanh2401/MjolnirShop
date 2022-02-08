@@ -81,7 +81,11 @@ app.use('/', viewRoutes);
 // 3. ROUTERS
 
 app.all('*', (req, res, next) => {
-	next(new AppError(`Can't find ${req.originalUrl} on server !!`, 400));
+	if (req.url.includes('api')) {
+		next(new AppError(`Can't find ${req.originalUrl} on server !!`, 400));
+	} else {
+		res.render('404');
+	}
 });
 
 app.use(globalErrorHandler);

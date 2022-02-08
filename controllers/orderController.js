@@ -13,9 +13,11 @@ exports.createOrder = catchAsync(async (req, res, next) => {
 	const data = await Order.findById(order.id);
 	const products = await Product.find();
 	const listUpdate = [];
+	let priceTotal = 30000;
 	products.forEach((product) => {
 		data.products.forEach((el) => {
 			if (product.id === el.product.id) {
+				priceTotal = priceTotal + el.product.price * el.quantity;
 				product.quantity = product.quantity - el.quantity;
 				listUpdate.push({
 					id: product.id,
@@ -29,6 +31,8 @@ exports.createOrder = catchAsync(async (req, res, next) => {
 			await Product.findByIdAndUpdate(el.id, { quantity: el.quantity });
 		});
 	}
+
+	await Order.findByIdAndUpdate(data.id, { priceTotal });
 	let totalPrice = 0;
 	let HTMLSend = `
     <div class="modal-header">

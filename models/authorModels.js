@@ -24,7 +24,7 @@ const authorSchema = mongoose.Schema(
 
 // Virtual populate
 authorSchema.virtual('products', {
-	ref: 'Author',
+	ref: 'Product',
 	foreignField: 'author',
 	localField: '_id',
 });

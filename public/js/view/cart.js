@@ -6,38 +6,26 @@ const formatter = new Intl.NumberFormat('vi-VN', {
 	currency: 'VND',
 });
 
-const removeProduct = async (e, isUser) => {
-	if (isUser) {
-		const res = await postDataAPI('cart/removeProduct', {
-			product: e.currentTarget.dataset.id,
-		});
+const removeProduct = async (e) => {
+	const res = await postDataAPI('cart/removeProduct', {
+		product: e.currentTarget.dataset.id,
+	});
 
-		if (res.status === 200) {
-			toast('success', 'Đã xoá 1 sản phẩm');
-			const productsRender = res.data.data.map((productItem) => {
-				const { product } = productItem;
-				product.qty = productItem.quantity;
-				product.productID = product._id;
-				return product;
-			});
-			(() => renderCart(productsRender, true))();
-		} else {
-			toast('danger', 'Có lỗi xảy ra. Vui lòng thử lại sau');
-		}
-	} else {
-		const products = JSON.parse(localStorage.getItem('cart'));
-
-		const newProducts = products.filter((product) => {
-			return product.productID !== e.currentTarget.dataset.id;
-		});
+	if (res.status === 200) {
 		toast('success', 'Đã xoá 1 sản phẩm');
-
-		localStorage.setItem('cart', JSON.stringify(newProducts));
-		(() => renderCart(newProducts))();
+		const productsRender = res.data.data.map((productItem) => {
+			const { product } = productItem;
+			product.qty = productItem.quantity;
+			product.productID = product._id;
+			return product;
+		});
+		(() => renderCart(productsRender, true))();
+	} else {
+		toast('danger', 'Có lỗi xảy ra. Vui lòng thử lại sau');
 	}
 };
 
-const renderCart = (products, isUser) => {
+const renderCart = (products) => {
 	const cartRender = document.querySelectorAll('.table.table-cart');
 	let totalPrice = 0;
 
@@ -104,49 +92,9 @@ const renderCart = (products, isUser) => {
 	}
 
 	document.querySelectorAll('.remove-product').forEach((el) => {
-		el.addEventListener('click', (e) => removeProduct(e, isUser));
+		el.addEventListener('click', (e) => removeProduct(e));
 	});
 };
-
-const addProductAnonymous = () => {
-	const productID = document
-		.querySelector('.product-single')
-		.getAttribute('data-id');
-	const qty = document.querySelector('.qty').innerText;
-	const name = document.querySelector('.product-header span').innerText;
-	const price = document
-		.querySelector('.product-single-price')
-		.innerText.replace(/\D/g, '');
-	const image = document.querySelector('.image-product').getAttribute('src');
-	let products = [];
-	const getProducts = JSON.parse(localStorage.getItem('cart'));
-	if (getProducts) {
-		products = getProducts;
-		let inCart = false;
-		products.forEach((product) => {
-			if (product.productID === productID) {
-				inCart = true;
-				product.qty = product.qty * 1 + qty * 1;
-			}
-		});
-		if (inCart) {
-			localStorage.setItem('cart', JSON.stringify(products));
-			renderCart(products);
-			toast('success', 'Thêm sản phẩm thành công');
-		} else {
-			products.push({ productID, qty, name, image, price });
-			localStorage.setItem('cart', JSON.stringify(products));
-			renderCart(products);
-			toast('success', 'Thêm sản phẩm thành công');
-		}
-	} else {
-		products.push({ productID, qty, name, image, price });
-		localStorage.setItem('cart', JSON.stringify(products));
-		renderCart(products);
-		toast('success', 'Thêm sản phẩm thành công');
-	}
-};
-
 const addProductUser = async () => {
 	const productID = document
 		.querySelector('.product-single')
@@ -172,4 +120,4 @@ const addProductUser = async () => {
 	}
 };
 
-export { renderCart, addProductAnonymous, addProductUser };
+export { renderCart, addProductUser };

@@ -22,17 +22,22 @@ header#header
       .logo-container
         a.logo-link(href='/')
           img.logo(src='/img/logo.png' alt='')
-      .navbar-list
-        .account
-          if user
-            .info-button#isLogin
-              i.bi.bi-person
-              span= `${user.name.split(" ")[user.name.split(" ").length -1]}`
+      if user
+        .navbar-list
+          .account
+            a(href='/me')
+              .info-button#isLogin
+                i.bi.bi-person
+                span= `${user.name.split(" ")[user.name.split(" ").length -1]}`
 
             .logout-button
                 i.bi.bi-box-arrow-left
                 | Đăng Xuất
-          else
+          .cart(data-bs-toggle='modal' data-bs-target='#cartModal')
+            i.bi.bi-bag-x
+      else
+        .navbar-list
+          .account
             .login-button
               div(data-bs-toggle='modal' data-bs-target='#FormLoginRegister')
                 i.bi.bi-box-arrow-right
@@ -42,8 +47,13 @@ header#header
               div(data-bs-toggle='modal' data-bs-target='#FormLoginRegister')
                 i.bi.bi-box-arrow-left
                 | Đăng Ký
-        .cart(data-bs-toggle='modal' data-bs-target='#cartModal')
-          i.bi.bi-bag-x
+          .cart.login-button(data-bs-toggle='modal' data-bs-target='#FormLoginRegister')
+            i.bi.bi-bag-x
+    .link-category
+      each item in category
+        a.category-url(href="/category/"+ item.slug)= item.name
+
+        
 .page-container
     block content
 footer#footer

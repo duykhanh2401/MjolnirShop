@@ -4,43 +4,50 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="stylesheet" href="./public/css/bootstrap.min.css" />
-		<link rel="stylesheet" href="./public/css/checkout.css" />
+		<link rel="stylesheet" href="./public/css/me.css" />
 		<title>Document</title>
 	</head>
 	<body>
-		<div class="modal-header">
-			<h5 class="modal-title" id="exampleModalLabel">
-				Thông tin đơn hàng
-			</h5>
-			<button
-				class="btn-close"
-				type="button"
-				data-bs-dismiss="modal"
-				aria-label="Close"
-			></button>
-		</div>
-		<div class="modal-body">
-			<div class="information-order">
-				<div class="name-order">
-					Tên người đặt hàng: <span>Vũ Duy Khánh</span>
-				</div>
-				<div class="email-order">Email đặt hàng: <span></span></div>
-				<div class="address-order">Địa chỉ đặt hàng: <span></span></div>
-				<div class="phone-number-order">
-					Số điện thoại đặt hàng: <span></span>
-				</div>
-				<div class="cart-order">Thông tin giỏ hàng:</div>
+		<h1 class="title">Simple JavaScript Tab Bar</h1>
+		<div class="container">
+			<ul class="container__list">
+				<li class="container__item container__item_active">
+					<span class="container__link">Intro</span>
+				</li>
+				<li class="container__item">
+					<span class="container__link">HTML</span>
+				</li>
+				<li class="container__item">
+					<span class="container__link">CSS</span>
+				</li>
+				<li class="container__item">
+					<span class="container__link">JavaScript</span>
+				</li>
+				<li class="container__item">
+					<span class="container__link">Animation</span>
+				</li>
+			</ul>
+			<div class="container__inner">
+				<h2 class="content__subtitle">Intro</h2>
+				<p class="content__description">
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+					Fugit, illum ipsam nesciunt nisi perferendis quisquam
+					repellendus reprehenderit voluptatum? A cupiditate, deleniti
+					doloremque hic iste praesentium quia quidem quisquam sunt
+					vel.
+				</p>
 			</div>
-			<table class="product-table" style="text-align: center">
-				<thead>
-					<th></th>
-					<th>Tên sản phẩm</th>
-					<th>Số lượng</th>
-					<th>Giá</th>
-				</thead>
-				<tbody class="body-info"></tbody>
-			</table>
+			<div class="container__inner container__inner_hidden">
+				<h2 class="content__subtitle">HTML</h2>
+				<p class="content__description">
+					The HyperText Markup Language, or HTML(HyperText Markup
+					Language) is the standard markup language for documents
+					designed to be displayed in a web browser. It can be
+					assisted by technologies such as Cascading Style Sheets
+					(CSS) and scripting languages such as JavaScript.
+				</p>
+			</div>
 		</div>
 	</body>
+	<script src="./public/js/view/bundle.js"></script>
 </html>

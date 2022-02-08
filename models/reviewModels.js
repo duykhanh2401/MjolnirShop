@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
-const Product = require(`${__dirname}/productModels`);
 const reviewSchema = new mongoose.Schema(
 	{
 		review: {
@@ -12,15 +10,10 @@ const reviewSchema = new mongoose.Schema(
 			min: 1,
 			max: 5,
 		},
-		name: {
-			type: String,
-			required: [true, 'Vui lòng nhập tên của bạn'],
-		},
-		email: {
-			type: String,
-			required: [true, 'Vui lòng nhập email của bạn'],
-			lowercase: true,
-			validate: [validator.isEmail, 'Đây không phải là email'],
+		user: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'User',
+			required: [true, 'Người dùng không tồn tại'],
 		},
 		product: {
 			type: mongoose.Schema.ObjectId,

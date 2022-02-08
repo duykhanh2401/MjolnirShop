@@ -1,10 +1,16 @@
 @import url('./product.css');
 @import url('./toastify.css');
+@import url('./me.css');
 * {
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
 }
+
+a {
+	text-decoration: none;
+}
+
 body {
 	background-color: #f0f0f0;
 }
@@ -30,9 +36,19 @@ body {
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
-
 	overflow: hidden;
 	margin: 0;
+}
+
+.link-category {
+	padding: 12px;
+}
+
+.category-url {
+	text-decoration: none;
+	color: #000;
+	cursor: pointer;
+	padding: 8px 16px;
 }
 
 .search {
@@ -399,3 +415,16 @@ pre {
 }
 
 /*------------------------------------------------- */
+
+.header-category {
+	background-image: url(https://res.cloudinary.com/duykhanh2401/image/upload/v1643790167/BookShop/41935-beautiful-ipad-wallpaper-for-a-book-lover-book-wallpaper_m9uznp.jpg);
+	height: 300px;
+}
+.title-category {
+	color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	font-size: 40px;
+}

@@ -48,6 +48,11 @@ const orderSchema = mongoose.Schema(
 			],
 			default: 'Order Placed',
 		},
+		priceTotal: Number,
+		createdAt: {
+			type: Date,
+			default: Date.now,
+		},
 	},
 	{
 		toJSON: { virtuals: true },

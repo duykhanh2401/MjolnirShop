@@ -77,7 +77,8 @@
 	display: flex;
 	margin-top: 24px;
 }
-.product-add-to-cart {
+.product-add-to-cart,
+.add-to-cart-no-user {
 	margin-left: 0;
 	color: #c92127;
 	cursor: pointer;

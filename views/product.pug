@@ -21,11 +21,13 @@ block content
                 .product-author
                     | Tác giả: 
                     each author in product.author
-                        span= author.name
+                        a(href=`/category/author/${author.slug}`)
+                            span= author.name
                 .product-category
                     | Danh mục: 
                     each category in product.category
-                        span= category.name
+                        a(href=`/category/${category.slug}`)
+                            span= category.name
                 .product-quantity
                     span Số lượng
                     .quantity-control
@@ -33,9 +35,16 @@ block content
                         span.qty 1
                         i.bi.bi-plus-lg
                 .product-control
-                    .product-add-to-cart
-                        | Thêm vào giỏ hàng
-                    a(href="/checkout").product-order Thanh toán
+                    if user
+                        .product-add-to-cart
+                            | Thêm vào giỏ hàng
+                        a(href="/checkout").product-order Thanh toán
+                    else
+                        .add-to-cart-no-user.login-button(data-bs-toggle='modal' data-bs-target='#FormLoginRegister')
+                            | Thêm vào giỏ hàng
+                        .product-order.login-button(data-bs-toggle='modal' data-bs-target='#FormLoginRegister')
+                            | Thanh toán
+                    
                          
     .description
         .description-header Mô tả
@@ -44,7 +53,6 @@ block content
     .rating
         .rating-header
             .rating-header-text Đánh giá sản phẩm
-            .rating-header-create(data-bs-toggle='modal' data-bs-target='#addNewModal') Viết đánh giá
         .rating-body
             if product.reviews
                 each review in product.reviews
@@ -55,33 +63,3 @@ block content
                                 i.bi.bi-star-fill(style="color: #FFDF00")
                         .rating-text= review.review
                         
-    #addNewModal.modal.fade(tabindex='-1' aria-labelledby='addNewModalLabel' aria-hidden='true')
-        .modal-dialog
-          .modal-content
-              .modal-header
-                h5#exampleModalLabel.modal-title
-                  | Viết đánh giá
-                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
-              .modal-body
-                .mb-3
-                  label.form-label(for='nameReview') Tên của bạn
-                  input#nameReview.form-control(type='text')
-                .mb-3
-                  label.form-label(for='emailReview') Email của bạn
-                  input#emailReview.form-control(type='email')
-                .mb-3
-                  label.form-label(for='ratingReview') Số sao
-                  select#ratingReview.form-control
-                    option(value=1) 1
-                    option(value=2) 2
-                    option(value=3) 3
-                    option(value=4) 4
-                    option(value=5) 5
-                .mb-3
-                  label.form-label(for='content') Nội dung
-                  textarea#content.form-control(type='')
-              .modal-footer
-                button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
-                  | Đóng
-                button.btn.btn-primary.btn-add-review
-                  | Đăng
