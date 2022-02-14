@@ -9,30 +9,43 @@ const formatter = new Intl.NumberFormat('vi-VN', {
 	currency: 'VND',
 });
 exports.createOrder = catchAsync(async (req, res, next) => {
-	const order = await Order.create(req.body);
-	const data = await Order.findById(order.id);
 	const products = await Product.find();
 	const listUpdate = [];
 	let priceTotal = 30000;
+	for (let product of products) {
+		for (let el of req.body.products) {
+			if (product.id === el.product) {
+				if (product.quantity < el.quantity) {
+					console.log(product);
+					return next(
+						new AppError('Sản phẩm quá giới hạn cho phép', 400),
+					);
+				}
+			}
+		}
+	}
+
 	products.forEach((product) => {
-		data.products.forEach((el) => {
-			if (product.id === el.product.id) {
-				priceTotal = priceTotal + el.product.price * el.quantity;
+		req.body.products.forEach((el) => {
+			if (product.id === el.product) {
+				priceTotal = priceTotal + product.price * el.quantity;
 				product.quantity = product.quantity - el.quantity;
 				listUpdate.push({
 					id: product.id,
 					quantity: product.quantity,
+					product,
 				});
 			}
 		});
 	});
+	await Order.create({ ...req.body, priceTotal });
+
 	if (listUpdate.length) {
 		listUpdate.forEach(async (el) => {
 			await Product.findByIdAndUpdate(el.id, { quantity: el.quantity });
 		});
 	}
 
-	await Order.findByIdAndUpdate(data.id, { priceTotal });
 	let totalPrice = 0;
 	let HTMLSend = `
     <div class="modal-header">
@@ -41,16 +54,16 @@ exports.createOrder = catchAsync(async (req, res, next) => {
     <div class="modal-body">
         <div class="information-order">
             <div class="name-order">Tên người đặt hàng: <span>${
-				data.name
+				req.body.name
 			}</span></div>
             <div class="email-order">Email đặt hàng: <span>${
-				data.email
+				req.body.email
 			}</span></div>
             <div class="address-order">Địa chỉ đặt hàng: <span>${
-				data.address
+				req.body.address
 			}</span></div>
             <div class="phone-number-order">Số điện thoại đặt hàng: <span>${
-				data.phone
+				req.body.phone
 			}</span></div>
             <div class="cart-order">Thông tin giỏ hàng: </div>
         </div>
@@ -62,7 +75,7 @@ exports.createOrder = catchAsync(async (req, res, next) => {
             <th>Giá</th>
         </thead>
         <tbody class="body-info">
-        ${data.products
+        ${listUpdate
 			.map((product) => {
 				totalPrice += product.product.price * product.quantity;
 				return `
@@ -87,12 +100,11 @@ exports.createOrder = catchAsync(async (req, res, next) => {
 </div>
     `;
 
-	sendMail(data.email, 'Đặt hàng thành công', HTMLSend);
+	sendMail(req.body.email, 'Đặt hàng thành công', HTMLSend);
 	sendMail(process.env.ADMIN_EMAIL, 'Đặt hàng thành công', HTMLSend);
 
 	res.status(200).json({
 		status: 'success',
-		data,
 	});
 });
 exports.getOrder = factory.getOne(Order);

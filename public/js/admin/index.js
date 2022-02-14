@@ -5,6 +5,7 @@ import { login } from './login';
 import { getDataAPI } from '../util/fetchAPI';
 import { renderUser } from './user';
 import { renderOrder } from './order';
+import { renderDashboard } from './dashboard';
 
 $(document).ready(function () {
 	// Phân loại các trang
@@ -15,8 +16,13 @@ $(document).ready(function () {
 	const mainPage = document.querySelector('#main');
 	const user = document.querySelector('#user');
 	const order = document.querySelector('#order');
+	const dashboard = document.querySelector('#dashboard');
 
 	//-----------------------------------------
+
+	if (dashboard) {
+		renderDashboard();
+	}
 
 	if (mainPage) {
 		$('.logout')[0].addEventListener('click', async () => {

@@ -329,7 +329,7 @@ const checkout = async () => {
 						products: productSubmit,
 						idUser,
 					});
-					// toast('success', res)
+					(0,_util_toastify__WEBPACK_IMPORTED_MODULE_1__.toast)('success', res);
 
 					if (res.status === 200) {
 						document.querySelector(
@@ -341,7 +341,8 @@ const checkout = async () => {
 						await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.deleteDataAPI)('cart/removeAllProducts');
 					}
 				} catch (error) {
-					(0,_util_toastify__WEBPACK_IMPORTED_MODULE_1__.toast)('danger', error);
+					console.log(error);
+					(0,_util_toastify__WEBPACK_IMPORTED_MODULE_1__.toast)('danger', error.response.data.message);
 				}
 			});
 	} else {
@@ -385,6 +386,146 @@ const checkout = async () => {
 				}
 			});
 	}
+};
+
+
+
+
+/***/ }),
+
+/***/ "./public/js/view/me.js":
+/*!******************************!*\
+  !*** ./public/js/view/me.js ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "renderMe": () => (/* binding */ renderMe)
+/* harmony export */ });
+/* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../util/fetchAPI */ "./public/js/util/fetchAPI.js");
+/* harmony import */ var _util_toastify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../util/toastify */ "./public/js/util/toastify.js");
+
+
+const formatter = new Intl.NumberFormat('vi-VN', {
+	style: 'currency',
+	currency: 'VND',
+});
+const renderMe = () => {
+	let tabContent = document.querySelectorAll('.container__inner');
+	let tabItem = document.querySelectorAll('.container__item');
+
+	// For each element with class 'container__item'
+	for (let i = 0; i < tabItem.length; i++) {
+		// if the element was hovered
+		//you can replace mouseover with click
+		tabItem[i].addEventListener('click', () => {
+			// Add to all containers class 'container__inner_hidden'
+			tabContent.forEach((item) => {
+				item.classList.add('container__inner_hidden');
+			});
+			// Clean all links from class 'container__item_active'
+			tabItem.forEach((item) => {
+				item.classList.remove('container__item_active');
+			});
+			// Make visible correct tab content and add class to item
+			tabContent[i].classList.remove('container__inner_hidden');
+			tabItem[i].classList.add('container__item_active');
+		});
+	}
+
+	$('#showInfoModal').on('shown.bs.modal', async function (e) {
+		const item = $(e.relatedTarget).closest('.item-list');
+		const itemId = item.attr('data-id');
+		console.log(itemId);
+
+		try {
+			const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`order/${itemId}`);
+			const infoRender = document.querySelector('.body-info');
+			let totalPrice = 0;
+			const { products } = res.data.data;
+			console.log(res);
+
+			infoRender.innerHTML = products
+				.map((product) => {
+					totalPrice += product.product.price * product.quantity;
+					return `
+									<tr>
+										<td class="w-25"><img class="img-fluid img-thumbnail" style="width:100px" src=${
+											product.product.image
+										} alt="Sheep" /></td>
+										<td>${product.product.name}</td>
+										<td class="qty">${product.quantity} </td>
+										<td>${formatter.format(product.product.price)}</td>
+								</tr>`;
+				})
+				.join('');
+
+			document.querySelector(
+				'.order-total-price ',
+			).innerHTML = `${formatter.format(totalPrice + 30000)}`;
+
+			document.querySelector('.name-order span').innerHTML =
+				res.data.data.name;
+
+			document.querySelector('.email-order span').innerHTML =
+				res.data.data.email;
+
+			document.querySelector('.address-order span').innerHTML =
+				res.data.data.address;
+
+			document.querySelector('.phone-number-order span').innerHTML =
+				res.data.data.phone;
+		} catch (error) {
+			console.log(error);
+		}
+	});
+
+	$('#addNewModal').on('shown.bs.modal', async function (e) {
+		const item = $(e.relatedTarget).closest('.item-list');
+		const itemId = item.attr('data-id');
+
+		try {
+			const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`order/${itemId}`);
+			const productReview = document.querySelector('#productReview');
+			const { products } = res.data.data;
+			console.log(products);
+			productReview.innerHTML = products
+				.map((product) => {
+					return `<option value="${product.product.id}">${product.product.name}</option>5</option>`;
+				})
+				.join('');
+
+			document
+				.querySelector('.btn-add-review')
+				.addEventListener('click', async () => {
+					try {
+						const rating =
+							document.querySelector('#ratingReview').value;
+						const review = document.querySelector('#content').value;
+						const productReview =
+							document.querySelector('#productReview').value;
+
+						const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.postDataAPI)('review', {
+							rating,
+							review,
+							idProduct: productReview,
+						});
+
+						if (res.status === 200) {
+							(0,_util_toastify__WEBPACK_IMPORTED_MODULE_1__.toast)('success', 'Đánh giá thành công');
+							setTimeout(() => {
+								location.reload();
+							}, 3000);
+						}
+					} catch (e) {
+						(0,_util_toastify__WEBPACK_IMPORTED_MODULE_1__.toast)('danger', e.message);
+					}
+				});
+		} catch (error) {
+			console.log(error);
+		}
+	});
 };
 
 
@@ -459,6 +600,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _util_toastify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../util/toastify */ "./public/js/util/toastify.js");
 /* harmony import */ var _cart__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./cart */ "./public/js/view/cart.js");
 /* harmony import */ var _checkout__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./checkout */ "./public/js/view/checkout.js");
+/* harmony import */ var _me__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./me */ "./public/js/view/me.js");
+
 
 
 
@@ -487,80 +630,17 @@ $(document).ready(async () => {
 		document
 			.querySelector('i.bi.bi-plus-lg')
 			.addEventListener('click', () => {
-				document.querySelector('.qty').innerText = quantity * 1 + 1;
-				quantity++;
+				const max =
+					document.querySelector('.max-quantity').innerText * 1;
+				if (quantity < max) {
+					document.querySelector('.qty').innerText = quantity * 1 + 1;
+					quantity++;
+				}
 			});
 	}
 
 	if (checkMePage) {
-		let tabContent = document.querySelectorAll('.container__inner');
-		let tabItem = document.querySelectorAll('.container__item');
-
-		// For each element with class 'container__item'
-		for (let i = 0; i < tabItem.length; i++) {
-			// if the element was hovered
-			//you can replace mouseover with click
-			tabItem[i].addEventListener('click', () => {
-				// Add to all containers class 'container__inner_hidden'
-				tabContent.forEach((item) => {
-					item.classList.add('container__inner_hidden');
-				});
-				// Clean all links from class 'container__item_active'
-				tabItem.forEach((item) => {
-					item.classList.remove('container__item_active');
-				});
-				// Make visible correct tab content and add class to item
-				tabContent[i].classList.remove('container__inner_hidden');
-				tabItem[i].classList.add('container__item_active');
-			});
-		}
-
-		$('#showInfoModal').on('shown.bs.modal', async function (e) {
-			const item = $(e.relatedTarget).closest('.item-list');
-			const itemId = item.attr('data-id');
-			console.log(itemId);
-
-			try {
-				const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`order/${itemId}`);
-				const infoRender = document.querySelector('.body-info');
-				let totalPrice = 0;
-				const { products } = res.data.data;
-				console.log(res);
-
-				infoRender.innerHTML = products
-					.map((product) => {
-						totalPrice += product.product.price * product.quantity;
-						return `
-									<tr>
-										<td class="w-25"><img class="img-fluid img-thumbnail" style="width:100px" src=${
-											product.product.image
-										} alt="Sheep" /></td>
-										<td>${product.product.name}</td>
-										<td class="qty">${product.quantity} </td>
-										<td>${formatter.format(product.product.price)}</td>
-								</tr>`;
-					})
-					.join('');
-
-				document.querySelector(
-					'.order-total-price ',
-				).innerHTML = `${formatter.format(totalPrice + 30000)}`;
-
-				document.querySelector('.name-order span').innerHTML =
-					res.data.data.name;
-
-				document.querySelector('.email-order span').innerHTML =
-					res.data.data.email;
-
-				document.querySelector('.address-order span').innerHTML =
-					res.data.data.address;
-
-				document.querySelector('.phone-number-order span').innerHTML =
-					res.data.data.phone;
-			} catch (error) {
-				console.log(error);
-			}
-		});
+		(0,_me__WEBPACK_IMPORTED_MODULE_4__.renderMe)();
 	}
 
 	if (checkCheckout) {

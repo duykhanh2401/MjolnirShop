@@ -10,5 +10,4 @@ router
 	.get(productController.getProduct)
 	.patch(productController.updateProduct)
 	.delete(productController.deleteProduct);
-
 module.exports = router;

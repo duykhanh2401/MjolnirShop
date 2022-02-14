@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Product = require('./productModels');
 const reviewSchema = new mongoose.Schema(
 	{
 		review: {
@@ -31,8 +32,20 @@ const reviewSchema = new mongoose.Schema(
 	},
 );
 
-reviewSchema.index({ product: 1, email: 1 }, { unique: true });
+reviewSchema.index({ product: 1, user: 1 }, { unique: true });
 
+reviewSchema.pre(/^find/, function (next) {
+	this.populate({
+		path: 'user',
+		select: 'name -_id ',
+	});
+	// .populate({
+	// 	path: 'tour',
+	// 	select: 'name',
+	// });
+
+	next();
+});
 // this trong static method là tên class
 reviewSchema.statics.calcAverageRatings = async function (ProductID) {
 	const stats = await this.aggregate([

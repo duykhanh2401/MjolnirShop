@@ -15,6 +15,7 @@ router.get('/category/:category', viewController.getCategory);
 router.get('/category/author/:author', viewController.getAuthor);
 router.get('/category/:category/:id', viewController.getProduct);
 router.get('/checkout', viewController.checkOut);
+router.get('/search', viewController.search);
 router.get('/me', viewController.getMe);
 router.get('/', viewController.getOverview);
 

@@ -72,15 +72,11 @@ const renderOrder = async () => {
 				listOrder
 					.slice(min, max)
 					.map((order) => {
-						let price = 0;
-						order.products.forEach((product) => {
-							price += product.product.price * product.quantity;
-						});
 						return `
 							<tr class="item-list" data-id=${order._id}>
 								<td class="info">${order.name}</td>
 								<td class="email">${order.email}</td>
-								<td class="price">${formatter.format(price + 30000)}</td>
+								<td class="price">${formatter.format(order.priceTotal)}</td>
 								<td class="status" value="${order.status}">${getStatus(order.status)}</td>
 								<td class="show-info" data-bs-toggle="modal" data-bs-target="#showInfoModal">Chi tiết</td>
 								
@@ -158,13 +154,10 @@ const renderOrder = async () => {
 		try {
 			const res = await getDataAPI(`order/${itemId}`);
 			const infoRender = document.querySelector('.body-info');
-			let totalPrice = 0;
 			const { products } = res.data.data;
-			console.log(res);
 
 			infoRender.innerHTML = products
 				.map((product) => {
-					totalPrice += product.product.price * product.quantity;
 					return `
 								<tr>
 									<td class="w-25"><img class="img-fluid img-thumbnail" style="width:100px" src=${
@@ -179,7 +172,7 @@ const renderOrder = async () => {
 
 			document.querySelector(
 				'.order-total-price ',
-			).innerHTML = `${formatter.format(totalPrice + 30000)}`;
+			).innerHTML = `${formatter.format(res.data.data.priceTotal)}`;
 
 			document.querySelector('.name-order span').innerHTML =
 				res.data.data.name;

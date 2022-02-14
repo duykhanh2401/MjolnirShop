@@ -76,7 +76,7 @@ const checkout = async () => {
 						products: productSubmit,
 						idUser,
 					});
-					// toast('success', res)
+					toast('success', res);
 
 					if (res.status === 200) {
 						document.querySelector(
@@ -88,7 +88,8 @@ const checkout = async () => {
 						await deleteDataAPI('cart/removeAllProducts');
 					}
 				} catch (error) {
-					toast('danger', error);
+					console.log(error);
+					toast('danger', error.response.data.message);
 				}
 			});
 	} else {

@@ -142,8 +142,8 @@ const renderProduct = () => {
 					document.querySelector('#priceProduct').value = '';
 
 					document.querySelector('#quantityProduct').value = '';
-					$('#authorSelect').val('').trigger('chosen:updated');
-					$('#categorySelect').val('').trigger('chosen:updated');
+					$('#authorSelect').val([]).trigger('chosen:updated');
+					$('#categorySelect').val([]).trigger('chosen:updated');
 					$('.imgShow')[0].setAttribute('src', '');
 					document.querySelector('#description').value = '';
 
@@ -259,8 +259,8 @@ const renderProduct = () => {
 				document.querySelector('#priceProductUpdate').value = '';
 
 				document.querySelector('#quantityProductUpdate').value = '';
-				$('#authorSelectUpdate').val('').trigger('chosen:updated');
-				$('#categorySelectUpdate').val('').trigger('chosen:updated');
+				$('#authorSelectUpdate').val([]).trigger('chosen:updated');
+				$('#categorySelectUpdate').val([]).trigger('chosen:updated');
 				$('.imgShowUpdate')[0].setAttribute('src', '');
 				document.querySelector('#descriptionProductUpdate').value = '';
 

@@ -34,16 +34,24 @@ block content
                         i.bi.bi-dash-lg
                         span.qty 1
                         i.bi.bi-plus-lg
-                .product-control
-                    if user
-                        .product-add-to-cart
-                            | Thêm vào giỏ hàng
-                        a(href="/checkout").product-order Thanh toán
-                    else
-                        .add-to-cart-no-user.login-button(data-bs-toggle='modal' data-bs-target='#FormLoginRegister')
-                            | Thêm vào giỏ hàng
-                        .product-order.login-button(data-bs-toggle='modal' data-bs-target='#FormLoginRegister')
-                            | Thanh toán
+                    if(product.quantity > 0)
+                        span (Số lượng còn lại: 
+                        .max-quantity= `${product.quantity}`
+                        span )
+                    
+                if(product.quantity > 0)
+                    .product-control
+                        if user
+                            .product-add-to-cart
+                                | Thêm vào giỏ hàng
+                            a(href="/checkout").product-order Thanh toán
+                        else
+                            .add-to-cart-no-user.login-button(data-bs-toggle='modal' data-bs-target='#FormLoginRegister')
+                                | Thêm vào giỏ hàng
+                            .product-order.login-button(data-bs-toggle='modal' data-bs-target='#FormLoginRegister')
+                                | Thanh toán
+                else
+                    .add-to-cart-no-user Đã hết hàng
                     
                          
     .description
@@ -57,7 +65,7 @@ block content
             if product.reviews
                 each review in product.reviews
                     .rating-wrap
-                        .rating-name= review.name 
+                        .rating-name= review.user.name 
                         each star in [1, 2 , 3 ,4, 5]
                             if review.rating*1 >= star
                                 i.bi.bi-star-fill(style="color: #FFDF00")

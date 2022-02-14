@@ -2,7 +2,30 @@ const Product = require('../models/productModels');
 const Order = require('../models/orderModels');
 const Category = require('../models/categoryModels');
 const Author = require('../models/authorModels');
-
+function removeAccents(str) {
+	var AccentsMap = [
+		'aàảãáạăằẳẵắặâầẩẫấậ',
+		'AÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬ',
+		'dđ',
+		'DĐ',
+		'eèẻẽéẹêềểễếệ',
+		'EÈẺẼÉẸÊỀỂỄẾỆ',
+		'iìỉĩíị',
+		'IÌỈĨÍỊ',
+		'oòỏõóọôồổỗốộơờởỡớợ',
+		'OÒỎÕÓỌÔỒỔỖỐỘƠỜỞỠỚỢ',
+		'uùủũúụưừửữứự',
+		'UÙỦŨÚỤƯỪỬỮỨỰ',
+		'yỳỷỹýỵ',
+		'YỲỶỸÝỴ',
+	];
+	for (var i = 0; i < AccentsMap.length; i++) {
+		var re = new RegExp('[' + AccentsMap[i].substr(1) + ']', 'g');
+		var char = AccentsMap[i][0];
+		str = str.replace(re, char);
+	}
+	return str.toLowerCase();
+}
 const formatter = new Intl.NumberFormat('vi-VN', {
 	style: 'currency',
 	currency: 'VND',
@@ -29,8 +52,8 @@ exports.getProduct = async (req, res, next) => {
 			const product = await Product.findOne({
 				slug: req.params.id,
 			}).populate('reviews');
-			product.priceFormat = formatter.format(product.price);
 			console.log(product);
+			product.priceFormat = formatter.format(product.price);
 			return res.status(200).render('product', { product });
 		}
 	}
@@ -89,6 +112,21 @@ exports.getAuthor = async (req, res, next) => {
 	} else {
 		res.render('404');
 	}
+};
+
+exports.search = async (req, res, next) => {
+	const search = req.query.q;
+	console.log(search);
+	const a = await Product.find();
+	const arr = a.filter((item) => {
+		return removeAccents(item.name).includes(removeAccents(search));
+		// return item.name.toLowerCase().includes(search.toLowerCase());
+	});
+	console.log(arr);
+	res.render('category', {
+		products: arr,
+		name: `Kết quả tìm kiếm cho: ${search}`,
+	});
 };
 
 const getStatus = (input) => {
