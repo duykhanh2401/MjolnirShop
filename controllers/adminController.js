@@ -43,14 +43,12 @@ exports.protect = async (req, res, next) => {
 		if (!token) {
 			return res.redirect(`/admin/login`);
 		}
-		console.log(process.env.JWT_SECRET);
 
 		const decode = await promisify(jwt.verify)(
 			token,
 			process.env.JWT_SECRET,
 		);
 		const currentUser = await User.findById(decode.id);
-		console.log(decode);
 		if (!currentUser) {
 			return res.redirect(`/admin/login`);
 		}
@@ -61,8 +59,6 @@ exports.protect = async (req, res, next) => {
 
 		return next();
 	} catch (error) {
-		console.log(error);
-
 		return res.redirect(`/admin/login`);
 		// return res.status(200).render('admin/login');
 	}

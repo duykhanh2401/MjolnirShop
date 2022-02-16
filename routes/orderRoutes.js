@@ -32,7 +32,6 @@ router.get('/income', async (req, res) => {
 			},
 		]);
 
-		console.log(orderReceived);
 		res.status(200).json(orderReceived);
 	} catch (err) {
 		res.status(500).json(err);

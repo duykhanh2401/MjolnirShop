@@ -13,7 +13,7 @@ const handleCastErrorDB = (error) => {
 
 const handleDuplicateFieldsDB = (error) => {
 	const value = Object.values(error.keyValue)[0];
-	const msg = `Duplicate field value: ${value}. Please use another value!!`;
+	const msg = `Dữ liệu đã tồn tại: '${value}'. Xin vui lòng thử lại!!`;
 	return new AppError(msg, 400);
 };
 

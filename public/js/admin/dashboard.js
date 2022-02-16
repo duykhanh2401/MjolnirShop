@@ -3,7 +3,6 @@ import { getDataAPI } from './../util/fetchAPI';
 
 const renderDashboard = async () => {
 	const { data } = await getDataAPI('order/income');
-	console.log(data);
 	let ax = [],
 		yx = [],
 		data1 = [],

@@ -65,4 +65,25 @@ block content
                 button.btn.btn-primary.btn-update-author(type='submit')
                   | Cập nhật
 
+    #infoModal.modal.fade(tabindex='-1' aria-labelledby='infoModalLabel' aria-hidden='true')
+        .modal-dialog
+          .modal-content
+              .modal-header
+                h5#exampleModalLabel.modal-title
+                  | Cập nhật
+                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+              .modal-body
+                .mb-3
+                  label.form-label(for='nameAuthorInfo') Tên Tác Giả
+                  input#nameAuthorInfo.form-control(type='text' readonly)
+                .mb-3
+                  label.form-label(for='slugInfo') Slug
+                  input#slugInfo.form-control(type='text' readonly)
+                
+              .modal-footer
+                button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                  | Đóng
+
+
+
 

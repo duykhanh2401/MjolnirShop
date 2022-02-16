@@ -281,7 +281,8 @@
 }
 
 .imgShow,
-.imgShowUpdate {
+.imgShowUpdate,
+.imgShowInfo {
 	width: 100px;
 }
 

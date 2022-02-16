@@ -28,16 +28,19 @@ block content
                     each category in product.category
                         a(href=`/category/${category.slug}`)
                             span= category.name
-                .product-quantity
-                    span Số lượng
-                    .quantity-control
-                        i.bi.bi-dash-lg
-                        span.qty 1
-                        i.bi.bi-plus-lg
-                    if(product.quantity > 0)
-                        span (Số lượng còn lại: 
-                        .max-quantity= `${product.quantity}`
-                        span )
+                if(product.quantity > 0)
+                    .product-quantity
+                        span Số lượng
+                        .quantity-control
+                            button
+                                i.bi.bi-dash-lg
+                            span.qty 1
+                            button
+                                i.bi.bi-plus-lg
+                    .wrap(style="display: flex")
+                        span= 'Số lượng còn lại:  '
+                        .max-quantity= ` ${product.quantity}`
+                        
                     
                 if(product.quantity > 0)
                     .product-control
@@ -65,7 +68,9 @@ block content
             if product.reviews
                 each review in product.reviews
                     .rating-wrap
-                        .rating-name= review.user.name 
+                        .wrap-header
+                            .rating-name= review.user.name
+                            .rating-time= review.timeReview
                         each star in [1, 2 , 3 ,4, 5]
                             if review.rating*1 >= star
                                 i.bi.bi-star-fill(style="color: #FFDF00")

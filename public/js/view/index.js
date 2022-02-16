@@ -1,8 +1,10 @@
 import { getDataAPI, postDataAPI } from '../util/fetchAPI';
 import { toast } from './../util/toastify';
-import { renderCart, addProductUser } from './cart';
 import { checkout } from './checkout';
 import { renderMe } from './me';
+import { renderProduct } from './product';
+import { renderCart, addProductUser } from './cart';
+
 const formatter = new Intl.NumberFormat('vi-VN', {
 	style: 'currency',
 	currency: 'VND',
@@ -14,26 +16,7 @@ $(document).ready(async () => {
 	const checkMePage = document.querySelector('#me');
 	// handle change quantity
 	if (document.querySelector('.product-single')) {
-		let quantity = document.querySelector('.qty').innerText;
-		document
-			.querySelector('i.bi.bi-dash-lg')
-			.addEventListener('click', () => {
-				if (quantity > 0) {
-					document.querySelector('.qty').innerText = quantity * 1 - 1;
-					quantity--;
-				}
-			});
-
-		document
-			.querySelector('i.bi.bi-plus-lg')
-			.addEventListener('click', () => {
-				const max =
-					document.querySelector('.max-quantity').innerText * 1;
-				if (quantity < max) {
-					document.querySelector('.qty').innerText = quantity * 1 + 1;
-					quantity++;
-				}
-			});
+		renderProduct();
 	}
 
 	if (checkMePage) {
@@ -49,23 +32,8 @@ $(document).ready(async () => {
 	}
 
 	if (checkLogin) {
-		document
-			.querySelector('.logout-button')
-			.addEventListener('click', async (e) => {
-				const res = await getDataAPI('user/logout');
-
-				if (res.status === 200) {
-					location.reload();
-				}
-			});
-
-		if (document.querySelector('.product-add-to-cart')) {
-			document
-				.querySelector('.product-add-to-cart')
-				.addEventListener('click', () => addProductUser());
-		}
-
 		const res = await getDataAPI('cart');
+		console.log(res.data.data);
 		const productsRender = res.data.data.map((productItem) => {
 			const { product } = productItem;
 			product.qty = productItem.quantity;
@@ -77,13 +45,6 @@ $(document).ready(async () => {
 	} else {
 		// Render Cart
 		if (!checkCheckout) {
-			//------------------------------
-			if (document.querySelector('.product-add-to-cart')) {
-				document
-					.querySelector('.product-add-to-cart')
-					.addEventListener('click', () => addProductAnonymous());
-			}
-
 			//------------------------------
 			// Enable form and set form
 			const activeForm = (form) => {
@@ -177,5 +138,4 @@ $(document).ready(async () => {
 				});
 		}
 	}
-	//------------------------------
 });

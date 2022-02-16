@@ -8,6 +8,7 @@ const productSchema = mongoose.Schema(
 		name: {
 			type: String,
 			require: [true, 'Vui lòng nhập tên sản phẩm'],
+			unique: true,
 		},
 		price: {
 			type: Number,

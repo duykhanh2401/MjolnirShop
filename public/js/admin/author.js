@@ -5,6 +5,7 @@ import {
 	getDataAPI,
 } from '../util/fetchAPI';
 import { pagination } from '../util/pagination';
+import { toast } from './../util/toastify';
 
 const createAuthor = async (name) => {
 	try {
@@ -13,7 +14,7 @@ const createAuthor = async (name) => {
 			return true;
 		}
 	} catch (error) {
-		console.log('error');
+		toast('danger', error.response.data.message);
 	}
 };
 
@@ -24,7 +25,7 @@ const deleteAuthor = async (id) => {
 			return true;
 		}
 	} catch (error) {
-		console.log('error');
+		toast('danger', error.response.data.message);
 	}
 };
 
@@ -62,7 +63,9 @@ const renderAuthor = async () => {
 					.slice(min, max)
 					.map((author) => {
 						return `
-				<tr class="item-list" data-id=${author._id}>
+				<tr class="item-list" data-id=${
+					author._id
+				} data-bs-toggle="modal" data-bs-target="#infoModal">
 				
 					<td class="info">${author.name}</td>
 					<td class="slug"><span>${author.slug}</span></td>
@@ -92,12 +95,15 @@ const renderAuthor = async () => {
 
 		addAuthorButton.onclick = async (e) => {
 			const name = document.querySelector('#nameAuthor').value;
-
+			if (!name) {
+				return toast('danger', 'Vui lòng nhập tên tác giả');
+			}
 			const isSuccess = await createAuthor(name);
 			if (isSuccess) {
 				document.querySelector('#nameAuthor').value = '';
 				$('#addNewModal').modal('hide');
 				BuildPage();
+				toast('success', 'Thêm mới thành công');
 			}
 		};
 	});
@@ -118,6 +124,7 @@ const renderAuthor = async () => {
 			const isSuccess = await deleteAuthor(deleteId);
 			if (isSuccess) {
 				$('#deleteModal').modal('hide');
+				toast('success', 'Xoá thành công');
 				BuildPage();
 			}
 		};
@@ -144,16 +151,30 @@ const renderAuthor = async () => {
 			const deleteId = updateAuthorButton.getAttribute('update-id');
 			const name = $('#nameAuthorUpdate')[0].value;
 			const slug = $('#slugUpdate')[0].value;
-
+			if (!name) {
+				return toast('danger', 'Vui lòng nhập tên tác giả');
+			}
 			const isSuccess = updateAuthor(deleteId, { name, slug });
 
 			if (isSuccess) {
 				$('#updateModal').modal('hide');
 				BuildPage();
+				toast('success', 'Cập nhật thành công');
 			}
 		};
 	});
 
+	$('#infoModal').on('show.bs.modal', function (e) {
+		// get row
+		const item = $(e.relatedTarget).closest('.item-list');
+		const itemId = item.attr('data-id');
+		const itemName = item.find('.info')[0].innerText;
+		const itemSlug = item.find('.slug')[0].innerText;
+
+		// Set giá trị khi hiện modal update
+		$('#nameAuthorInfo')[0].value = itemName;
+		$('#slugInfo')[0].value = itemSlug;
+	});
 	BuildPage();
 };
 

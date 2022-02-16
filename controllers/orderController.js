@@ -16,7 +16,6 @@ exports.createOrder = catchAsync(async (req, res, next) => {
 		for (let el of req.body.products) {
 			if (product.id === el.product) {
 				if (product.quantity < el.quantity) {
-					console.log(product);
 					return next(
 						new AppError('Sản phẩm quá giới hạn cho phép', 400),
 					);

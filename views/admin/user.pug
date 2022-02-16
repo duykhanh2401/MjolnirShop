@@ -47,7 +47,7 @@ block content
           .modal-content
               .modal-header
                 h5#exampleModalLabel.modal-title
-                  | Bạn có chắc chắn muốn xoá Tác giả này
+                  | Bạn có chắc chắn muốn xoá người dùng này
                 button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
      
               .modal-footer
@@ -83,3 +83,26 @@ block content
                   | Cập nhật
 
 
+    #infoModal.modal.fade(tabindex='-1' aria-labelledby='infoModalLabel' aria-hidden='true')
+        .modal-dialog
+          .modal-content
+              .modal-header
+                h5#exampleModalLabel.modal-title
+                  | Thông tin người dùng
+                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+              .modal-body
+                .mb-3
+                  label.form-label(for='nameUserInfo') Tên Người Dùng
+                  input#nameUserInfo.form-control(type='text' readonly)
+                .mb-3
+                  label.form-label(for='emailUserInfo') Email
+                  input#emailUserInfo.form-control(type='email' readonly)
+                .mb-3
+                  label.form-label(for='roleUserInfo') Chức Vụ
+                  select#roleUserInfo.form-control(type='text' readonly)
+                    option(value='user' disabled) Người dùng
+                    option(value='admin' disabled) Quản trị viên
+
+              .modal-footer
+                button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                  | Đóng

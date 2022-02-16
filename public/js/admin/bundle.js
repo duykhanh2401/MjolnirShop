@@ -618,6 +618,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/fetchAPI */ "./public/js/util/fetchAPI.js");
 /* harmony import */ var _util_pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/pagination */ "./public/js/util/pagination.js");
+/* harmony import */ var _util_toastify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../util/toastify */ "./public/js/util/toastify.js");
+
 
 
 
@@ -628,7 +630,7 @@ const createAuthor = async (name) => {
 			return true;
 		}
 	} catch (error) {
-		console.log('error');
+		(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', error.response.data.message);
 	}
 };
 
@@ -639,7 +641,7 @@ const deleteAuthor = async (id) => {
 			return true;
 		}
 	} catch (error) {
-		console.log('error');
+		(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', error.response.data.message);
 	}
 };
 
@@ -677,7 +679,9 @@ const renderAuthor = async () => {
 					.slice(min, max)
 					.map((author) => {
 						return `
-				<tr class="item-list" data-id=${author._id}>
+				<tr class="item-list" data-id=${
+					author._id
+				} data-bs-toggle="modal" data-bs-target="#infoModal">
 				
 					<td class="info">${author.name}</td>
 					<td class="slug"><span>${author.slug}</span></td>
@@ -707,12 +711,15 @@ const renderAuthor = async () => {
 
 		addAuthorButton.onclick = async (e) => {
 			const name = document.querySelector('#nameAuthor').value;
-
+			if (!name) {
+				return (0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', 'Vui lòng nhập tên tác giả');
+			}
 			const isSuccess = await createAuthor(name);
 			if (isSuccess) {
 				document.querySelector('#nameAuthor').value = '';
 				$('#addNewModal').modal('hide');
 				BuildPage();
+				(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('success', 'Thêm mới thành công');
 			}
 		};
 	});
@@ -733,6 +740,7 @@ const renderAuthor = async () => {
 			const isSuccess = await deleteAuthor(deleteId);
 			if (isSuccess) {
 				$('#deleteModal').modal('hide');
+				(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('success', 'Xoá thành công');
 				BuildPage();
 			}
 		};
@@ -759,16 +767,30 @@ const renderAuthor = async () => {
 			const deleteId = updateAuthorButton.getAttribute('update-id');
 			const name = $('#nameAuthorUpdate')[0].value;
 			const slug = $('#slugUpdate')[0].value;
-
+			if (!name) {
+				return (0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', 'Vui lòng nhập tên tác giả');
+			}
 			const isSuccess = updateAuthor(deleteId, { name, slug });
 
 			if (isSuccess) {
 				$('#updateModal').modal('hide');
 				BuildPage();
+				(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('success', 'Cập nhật thành công');
 			}
 		};
 	});
 
+	$('#infoModal').on('show.bs.modal', function (e) {
+		// get row
+		const item = $(e.relatedTarget).closest('.item-list');
+		const itemId = item.attr('data-id');
+		const itemName = item.find('.info')[0].innerText;
+		const itemSlug = item.find('.slug')[0].innerText;
+
+		// Set giá trị khi hiện modal update
+		$('#nameAuthorInfo')[0].value = itemName;
+		$('#slugInfo')[0].value = itemSlug;
+	});
 	BuildPage();
 };
 
@@ -790,6 +812,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/fetchAPI */ "./public/js/util/fetchAPI.js");
 /* harmony import */ var _util_pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/pagination */ "./public/js/util/pagination.js");
+/* harmony import */ var _util_toastify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../util/toastify */ "./public/js/util/toastify.js");
+
 
 
 const createCategory = async (name) => {
@@ -799,19 +823,18 @@ const createCategory = async (name) => {
 			return true;
 		}
 	} catch (error) {
-		console.log('error');
+		(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', error.response.data.message);
 	}
 };
 
 const deleteCategory = async (id) => {
 	try {
 		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.deleteDataAPI)(`category/${id}`);
-		console.log(res);
 		if (res.status === 204) {
 			return true;
 		}
 	} catch (error) {
-		console.log('error');
+		(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', error.response.data.message);
 	}
 };
 
@@ -823,7 +846,7 @@ const updateCategory = async (id, data) => {
 			return true;
 		}
 	} catch (error) {
-		console.log(error);
+		(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', error.response.data.message);
 	}
 };
 
@@ -849,7 +872,9 @@ const renderCategory = async () => {
 					.slice(min, max)
 					.map((category) => {
 						return `
-							<tr class="item-list" data-id=${category._id}>
+							<tr class="item-list" data-id=${
+								category._id
+							}  data-bs-toggle="modal" data-bs-target="#infoModal">
 								<td class="info">${category.name}</td>
 								<td class="slug">${category.slug}</td>
 								<td class="date">${new Date(category.createdAt).toLocaleDateString()}</td>
@@ -870,39 +895,52 @@ const renderCategory = async () => {
 
 	// Add New Category
 	$('#addNewModal').on('shown.bs.modal', function (e) {
-		const addCategoryButton = $('.btn-addCategory')[0];
+		try {
+			const addCategoryButton = $('.btn-addCategory')[0];
 
-		addCategoryButton.onclick = async (e) => {
-			const name = document.querySelector('#nameCategory').value;
-
-			const isSuccess = await createCategory(name);
-			if (isSuccess) {
-				document.querySelector('#nameCategory').value = '';
-				$('#addNewModal').modal('hide');
-				BuildPage();
-			}
-		};
+			addCategoryButton.onclick = async (e) => {
+				const name = document.querySelector('#nameCategory').value;
+				if (!name) {
+					return (0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', 'Vui lòng nhập tên danh mục');
+				}
+				const isSuccess = await createCategory(name);
+				if (isSuccess) {
+					document.querySelector('#nameCategory').value = '';
+					$('#addNewModal').modal('hide');
+					BuildPage();
+					(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('success', 'Thêm mới thành công');
+				}
+			};
+		} catch (error) {
+			(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', error.response.data.message);
+		}
 	});
 
 	//----------------------------------------
 
 	// Delete category
 	const deleteCategoryButton = $('.btn-delete')[0];
+
 	$('#deleteModal').on('show.bs.modal', function (e) {
-		// get row
-		const item = $(e.relatedTarget).closest('.item-list');
-		const itemId = item.attr('data-id');
+		try {
+			// get row
+			const item = $(e.relatedTarget).closest('.item-list');
+			const itemId = item.attr('data-id');
 
-		deleteCategoryButton.setAttribute('delete-id', itemId);
+			deleteCategoryButton.setAttribute('delete-id', itemId);
 
-		deleteCategoryButton.onclick = async (e) => {
-			const deleteId = deleteCategoryButton.getAttribute('delete-id');
-			const isSuccess = await deleteCategory(deleteId);
-			if (isSuccess) {
-				$('#deleteModal').modal('hide');
-				BuildPage();
-			}
-		};
+			deleteCategoryButton.onclick = async (e) => {
+				const deleteId = deleteCategoryButton.getAttribute('delete-id');
+				const isSuccess = await deleteCategory(deleteId);
+				if (isSuccess) {
+					$('#deleteModal').modal('hide');
+					(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('success', 'Xoá thành công');
+					BuildPage();
+				}
+			};
+		} catch (error) {
+			(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', error.response.data.message);
+		}
 	});
 
 	//------------------------------
@@ -910,30 +948,50 @@ const renderCategory = async () => {
 	// Update category
 	$('#updateModal').on('show.bs.modal', function (e) {
 		// get row
+		try {
+			const item = $(e.relatedTarget).closest('.item-list');
+			const itemId = item.attr('data-id');
+			const itemName = item.find('.info')[0].innerText;
+			const itemSlug = item.find('.slug')[0].innerText;
+
+			// Set giá trị khi hiện modal update
+			$('#nameCategoryUpdate')[0].value = itemName;
+			$('#slugUpdate')[0].value = itemSlug;
+
+			const updateCategoryButton = $('.btn-update-category')[0];
+
+			updateCategoryButton.setAttribute('update-id', itemId);
+			updateCategoryButton.onclick = (e) => {
+				const deleteId = updateCategoryButton.getAttribute('update-id');
+				const name = $('#nameCategoryUpdate')[0].value;
+				const slug = $('#slugUpdate')[0].value;
+				if (!name) {
+					return (0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', 'Vui lòng nhập tên danh mục');
+				}
+
+				const isSuccess = updateCategory(deleteId, { name, slug });
+
+				if (isSuccess) {
+					$('#updateModal').modal('hide');
+					BuildPage();
+					(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('success', 'Cập nhật thành công');
+				}
+			};
+		} catch (error) {
+			(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', error.response.data.message);
+		}
+	});
+
+	$('#infoModal').on('show.bs.modal', function (e) {
+		// get row
 		const item = $(e.relatedTarget).closest('.item-list');
 		const itemId = item.attr('data-id');
 		const itemName = item.find('.info')[0].innerText;
 		const itemSlug = item.find('.slug')[0].innerText;
 
 		// Set giá trị khi hiện modal update
-		$('#nameCategoryUpdate')[0].value = itemName;
-		$('#slugUpdate')[0].value = itemSlug;
-
-		const updateCategoryButton = $('.btn-update-category')[0];
-
-		updateCategoryButton.setAttribute('update-id', itemId);
-		updateCategoryButton.onclick = (e) => {
-			const deleteId = updateCategoryButton.getAttribute('update-id');
-			const name = $('#nameCategoryUpdate')[0].value;
-			const slug = $('#slugUpdate')[0].value;
-
-			const isSuccess = updateCategory(deleteId, { name, slug });
-
-			if (isSuccess) {
-				$('#updateModal').modal('hide');
-				BuildPage();
-			}
-		};
+		$('#nameCategoryInfo')[0].value = itemName;
+		$('#slugInfo')[0].value = itemSlug;
 	});
 
 	BuildPage();
@@ -963,7 +1021,6 @@ __webpack_require__.r(__webpack_exports__);
 
 const renderDashboard = async () => {
 	const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_1__.getDataAPI)('order/income');
-	console.log(data);
 	let ax = [],
 		yx = [],
 		data1 = [],
@@ -1099,6 +1156,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/fetchAPI */ "./public/js/util/fetchAPI.js");
 /* harmony import */ var _util_pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/pagination */ "./public/js/util/pagination.js");
+/* harmony import */ var _util_toastify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../util/toastify */ "./public/js/util/toastify.js");
+
 
 
 
@@ -1122,18 +1181,6 @@ const getStatus = (input) => {
 	}
 };
 
-const deleteOrder = async (id) => {
-	try {
-		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.deleteDataAPI)(`order/${id}`);
-		console.log(res);
-		if (res.status === 204) {
-			return true;
-		}
-	} catch (error) {
-		console.log('error');
-	}
-};
-
 const updateOrder = async (id, data) => {
 	try {
 		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.patchDataAPI)(`order/${id}`, data);
@@ -1141,7 +1188,7 @@ const updateOrder = async (id, data) => {
 			return true;
 		}
 	} catch (error) {
-		console.log(error);
+		(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', error.response.data.message);
 	}
 };
 
@@ -1196,19 +1243,23 @@ const renderOrder = async () => {
 	const deleteUserButton = $('.btn-delete')[0];
 	$('#deleteModal').on('show.bs.modal', function (e) {
 		// get row
-		const item = $(e.relatedTarget).closest('.item-list');
-		const itemId = item.attr('data-id');
+		try {
+			const item = $(e.relatedTarget).closest('.item-list');
+			const itemId = item.attr('data-id');
 
-		deleteUserButton.setAttribute('delete-id', itemId);
+			deleteUserButton.setAttribute('delete-id', itemId);
 
-		deleteUserButton.onclick = async (e) => {
-			const deleteId = deleteUserButton.getAttribute('delete-id');
-			const isSuccess = await deleteUser(deleteId);
-			if (isSuccess) {
-				$('#deleteModal').modal('hide');
-				BuildPage();
-			}
-		};
+			deleteUserButton.onclick = async (e) => {
+				const deleteId = deleteUserButton.getAttribute('delete-id');
+				const isSuccess = await deleteUser(deleteId);
+				if (isSuccess) {
+					$('#deleteModal').modal('hide');
+					BuildPage();
+				}
+			};
+		} catch (error) {
+			(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', error.response.data.message);
+		}
 	});
 
 	//------------------------------
@@ -1216,36 +1267,39 @@ const renderOrder = async () => {
 	// Update order
 	$('#updateModal').on('show.bs.modal', function (e) {
 		// get row
-		const item = $(e.relatedTarget).closest('.item-list');
-		const itemId = item.attr('data-id');
+		try {
+			const item = $(e.relatedTarget).closest('.item-list');
+			const itemId = item.attr('data-id');
 
-		const statusValue = item.find('.status')[0].getAttribute('value');
-		console.log(statusValue);
+			const statusValue = item.find('.status')[0].getAttribute('value');
 
-		// Set giá trị khi hiện modal update
+			// Set giá trị khi hiện modal update
 
-		document.querySelector('#statusOrder').value = statusValue;
-		const updateOrderButton = $('.btn-update-order')[0];
+			document.querySelector('#statusOrder').value = statusValue;
+			const updateOrderButton = $('.btn-update-order')[0];
 
-		updateOrderButton.setAttribute('update-id', itemId);
-		updateOrderButton.onclick = async (e) => {
-			const updateId = updateOrderButton.getAttribute('update-id');
-			const status = document.querySelector('#statusOrder').value;
+			updateOrderButton.setAttribute('update-id', itemId);
+			updateOrderButton.onclick = async (e) => {
+				const updateId = updateOrderButton.getAttribute('update-id');
+				const status = document.querySelector('#statusOrder').value;
 
-			const isSuccess = await updateOrder(updateId, { status });
+				const isSuccess = await updateOrder(updateId, { status });
 
-			if (isSuccess) {
-				$('#updateModal').modal('hide');
-				BuildPage();
-			}
-		};
+				if (isSuccess) {
+					$('#updateModal').modal('hide');
+					BuildPage();
+					(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('success', 'Cập nhật trạng thái thành công');
+				}
+			};
+		} catch (error) {
+			(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', error.response.data.message);
+		}
 	});
 
 	// Get info order
 	$('#showInfoModal').on('shown.bs.modal', async function (e) {
 		const item = $(e.relatedTarget).closest('.item-list');
 		const itemId = item.attr('data-id');
-		console.log(itemId);
 
 		try {
 			const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`order/${itemId}`);
@@ -1282,7 +1336,7 @@ const renderOrder = async () => {
 			document.querySelector('.phone-number-order span').innerHTML =
 				res.data.data.phone;
 		} catch (error) {
-			console.log(error);
+			(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', error.response.data.message);
 		}
 	});
 
@@ -1321,19 +1375,18 @@ const createProduct = async (data) => {
 			return true;
 		}
 	} catch (error) {
-		(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', 'Có lỗi xảy ra. Vui lòng thử lại sau');
+		(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', error.response.data.message);
 	}
 };
 
 const deleteProduct = async (id) => {
 	try {
 		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.deleteDataAPI)(`product/${id}`);
-		console.log(res);
 		if (res.status === 204) {
 			return true;
 		}
 	} catch (error) {
-		(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', 'Có lỗi xảy ra. Vui lòng thử lại sau');
+		(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', error.response.data.message);
 	}
 };
 
@@ -1345,7 +1398,7 @@ const updateProduct = async (id, data) => {
 			return true;
 		}
 	} catch (error) {
-		(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', error);
+		(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', error.response.data.message);
 	}
 };
 
@@ -1377,23 +1430,28 @@ const renderProduct = () => {
 						.slice(min, max)
 						.map((product) => {
 							return `
-						<tr class="item-list" data-id=${product._id}>
-							<td class="image-product"><img src=${product.image} alt=${product.name} /></td>
-							<td class="info">${product.name}
-							<div class="d-none author-value">${product.author
-								.map((e) => e.id)
-								.join(',')}</div>
-							<div class="d-none category-value">${product.category
-								.map((e) => e.id)
-								.join(',')}</div>
-									<div class="d-none slug">${product.slug}</div>
+							
+						<tr class="item-list" data-id=${
+							product._id
+						} data-bs-toggle="modal" data-bs-target="#infoModal">
+								<td class="image-product"><img src=${product.image} alt=${product.name}  /></td>
+								<td class="info">${product.name}
+								<div class="d-none author-value">${product.author
+									.map((e) => e.id)
+									.join(',')}</div>
+									<div class="d-none category-value">${product.category
+										.map((e) => e.id)
+										.join(',')}</div>
+										<div class="d-none slug">${product.slug}</div>
 								<div class="d-none description">${product.description}</div>
 								<div class="col-lg-1 col-sm-2 col-4 col-date"></div></td>
-							
-							<td class="price">${formatter.format(product.price)} </td>
-							<td class="quantity">${product.quantity}</td>
-							<td class="btn btn-sm font-sm rounded btn-brand" data-bs-toggle="modal" data-bs-target="#updateModal"><i class="bi bi-pencil"></i>Sửa</td>
-							<td class="btn btn-sm font-sm btn-light rounded btn btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i>Xoá</td>
+								
+								<td class="price">${formatter.format(product.price)} </td>
+								<td class="quantity">${product.quantity}</td>
+							<td>
+								<div class="btn btn-sm font-sm rounded btn-brand" data-bs-toggle="modal" data-bs-target="#updateModal"><i class="bi bi-pencil"></i>Sửa</div>
+								<div class="btn btn-sm font-sm btn-light rounded btn btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i>Xoá</div>
+							</td>
 							
 					</tr>
 					`;
@@ -1405,11 +1463,11 @@ const renderProduct = () => {
 
 			(0,_util_pagination__WEBPACK_IMPORTED_MODULE_1__.pagination)(buildList);
 		} catch (error) {
-			(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', 'Có lỗi xảy ra. Vui lòng thử lại sau');
+			(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', error.response.data.message);
 		}
 	};
 
-	// Add New Category
+	// Add New
 	$('#addNewModal').on('shown.bs.modal', function (e) {
 		const addProductButton = $('.btn-addProduct')[0];
 
@@ -1434,6 +1492,17 @@ const renderProduct = () => {
 				const image = document
 					.querySelector('.imgShow')
 					.getAttribute('src');
+				if (
+					!name ||
+					!price ||
+					!quantity ||
+					!author ||
+					!category ||
+					!description ||
+					!image
+				) {
+					return (0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', 'Vui lòng nhập đủ các trường');
+				}
 				const isSuccess = await createProduct({
 					name,
 					price,
@@ -1455,9 +1524,10 @@ const renderProduct = () => {
 
 					$('#addNewModal').modal('hide');
 					BuildPage();
+					(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('success', 'Thêm mới thành công');
 				}
 			} catch (error) {
-				(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', 'Có lỗi xảy ra. Vui lòng thử lại sau');
+				(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', error.response.data.message);
 			}
 		};
 	});
@@ -1483,7 +1553,7 @@ const renderProduct = () => {
 				}
 			};
 		} catch (error) {
-			(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', 'Có lỗi xảy ra. Vui lòng thử lại sau');
+			(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', error.response.data.message);
 		}
 		// get row
 	});
@@ -1547,7 +1617,17 @@ const renderProduct = () => {
 				.getAttribute('src');
 
 			const updateId = updateProductButton.getAttribute('update-id');
-			console.log(updateId);
+			if (
+				!name ||
+				!price ||
+				!quantity ||
+				!author ||
+				!category ||
+				!description ||
+				!slug
+			) {
+				return (0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', 'Vui lòng nhập đủ các trường');
+			}
 			const isSuccess = await updateProduct(updateId, {
 				name,
 				price,
@@ -1572,8 +1652,35 @@ const renderProduct = () => {
 
 				$('#updateModal').modal('hide');
 				BuildPage();
+				(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('success', 'Cập nhật thành công');
 			}
 		};
+	});
+
+	$('#infoModal').on('show.bs.modal', function (e) {
+		const item = $(e.relatedTarget).closest('.item-list');
+		const itemId = item.attr('data-id');
+		const itemName = item.find('.info')[0].innerText;
+		const itemSlug = item.find('.info .slug')[0].innerText;
+		const itemPrice = item.find('.price')[0].innerText.replace(/\D/g, '');
+		const itemQuantity = item.find('.quantity')[0].innerText;
+		const itemAuthor = item
+			.find('.info .author-value')[0]
+			.innerText.split(',');
+		const itemCategory = item
+			.find('.info .category-value')[0]
+			.innerText.split(',');
+		const itemDescription = item.find('.info .description')[0].innerText;
+		const image = item.find('.image-product img').attr('src');
+		// Set giá trị khi hiện modal update
+		$('#nameProductInfo')[0].value = itemName;
+		$('#slugProductInfo')[0].value = itemSlug;
+		$('#priceProductInfo')[0].value = itemPrice;
+		$('#quantityProductInfo')[0].value = itemQuantity;
+		$('#descriptionProductInfo')[0].value = itemDescription;
+		$('#authorSelectInfo').val(itemAuthor).trigger('chosen:updated');
+		$('#categorySelectInfo').val(itemCategory).trigger('chosen:updated');
+		$('.imgShowInfo')[0].setAttribute('src', image);
 	});
 
 	BuildPage();
@@ -1599,6 +1706,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/fetchAPI */ "./public/js/util/fetchAPI.js");
 /* harmony import */ var _util_pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/pagination */ "./public/js/util/pagination.js");
+/* harmony import */ var _util_toastify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../util/toastify */ "./public/js/util/toastify.js");
+
 
 
 const createUser = async (data) => {
@@ -1608,18 +1717,17 @@ const createUser = async (data) => {
 			return true;
 		}
 	} catch (error) {
-		toast('danger', 'Có lỗi xảy ra. Vui lòng thử lại sau');
+		(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', error.response.data.message);
 	}
 };
 const deleteUser = async (id) => {
 	try {
 		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.deleteDataAPI)(`user/${id}`);
-		console.log(res);
 		if (res.status === 204) {
 			return true;
 		}
 	} catch (error) {
-		console.log('error');
+		(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', error.response.data.message);
 	}
 };
 
@@ -1630,7 +1738,7 @@ const updateUser = async (id, data) => {
 			return true;
 		}
 	} catch (error) {
-		console.log(error);
+		(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', error.response.data.message);
 	}
 };
 
@@ -1657,7 +1765,9 @@ const renderUser = async () => {
 					.slice(min, max)
 					.map((user) => {
 						return `
-							<tr class="item-list" data-id=${user._id}>
+							<tr class="item-list" data-id=${
+								user._id
+							}  data-bs-toggle="modal" data-bs-target="#infoModal">
 								<td class="info">${user.name}</td>
 								<td class="email">${user.email}</td>
 								<td class="role" value=${user.role}>${
@@ -1687,29 +1797,34 @@ const renderUser = async () => {
 
 	// Add New Category
 	$('#addNewModal').on('shown.bs.modal', function (e) {
-		const addCategoryButton = $('.btn-addUser')[0];
+		try {
+			const addCategoryButton = $('.btn-addUser')[0];
 
-		addCategoryButton.onclick = async (e) => {
-			const name = document.querySelector('#nameUser').value;
-			const email = document.querySelector('#emailUser').value;
-			const password = document.querySelector('#passwordUser').value;
-			const role = document.querySelector('#roleUser').value;
+			addCategoryButton.onclick = async (e) => {
+				const name = document.querySelector('#nameUser').value;
+				const email = document.querySelector('#emailUser').value;
+				const password = document.querySelector('#passwordUser').value;
+				const role = document.querySelector('#roleUser').value;
 
-			const isSuccess = await createUser({
-				name,
-				email,
-				password,
-				role,
-				passwordConfirm: password,
-			});
-			if (isSuccess) {
-				document.querySelector('#nameUser').value = '';
-				document.querySelector('#emailUser').value = '';
-				document.querySelector('#passwordUser').value = '';
-				$('#addNewModal').modal('hide');
-				BuildPage();
-			}
-		};
+				const isSuccess = await createUser({
+					name,
+					email,
+					password,
+					role,
+					passwordConfirm: password,
+				});
+				if (isSuccess) {
+					document.querySelector('#nameUser').value = '';
+					document.querySelector('#emailUser').value = '';
+					document.querySelector('#passwordUser').value = '';
+					$('#addNewModal').modal('hide');
+					BuildPage();
+					(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('success', 'Thêm mới thành công');
+				}
+			};
+		} catch (error) {
+			(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', error.response.data.message);
+		}
 	});
 
 	//----------------------------------------
@@ -1729,6 +1844,7 @@ const renderUser = async () => {
 			if (isSuccess) {
 				$('#deleteModal').modal('hide');
 				BuildPage();
+				(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('success', 'Xoá thành công');
 			}
 		};
 	});
@@ -1763,8 +1879,24 @@ const renderUser = async () => {
 			if (isSuccess) {
 				$('#updateModal').modal('hide');
 				BuildPage();
+				(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('success', 'Cập nhật thành công');
 			}
 		};
+	});
+
+	$('#infoModal').on('show.bs.modal', function (e) {
+		// get row
+		const item = $(e.relatedTarget).closest('.item-list');
+		const itemId = item.attr('data-id');
+		const itemName = item.find('.info')[0].innerText;
+		const itemEmail = item.find('.email')[0].innerText;
+		const itemRole = item.find('.role')[0].getAttribute('value');
+
+		// Set giá trị khi hiện modal update
+
+		document.querySelector('#nameUserInfo').value = itemName;
+		document.querySelector('#emailUserInfo').value = itemEmail;
+		document.querySelector('#roleUserInfo').value = itemRole;
 	});
 
 	BuildPage();

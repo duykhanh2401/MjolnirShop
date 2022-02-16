@@ -147,3 +147,8 @@
 .rating-body {
 	padding: 16px;
 }
+
+.wrap-header {
+	display: flex;
+	justify-content: space-between;
+}

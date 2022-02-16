@@ -5,6 +5,7 @@ import {
 	getDataAPI,
 } from '../util/fetchAPI';
 import { pagination } from '../util/pagination';
+import { toast } from './../util/toastify';
 
 const formatter = new Intl.NumberFormat('vi-VN', {
 	style: 'currency',
@@ -26,18 +27,6 @@ const getStatus = (input) => {
 	}
 };
 
-const deleteOrder = async (id) => {
-	try {
-		const res = await deleteDataAPI(`order/${id}`);
-		console.log(res);
-		if (res.status === 204) {
-			return true;
-		}
-	} catch (error) {
-		console.log('error');
-	}
-};
-
 const updateOrder = async (id, data) => {
 	try {
 		const res = await patchDataAPI(`order/${id}`, data);
@@ -45,7 +34,7 @@ const updateOrder = async (id, data) => {
 			return true;
 		}
 	} catch (error) {
-		console.log(error);
+		toast('danger', error.response.data.message);
 	}
 };
 
@@ -100,19 +89,23 @@ const renderOrder = async () => {
 	const deleteUserButton = $('.btn-delete')[0];
 	$('#deleteModal').on('show.bs.modal', function (e) {
 		// get row
-		const item = $(e.relatedTarget).closest('.item-list');
-		const itemId = item.attr('data-id');
+		try {
+			const item = $(e.relatedTarget).closest('.item-list');
+			const itemId = item.attr('data-id');
 
-		deleteUserButton.setAttribute('delete-id', itemId);
+			deleteUserButton.setAttribute('delete-id', itemId);
 
-		deleteUserButton.onclick = async (e) => {
-			const deleteId = deleteUserButton.getAttribute('delete-id');
-			const isSuccess = await deleteUser(deleteId);
-			if (isSuccess) {
-				$('#deleteModal').modal('hide');
-				BuildPage();
-			}
-		};
+			deleteUserButton.onclick = async (e) => {
+				const deleteId = deleteUserButton.getAttribute('delete-id');
+				const isSuccess = await deleteUser(deleteId);
+				if (isSuccess) {
+					$('#deleteModal').modal('hide');
+					BuildPage();
+				}
+			};
+		} catch (error) {
+			toast('danger', error.response.data.message);
+		}
 	});
 
 	//------------------------------
@@ -120,36 +113,39 @@ const renderOrder = async () => {
 	// Update order
 	$('#updateModal').on('show.bs.modal', function (e) {
 		// get row
-		const item = $(e.relatedTarget).closest('.item-list');
-		const itemId = item.attr('data-id');
+		try {
+			const item = $(e.relatedTarget).closest('.item-list');
+			const itemId = item.attr('data-id');
 
-		const statusValue = item.find('.status')[0].getAttribute('value');
-		console.log(statusValue);
+			const statusValue = item.find('.status')[0].getAttribute('value');
 
-		// Set giá trị khi hiện modal update
+			// Set giá trị khi hiện modal update
 
-		document.querySelector('#statusOrder').value = statusValue;
-		const updateOrderButton = $('.btn-update-order')[0];
+			document.querySelector('#statusOrder').value = statusValue;
+			const updateOrderButton = $('.btn-update-order')[0];
 
-		updateOrderButton.setAttribute('update-id', itemId);
-		updateOrderButton.onclick = async (e) => {
-			const updateId = updateOrderButton.getAttribute('update-id');
-			const status = document.querySelector('#statusOrder').value;
+			updateOrderButton.setAttribute('update-id', itemId);
+			updateOrderButton.onclick = async (e) => {
+				const updateId = updateOrderButton.getAttribute('update-id');
+				const status = document.querySelector('#statusOrder').value;
 
-			const isSuccess = await updateOrder(updateId, { status });
+				const isSuccess = await updateOrder(updateId, { status });
 
-			if (isSuccess) {
-				$('#updateModal').modal('hide');
-				BuildPage();
-			}
-		};
+				if (isSuccess) {
+					$('#updateModal').modal('hide');
+					BuildPage();
+					toast('success', 'Cập nhật trạng thái thành công');
+				}
+			};
+		} catch (error) {
+			toast('danger', error.response.data.message);
+		}
 	});
 
 	// Get info order
 	$('#showInfoModal').on('shown.bs.modal', async function (e) {
 		const item = $(e.relatedTarget).closest('.item-list');
 		const itemId = item.attr('data-id');
-		console.log(itemId);
 
 		try {
 			const res = await getDataAPI(`order/${itemId}`);
@@ -186,7 +182,7 @@ const renderOrder = async () => {
 			document.querySelector('.phone-number-order span').innerHTML =
 				res.data.data.phone;
 		} catch (error) {
-			console.log(error);
+			toast('danger', error.response.data.message);
 		}
 	});
 

@@ -63,7 +63,7 @@ block content
           .modal-content
               .modal-header
                 h5#exampleModalLabel.modal-title
-                  | Bạn có chắc chắn muốn xoá Tác giả này
+                  | Bạn có chắc chắn muốn xoá sản phẩm này
                 button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
      
               .modal-footer
@@ -120,3 +120,50 @@ block content
                 | Đóng
               button.btn.btn-primary.btn-update-product(type='button')
                 | Cập nhật
+
+
+    #infoModal.modal.fade(tabindex='-1' aria-labelledby='infoModalLabel' aria-hidden='true')
+        .modal-dialog
+          .modal-content
+            .modal-header
+              h5#exampleModalLabel.modal-title
+                | Thông tin sản phẩm
+              button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+            .modal-body
+              .mb-3
+                label.form-label(for='imageProductInfo') Ảnh Sản Phẩm
+                .wrap
+                  img.imgShowInfo
+
+              .mb-3
+                label.form-label(for='nameProductInfo') Tên Sản Phẩm
+                input#nameProductInfo.form-control(type='text' readonly )
+              .mb-3
+                label.form-label(for='priceProductInfo') Giá Sản Phẩm
+                input#priceProductInfo.form-control(type='number' readonly )
+              .mb-3
+                label.form-label(for='quantityProductInfo') Số Lượng
+                input#quantityProductInfo.form-control(type='number' readonly )
+              .mb-3
+                label.form-label(for='slugProductInfo') Slug
+                input#slugProductInfo.form-control(type='text' readonly )
+              .mb-3
+                label.form-label(for='authorSelectInfo') Tác Giả
+                select#authorSelectInfo.chosen-select(readonly data-placeholder='Chọn tên phân loại' multiple='' name='test')
+                  option(value='')
+                  each author in authors
+                    option(value= author.id)= author.name
+                    
+              .mb-3
+                label.form-label(for='categorySelectInfo') Danh Mục
+                select#categorySelectInfo.chosen-select(data-placeholder='Chọn tên phân loại' multiple='' name='test')
+                  option(value='')
+                  each category in categories
+                    option(value= category.id)= category.name
+              .mb-3
+                label.form-label(for='descriptionProductInfo') Mô tả
+                textarea#descriptionProductInfo.form-control(rows='3' readonly)
+            .modal-footer
+              button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                | Đóng
+             

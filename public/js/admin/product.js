@@ -15,19 +15,18 @@ const createProduct = async (data) => {
 			return true;
 		}
 	} catch (error) {
-		toast('danger', 'Có lỗi xảy ra. Vui lòng thử lại sau');
+		toast('danger', error.response.data.message);
 	}
 };
 
 const deleteProduct = async (id) => {
 	try {
 		const res = await deleteDataAPI(`product/${id}`);
-		console.log(res);
 		if (res.status === 204) {
 			return true;
 		}
 	} catch (error) {
-		toast('danger', 'Có lỗi xảy ra. Vui lòng thử lại sau');
+		toast('danger', error.response.data.message);
 	}
 };
 
@@ -39,7 +38,7 @@ const updateProduct = async (id, data) => {
 			return true;
 		}
 	} catch (error) {
-		toast('danger', error);
+		toast('danger', error.response.data.message);
 	}
 };
 
@@ -71,23 +70,28 @@ const renderProduct = () => {
 						.slice(min, max)
 						.map((product) => {
 							return `
-						<tr class="item-list" data-id=${product._id}>
-							<td class="image-product"><img src=${product.image} alt=${product.name} /></td>
-							<td class="info">${product.name}
-							<div class="d-none author-value">${product.author
-								.map((e) => e.id)
-								.join(',')}</div>
-							<div class="d-none category-value">${product.category
-								.map((e) => e.id)
-								.join(',')}</div>
-									<div class="d-none slug">${product.slug}</div>
+							
+						<tr class="item-list" data-id=${
+							product._id
+						} data-bs-toggle="modal" data-bs-target="#infoModal">
+								<td class="image-product"><img src=${product.image} alt=${product.name}  /></td>
+								<td class="info">${product.name}
+								<div class="d-none author-value">${product.author
+									.map((e) => e.id)
+									.join(',')}</div>
+									<div class="d-none category-value">${product.category
+										.map((e) => e.id)
+										.join(',')}</div>
+										<div class="d-none slug">${product.slug}</div>
 								<div class="d-none description">${product.description}</div>
 								<div class="col-lg-1 col-sm-2 col-4 col-date"></div></td>
-							
-							<td class="price">${formatter.format(product.price)} </td>
-							<td class="quantity">${product.quantity}</td>
-							<td class="btn btn-sm font-sm rounded btn-brand" data-bs-toggle="modal" data-bs-target="#updateModal"><i class="bi bi-pencil"></i>Sửa</td>
-							<td class="btn btn-sm font-sm btn-light rounded btn btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i>Xoá</td>
+								
+								<td class="price">${formatter.format(product.price)} </td>
+								<td class="quantity">${product.quantity}</td>
+							<td>
+								<div class="btn btn-sm font-sm rounded btn-brand" data-bs-toggle="modal" data-bs-target="#updateModal"><i class="bi bi-pencil"></i>Sửa</div>
+								<div class="btn btn-sm font-sm btn-light rounded btn btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i>Xoá</div>
+							</td>
 							
 					</tr>
 					`;
@@ -99,11 +103,11 @@ const renderProduct = () => {
 
 			pagination(buildList);
 		} catch (error) {
-			toast('danger', 'Có lỗi xảy ra. Vui lòng thử lại sau');
+			toast('danger', error.response.data.message);
 		}
 	};
 
-	// Add New Category
+	// Add New
 	$('#addNewModal').on('shown.bs.modal', function (e) {
 		const addProductButton = $('.btn-addProduct')[0];
 
@@ -128,6 +132,17 @@ const renderProduct = () => {
 				const image = document
 					.querySelector('.imgShow')
 					.getAttribute('src');
+				if (
+					!name ||
+					!price ||
+					!quantity ||
+					!author ||
+					!category ||
+					!description ||
+					!image
+				) {
+					return toast('danger', 'Vui lòng nhập đủ các trường');
+				}
 				const isSuccess = await createProduct({
 					name,
 					price,
@@ -149,9 +164,10 @@ const renderProduct = () => {
 
 					$('#addNewModal').modal('hide');
 					BuildPage();
+					toast('success', 'Thêm mới thành công');
 				}
 			} catch (error) {
-				toast('danger', 'Có lỗi xảy ra. Vui lòng thử lại sau');
+				toast('danger', error.response.data.message);
 			}
 		};
 	});
@@ -177,7 +193,7 @@ const renderProduct = () => {
 				}
 			};
 		} catch (error) {
-			toast('danger', 'Có lỗi xảy ra. Vui lòng thử lại sau');
+			toast('danger', error.response.data.message);
 		}
 		// get row
 	});
@@ -241,7 +257,17 @@ const renderProduct = () => {
 				.getAttribute('src');
 
 			const updateId = updateProductButton.getAttribute('update-id');
-			console.log(updateId);
+			if (
+				!name ||
+				!price ||
+				!quantity ||
+				!author ||
+				!category ||
+				!description ||
+				!slug
+			) {
+				return toast('danger', 'Vui lòng nhập đủ các trường');
+			}
 			const isSuccess = await updateProduct(updateId, {
 				name,
 				price,
@@ -266,8 +292,35 @@ const renderProduct = () => {
 
 				$('#updateModal').modal('hide');
 				BuildPage();
+				toast('success', 'Cập nhật thành công');
 			}
 		};
+	});
+
+	$('#infoModal').on('show.bs.modal', function (e) {
+		const item = $(e.relatedTarget).closest('.item-list');
+		const itemId = item.attr('data-id');
+		const itemName = item.find('.info')[0].innerText;
+		const itemSlug = item.find('.info .slug')[0].innerText;
+		const itemPrice = item.find('.price')[0].innerText.replace(/\D/g, '');
+		const itemQuantity = item.find('.quantity')[0].innerText;
+		const itemAuthor = item
+			.find('.info .author-value')[0]
+			.innerText.split(',');
+		const itemCategory = item
+			.find('.info .category-value')[0]
+			.innerText.split(',');
+		const itemDescription = item.find('.info .description')[0].innerText;
+		const image = item.find('.image-product img').attr('src');
+		// Set giá trị khi hiện modal update
+		$('#nameProductInfo')[0].value = itemName;
+		$('#slugProductInfo')[0].value = itemSlug;
+		$('#priceProductInfo')[0].value = itemPrice;
+		$('#quantityProductInfo')[0].value = itemQuantity;
+		$('#descriptionProductInfo')[0].value = itemDescription;
+		$('#authorSelectInfo').val(itemAuthor).trigger('chosen:updated');
+		$('#categorySelectInfo').val(itemCategory).trigger('chosen:updated');
+		$('.imgShowInfo')[0].setAttribute('src', image);
 	});
 
 	BuildPage();

@@ -72,7 +72,6 @@ reviewSchema.statics.calcAverageRatings = async function (ProductID) {
 			ratingsAverage: 0,
 		});
 	}
-	console.log(stats);
 };
 
 reviewSchema.post('save', function () {

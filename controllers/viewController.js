@@ -2,6 +2,7 @@ const Product = require('../models/productModels');
 const Order = require('../models/orderModels');
 const Category = require('../models/categoryModels');
 const Author = require('../models/authorModels');
+const Cart = require('../models/cartModels');
 function removeAccents(str) {
 	var AccentsMap = [
 		'aàảãáạăằẳẵắặâầẩẫấậ',
@@ -32,7 +33,8 @@ const formatter = new Intl.NumberFormat('vi-VN', {
 });
 
 exports.getOverview = async (req, res, next) => {
-	const products = await Product.find();
+	const products = await Product.find().sort('-createdAt');
+
 	products.forEach((el) => {
 		el.priceFormat = formatter.format(el.price);
 	});
@@ -52,8 +54,11 @@ exports.getProduct = async (req, res, next) => {
 			const product = await Product.findOne({
 				slug: req.params.id,
 			}).populate('reviews');
-			console.log(product);
 			product.priceFormat = formatter.format(product.price);
+			product.reviews.forEach((review) => {
+				review.timeReview = review.createdAt.toLocaleDateString('vi');
+			});
+			console.log(product);
 			return res.status(200).render('product', { product });
 		}
 	}
@@ -62,7 +67,15 @@ exports.getProduct = async (req, res, next) => {
 
 exports.getCart = async (req, res, next) => {
 	if (req.user) {
-		return res.status(200).render('cart');
+		const { products } = await Cart.findOne({ user: req.user._id });
+		let totalPrice = 0;
+		products.forEach(
+			(product) =>
+				(totalPrice += product.product.price * product.quantity),
+		);
+		totalPrice = formatter.format(totalPrice);
+		console.log(products);
+		return res.status(200).render('cart', { products, totalPrice });
 	}
 
 	return res.redirect('/');
@@ -70,6 +83,11 @@ exports.getCart = async (req, res, next) => {
 
 exports.checkOut = async (req, res, next) => {
 	if (req.user) {
+		const cartUser = await Cart.findOne({ user: req.user._id });
+
+		if (cartUser.products.length == 0) {
+			return res.redirect('/');
+		}
 		return res.status(200).render('checkout');
 	}
 
@@ -80,7 +98,6 @@ exports.getCategory = async (req, res, next) => {
 	const category = await Category.find({
 		slug: req.params.category,
 	}).populate('products');
-	console.log(category);
 	if (category.length > 0) {
 		const products = category[0].products;
 		products.forEach((el) => {
@@ -99,7 +116,6 @@ exports.getAuthor = async (req, res, next) => {
 	const author = await Author.find({
 		slug: req.params.author,
 	}).populate('products');
-	console.log(author);
 	if (author.length > 0) {
 		const products = author[0].products;
 		products.forEach((el) => {
@@ -116,17 +132,25 @@ exports.getAuthor = async (req, res, next) => {
 
 exports.search = async (req, res, next) => {
 	const search = req.query.q;
-	console.log(search);
-	const a = await Product.find();
-	const arr = a.filter((item) => {
-		return removeAccents(item.name).includes(removeAccents(search));
-		// return item.name.toLowerCase().includes(search.toLowerCase());
-	});
-	console.log(arr);
-	res.render('category', {
-		products: arr,
-		name: `Kết quả tìm kiếm cho: ${search}`,
-	});
+	const products = await Product.find();
+	if (search) {
+		const arr = products.filter((item) => {
+			return removeAccents(item.name).includes(removeAccents(search));
+			// return item.name.toLowerCase().includes(search.toLowerCase());
+		});
+		arr.forEach((el) => {
+			el.priceFormat = formatter.format(el.price);
+		});
+		res.render('category', {
+			products: arr,
+			name: `Kết quả tìm kiếm cho: ${search}`,
+		});
+	} else {
+		res.render('category', {
+			products,
+			name: `Tất cả sản phẩm`,
+		});
+	}
 };
 
 const getStatus = (input) => {

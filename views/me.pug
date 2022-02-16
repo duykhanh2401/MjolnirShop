@@ -14,6 +14,7 @@ block content
             h2.content__subtitle Thông Tin Tài Khoản
             h3.name_user= `Họ Và Tên: ${user.name}`
             h3.name_user= `Email: ${user.email}`
+            div.login-button(data-bs-toggle='modal' data-bs-target='#FormUpdateInfo') Cập nhật tài khoản
         .container__inner.container__inner_hidden
             h2.content__subtitle Đơn hàng của tôi
             
@@ -98,5 +99,26 @@ block content
                   | Đóng
                 button.btn.btn-primary.btn-add-review
                   | Đăng
+
+    #FormUpdateInfo.modal.fade(tabindex='-1' aria-labelledby='FormUpdateInfo' aria-hidden='true')
+      .modal-dialog.modal-dialog-centered
+        .modal-content
+          .popup-form-user
+            .form-user
+              .heading-form
+                | Cập nhật, 
+                span.login-span  Tên người dùng
+                |  hoặc
+                span.register-span  Mật Khẩu
+              form.form-login-user(action='#')
+                input.user-email-login.user-name-update(type='text', placeholder='Họ và tên', required)
+                button.button-update-name.button-register(type='submit') Cập nhật
+              form.form-register-user
+                input.user-password-register.password-current(type='password' placeholder='Mật khẩu cũ' required) 
+                input.user-password-register.password-new(type='password' placeholder='Mật khẩu mới' required) 
+                input.user-password-confirm-register.password-confirm(type='password' placeholder='Nhập lại mật khẩu' required)
+                button.button-register.button-password-update Cập nhật
+            button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+
 
 //- &#x20AB;

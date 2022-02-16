@@ -5,6 +5,25 @@ const formatter = new Intl.NumberFormat('vi-VN', {
 	currency: 'VND',
 });
 const renderMe = () => {
+	const activeForm = (form) => {
+		$('.form-user').removeClass('login-active register-active');
+		$('.form-user').addClass(form);
+	};
+
+	document.querySelector('.login-span').addEventListener('click', (e) => {
+		activeForm('login-active');
+	});
+
+	document.querySelector('.register-span').addEventListener('click', (e) => {
+		activeForm('register-active ');
+	});
+
+	document.querySelectorAll('.login-button').forEach((el) =>
+		el.addEventListener('click', (e) => {
+			activeForm('login-active ');
+		}),
+	);
+
 	let tabContent = document.querySelectorAll('.container__inner');
 	let tabItem = document.querySelectorAll('.container__item');
 
@@ -30,14 +49,12 @@ const renderMe = () => {
 	$('#showInfoModal').on('shown.bs.modal', async function (e) {
 		const item = $(e.relatedTarget).closest('.item-list');
 		const itemId = item.attr('data-id');
-		console.log(itemId);
 
 		try {
 			const res = await getDataAPI(`order/${itemId}`);
 			const infoRender = document.querySelector('.body-info');
 			let totalPrice = 0;
 			const { products } = res.data.data;
-			console.log(res);
 
 			infoRender.innerHTML = products
 				.map((product) => {
@@ -70,7 +87,7 @@ const renderMe = () => {
 			document.querySelector('.phone-number-order span').innerHTML =
 				res.data.data.phone;
 		} catch (error) {
-			console.log(error);
+			toast('danger', error.response.data.message);
 		}
 	});
 
@@ -82,7 +99,6 @@ const renderMe = () => {
 			const res = await getDataAPI(`order/${itemId}`);
 			const productReview = document.querySelector('#productReview');
 			const { products } = res.data.data;
-			console.log(products);
 			productReview.innerHTML = products
 				.map((product) => {
 					return `<option value="${product.product.id}">${product.product.name}</option>5</option>`;
@@ -116,9 +132,37 @@ const renderMe = () => {
 					}
 				});
 		} catch (error) {
-			console.log(error);
+			toast('danger', error.response.data.message);
 		}
 	});
+
+	document
+		.querySelector('.button-update-name')
+		.addEventListener('click', async () => {
+			const name = document.querySelector('.user-name-update').value;
+			const res = await postDataAPI('user/updateMe', { name });
+			if (res.status === 200) {
+				location.reload();
+			}
+		});
+
+	document
+		.querySelector('.button-password-update')
+		.addEventListener('click', async () => {
+			const passwordCurrent =
+				document.querySelector('.password-current').value;
+			const password = document.querySelector('.password-new').value;
+			const passwordConfirm =
+				document.querySelector('.password-confirm').value;
+			const res = await postDataAPI('user/updateMyPassword', {
+				passwordCurrent,
+				password,
+				passwordConfirm,
+			});
+			if (res.status === 200) {
+				location.reload();
+			}
+		});
 };
 
 export { renderMe };

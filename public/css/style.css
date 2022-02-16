@@ -14,6 +14,11 @@ a {
 body {
 	background-color: #f0f0f0;
 }
+
+button {
+	border: 0;
+	background: transparent;
+}
 /* Header */
 #header {
 	background: #ffffff;
@@ -357,10 +362,6 @@ pre {
 	vertical-align: middle;
 	text-align: center;
 }
-.table-cart td.qty,
-.table-cart th.qty {
-	width: 1rem;
-}
 
 .price {
 	margin-left: 1rem;
@@ -427,4 +428,8 @@ pre {
 	justify-content: center;
 	height: 100%;
 	font-size: 40px;
+}
+.quantity-control i {
+	padding: 0 12px;
+	cursor: pointer;
 }

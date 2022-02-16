@@ -5,6 +5,7 @@ import {
 	getDataAPI,
 } from '../util/fetchAPI';
 import { pagination } from '../util/pagination';
+import { toast } from './../util/toastify';
 const createUser = async (data) => {
 	try {
 		const res = await postDataAPI('user', data);
@@ -12,18 +13,17 @@ const createUser = async (data) => {
 			return true;
 		}
 	} catch (error) {
-		toast('danger', 'Có lỗi xảy ra. Vui lòng thử lại sau');
+		toast('danger', error.response.data.message);
 	}
 };
 const deleteUser = async (id) => {
 	try {
 		const res = await deleteDataAPI(`user/${id}`);
-		console.log(res);
 		if (res.status === 204) {
 			return true;
 		}
 	} catch (error) {
-		console.log('error');
+		toast('danger', error.response.data.message);
 	}
 };
 
@@ -34,7 +34,7 @@ const updateUser = async (id, data) => {
 			return true;
 		}
 	} catch (error) {
-		console.log(error);
+		toast('danger', error.response.data.message);
 	}
 };
 
@@ -61,7 +61,9 @@ const renderUser = async () => {
 					.slice(min, max)
 					.map((user) => {
 						return `
-							<tr class="item-list" data-id=${user._id}>
+							<tr class="item-list" data-id=${
+								user._id
+							}  data-bs-toggle="modal" data-bs-target="#infoModal">
 								<td class="info">${user.name}</td>
 								<td class="email">${user.email}</td>
 								<td class="role" value=${user.role}>${
@@ -91,29 +93,34 @@ const renderUser = async () => {
 
 	// Add New Category
 	$('#addNewModal').on('shown.bs.modal', function (e) {
-		const addCategoryButton = $('.btn-addUser')[0];
+		try {
+			const addCategoryButton = $('.btn-addUser')[0];
 
-		addCategoryButton.onclick = async (e) => {
-			const name = document.querySelector('#nameUser').value;
-			const email = document.querySelector('#emailUser').value;
-			const password = document.querySelector('#passwordUser').value;
-			const role = document.querySelector('#roleUser').value;
+			addCategoryButton.onclick = async (e) => {
+				const name = document.querySelector('#nameUser').value;
+				const email = document.querySelector('#emailUser').value;
+				const password = document.querySelector('#passwordUser').value;
+				const role = document.querySelector('#roleUser').value;
 
-			const isSuccess = await createUser({
-				name,
-				email,
-				password,
-				role,
-				passwordConfirm: password,
-			});
-			if (isSuccess) {
-				document.querySelector('#nameUser').value = '';
-				document.querySelector('#emailUser').value = '';
-				document.querySelector('#passwordUser').value = '';
-				$('#addNewModal').modal('hide');
-				BuildPage();
-			}
-		};
+				const isSuccess = await createUser({
+					name,
+					email,
+					password,
+					role,
+					passwordConfirm: password,
+				});
+				if (isSuccess) {
+					document.querySelector('#nameUser').value = '';
+					document.querySelector('#emailUser').value = '';
+					document.querySelector('#passwordUser').value = '';
+					$('#addNewModal').modal('hide');
+					BuildPage();
+					toast('success', 'Thêm mới thành công');
+				}
+			};
+		} catch (error) {
+			toast('danger', error.response.data.message);
+		}
 	});
 
 	//----------------------------------------
@@ -133,6 +140,7 @@ const renderUser = async () => {
 			if (isSuccess) {
 				$('#deleteModal').modal('hide');
 				BuildPage();
+				toast('success', 'Xoá thành công');
 			}
 		};
 	});
@@ -167,8 +175,24 @@ const renderUser = async () => {
 			if (isSuccess) {
 				$('#updateModal').modal('hide');
 				BuildPage();
+				toast('success', 'Cập nhật thành công');
 			}
 		};
+	});
+
+	$('#infoModal').on('show.bs.modal', function (e) {
+		// get row
+		const item = $(e.relatedTarget).closest('.item-list');
+		const itemId = item.attr('data-id');
+		const itemName = item.find('.info')[0].innerText;
+		const itemEmail = item.find('.email')[0].innerText;
+		const itemRole = item.find('.role')[0].getAttribute('value');
+
+		// Set giá trị khi hiện modal update
+
+		document.querySelector('#nameUserInfo').value = itemName;
+		document.querySelector('#emailUserInfo').value = itemEmail;
+		document.querySelector('#roleUserInfo').value = itemRole;
 	});
 
 	BuildPage();

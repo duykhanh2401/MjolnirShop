@@ -5,6 +5,7 @@ import {
 	getDataAPI,
 } from '../util/fetchAPI';
 import { pagination } from '../util/pagination';
+import { toast } from './../util/toastify';
 const createCategory = async (name) => {
 	try {
 		const res = await postDataAPI('category', { name });
@@ -12,19 +13,18 @@ const createCategory = async (name) => {
 			return true;
 		}
 	} catch (error) {
-		console.log('error');
+		toast('danger', error.response.data.message);
 	}
 };
 
 const deleteCategory = async (id) => {
 	try {
 		const res = await deleteDataAPI(`category/${id}`);
-		console.log(res);
 		if (res.status === 204) {
 			return true;
 		}
 	} catch (error) {
-		console.log('error');
+		toast('danger', error.response.data.message);
 	}
 };
 
@@ -36,7 +36,7 @@ const updateCategory = async (id, data) => {
 			return true;
 		}
 	} catch (error) {
-		console.log(error);
+		toast('danger', error.response.data.message);
 	}
 };
 
@@ -62,7 +62,9 @@ const renderCategory = async () => {
 					.slice(min, max)
 					.map((category) => {
 						return `
-							<tr class="item-list" data-id=${category._id}>
+							<tr class="item-list" data-id=${
+								category._id
+							}  data-bs-toggle="modal" data-bs-target="#infoModal">
 								<td class="info">${category.name}</td>
 								<td class="slug">${category.slug}</td>
 								<td class="date">${new Date(category.createdAt).toLocaleDateString()}</td>
@@ -83,39 +85,52 @@ const renderCategory = async () => {
 
 	// Add New Category
 	$('#addNewModal').on('shown.bs.modal', function (e) {
-		const addCategoryButton = $('.btn-addCategory')[0];
+		try {
+			const addCategoryButton = $('.btn-addCategory')[0];
 
-		addCategoryButton.onclick = async (e) => {
-			const name = document.querySelector('#nameCategory').value;
-
-			const isSuccess = await createCategory(name);
-			if (isSuccess) {
-				document.querySelector('#nameCategory').value = '';
-				$('#addNewModal').modal('hide');
-				BuildPage();
-			}
-		};
+			addCategoryButton.onclick = async (e) => {
+				const name = document.querySelector('#nameCategory').value;
+				if (!name) {
+					return toast('danger', 'Vui lòng nhập tên danh mục');
+				}
+				const isSuccess = await createCategory(name);
+				if (isSuccess) {
+					document.querySelector('#nameCategory').value = '';
+					$('#addNewModal').modal('hide');
+					BuildPage();
+					toast('success', 'Thêm mới thành công');
+				}
+			};
+		} catch (error) {
+			toast('danger', error.response.data.message);
+		}
 	});
 
 	//----------------------------------------
 
 	// Delete category
 	const deleteCategoryButton = $('.btn-delete')[0];
+
 	$('#deleteModal').on('show.bs.modal', function (e) {
-		// get row
-		const item = $(e.relatedTarget).closest('.item-list');
-		const itemId = item.attr('data-id');
+		try {
+			// get row
+			const item = $(e.relatedTarget).closest('.item-list');
+			const itemId = item.attr('data-id');
 
-		deleteCategoryButton.setAttribute('delete-id', itemId);
+			deleteCategoryButton.setAttribute('delete-id', itemId);
 
-		deleteCategoryButton.onclick = async (e) => {
-			const deleteId = deleteCategoryButton.getAttribute('delete-id');
-			const isSuccess = await deleteCategory(deleteId);
-			if (isSuccess) {
-				$('#deleteModal').modal('hide');
-				BuildPage();
-			}
-		};
+			deleteCategoryButton.onclick = async (e) => {
+				const deleteId = deleteCategoryButton.getAttribute('delete-id');
+				const isSuccess = await deleteCategory(deleteId);
+				if (isSuccess) {
+					$('#deleteModal').modal('hide');
+					toast('success', 'Xoá thành công');
+					BuildPage();
+				}
+			};
+		} catch (error) {
+			toast('danger', error.response.data.message);
+		}
 	});
 
 	//------------------------------
@@ -123,30 +138,50 @@ const renderCategory = async () => {
 	// Update category
 	$('#updateModal').on('show.bs.modal', function (e) {
 		// get row
+		try {
+			const item = $(e.relatedTarget).closest('.item-list');
+			const itemId = item.attr('data-id');
+			const itemName = item.find('.info')[0].innerText;
+			const itemSlug = item.find('.slug')[0].innerText;
+
+			// Set giá trị khi hiện modal update
+			$('#nameCategoryUpdate')[0].value = itemName;
+			$('#slugUpdate')[0].value = itemSlug;
+
+			const updateCategoryButton = $('.btn-update-category')[0];
+
+			updateCategoryButton.setAttribute('update-id', itemId);
+			updateCategoryButton.onclick = (e) => {
+				const deleteId = updateCategoryButton.getAttribute('update-id');
+				const name = $('#nameCategoryUpdate')[0].value;
+				const slug = $('#slugUpdate')[0].value;
+				if (!name) {
+					return toast('danger', 'Vui lòng nhập tên danh mục');
+				}
+
+				const isSuccess = updateCategory(deleteId, { name, slug });
+
+				if (isSuccess) {
+					$('#updateModal').modal('hide');
+					BuildPage();
+					toast('success', 'Cập nhật thành công');
+				}
+			};
+		} catch (error) {
+			toast('danger', error.response.data.message);
+		}
+	});
+
+	$('#infoModal').on('show.bs.modal', function (e) {
+		// get row
 		const item = $(e.relatedTarget).closest('.item-list');
 		const itemId = item.attr('data-id');
 		const itemName = item.find('.info')[0].innerText;
 		const itemSlug = item.find('.slug')[0].innerText;
 
 		// Set giá trị khi hiện modal update
-		$('#nameCategoryUpdate')[0].value = itemName;
-		$('#slugUpdate')[0].value = itemSlug;
-
-		const updateCategoryButton = $('.btn-update-category')[0];
-
-		updateCategoryButton.setAttribute('update-id', itemId);
-		updateCategoryButton.onclick = (e) => {
-			const deleteId = updateCategoryButton.getAttribute('update-id');
-			const name = $('#nameCategoryUpdate')[0].value;
-			const slug = $('#slugUpdate')[0].value;
-
-			const isSuccess = updateCategory(deleteId, { name, slug });
-
-			if (isSuccess) {
-				$('#updateModal').modal('hide');
-				BuildPage();
-			}
-		};
+		$('#nameCategoryInfo')[0].value = itemName;
+		$('#slugInfo')[0].value = itemSlug;
 	});
 
 	BuildPage();

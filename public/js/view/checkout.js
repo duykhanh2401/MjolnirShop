@@ -88,7 +88,6 @@ const checkout = async () => {
 						await deleteDataAPI('cart/removeAllProducts');
 					}
 				} catch (error) {
-					console.log(error);
 					toast('danger', error.response.data.message);
 				}
 			});

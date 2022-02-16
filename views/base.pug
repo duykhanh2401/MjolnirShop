@@ -15,8 +15,8 @@ header#header
   .wrapper
     .desktop-header
       .search-container
-        form.search
-          input.input-search#search(type='text' value autocomplete="off" placeholder='Search....')
+        form.search(action='/search')
+          input.input-search#search(type='text' name='q' value autocomplete="off" placeholder='Search....')
           div.btn-search
             i.bi.bi-search
       .logo-container
@@ -112,10 +112,9 @@ footer#footer
             input.user-password-login(type='password', placeholder='Mật khẩu' ,required, minlength='8')
             button.button-login(type='submit') Đăng Nhập
           form.form-register-user
-            input.user-name-register(type='text' placeholder='Họ Tên' required)
-            input.user-email-register(type='email' placeholder='Email' required)
-            input.user-password-register(type='password' placeholder='Mật khẩu' required) 
-            input.user-password-confirm-register(type='password' placeholder='Nhập lại mật khẩu' required)
+            input.user-email-register.password-current(type='password' placeholder='Mật khẩu cũ' required)
+            input.user-password-register.password-new(type='password' placeholder='Mật khẩu' required) 
+            input.user-password-confirm-register.password-confirm(type='password' placeholder='Nhập lại mật khẩu' required)
             button.button-register Đăng ký
         button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
 
