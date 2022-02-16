@@ -356,100 +356,53 @@ const renderData = (products) => {
 };
 
 const checkout = async () => {
-	const checkLogin = document.querySelector('.isLogin');
+	const cartData = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)('cart');
+	const productsRender = cartData.data.data.map((productItem) => {
+		const { product } = productItem;
+		product.qty = productItem.quantity;
+		product.productID = product._id;
+		return product;
+	});
 
-	if (checkLogin) {
-		const cartData = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)('cart');
-		const productsRender = cartData.data.data.map((productItem) => {
-			const { product } = productItem;
-			product.qty = productItem.quantity;
-			product.productID = product._id;
-			return product;
-		});
+	renderData(productsRender);
+	const productSubmit = productsRender.map((el) => {
+		return {
+			product: el.productID,
+			quantity: el.qty * 1,
+		};
+	});
+	document
+		.querySelector('.success-oder')
+		.addEventListener('click', async () => {
+			try {
+				const name = document.querySelector('#nameUser').value;
+				const email = document.querySelector('#emailUser').value;
+				const phone = document.querySelector('#phoneNumberUser').value;
+				const address = document.querySelector('#addressUser').value;
+				const idUser =
+					document.querySelector('#emailUser').dataset.idUser;
+				const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.postDataAPI)('order', {
+					name,
+					email,
+					phone,
+					address,
+					products: productSubmit,
+					idUser,
+				});
 
-		renderData(productsRender);
-		const productSubmit = productsRender.map((el) => {
-			return {
-				product: el.productID,
-				quantity: el.qty * 1,
-			};
-		});
-		document
-			.querySelector('.success-oder')
-			.addEventListener('click', async () => {
-				try {
-					const name = document.querySelector('#nameUser').value;
-					const email = document.querySelector('#emailUser').value;
-					const phone =
-						document.querySelector('#phoneNumberUser').value;
-					const address =
-						document.querySelector('#addressUser').value;
-					const idUser =
-						document.querySelector('#emailUser').dataset.idUser;
-					const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.postDataAPI)('order', {
-						name,
-						email,
-						phone,
-						address,
-						products: productSubmit,
-						idUser,
-					});
-					(0,_util_toastify__WEBPACK_IMPORTED_MODULE_1__.toast)('success', res);
-
-					if (res.status === 200) {
-						document.querySelector(
-							'.container',
-						).innerHTML = `<div class="success-checkout">
+				if (res.status === 200) {
+					document.querySelector(
+						'.container',
+					).innerHTML = `<div class="success-checkout">
 							Bạn đã đặt hàng thành công. <a href="/">Quay về trang chủ</a>
 							</div>`;
 
-						await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.deleteDataAPI)('cart/removeAllProducts');
-					}
-				} catch (error) {
-					(0,_util_toastify__WEBPACK_IMPORTED_MODULE_1__.toast)('danger', error.response.data.message);
+					await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.deleteDataAPI)('cart/removeAllProducts');
 				}
-			});
-	} else {
-		const products = JSON.parse(localStorage.getItem('cart'));
-		renderData(products);
-		const productSubmit = products.map((el) => {
-			return {
-				product: el.productID,
-				quantity: el.qty * 1,
-			};
+			} catch (error) {
+				(0,_util_toastify__WEBPACK_IMPORTED_MODULE_1__.toast)('danger', error.response.data.message);
+			}
 		});
-		document
-			.querySelector('.success-oder')
-			.addEventListener('click', async () => {
-				try {
-					const name = document.querySelector('#nameUser').value;
-					const email = document.querySelector('#emailUser').value;
-					const phone =
-						document.querySelector('#phoneNumberUser').value;
-					const address =
-						document.querySelector('#addressUser').value;
-					const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.postDataAPI)('order', {
-						name,
-						email,
-						phone,
-						address,
-						products: productSubmit,
-					});
-					// toast('success', res)
-
-					if (res.status === 200) {
-						document.querySelector(
-							'.container',
-						).innerHTML = `<div class="success-checkout">
-							Bạn đã đặt hàng thành công. <a href="/">Quay về trang chủ</a>
-							</div>`;
-						localStorage.setItem('cart', JSON.stringify([]));
-					}
-				} catch (error) {
-					(0,_util_toastify__WEBPACK_IMPORTED_MODULE_1__.toast)('danger', error);
-				}
-			});
-	}
 };
 
 
