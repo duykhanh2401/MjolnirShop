@@ -97,7 +97,7 @@ exports.checkOut = async (req, res, next) => {
 exports.getCategory = async (req, res, next) => {
 	const category = await Category.find({
 		slug: req.params.category,
-	}).populate('products');
+	}).populate({ path: 'products', options: { sort: '-createdAt' } });
 	if (category.length > 0) {
 		const products = category[0].products;
 		products.forEach((el) => {
@@ -115,7 +115,7 @@ exports.getCategory = async (req, res, next) => {
 exports.getAuthor = async (req, res, next) => {
 	const author = await Author.find({
 		slug: req.params.author,
-	}).populate('products');
+	}).populate({ path: 'products', options: { sort: '-createdAt' } });
 	if (author.length > 0) {
 		const products = author[0].products;
 		products.forEach((el) => {

@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const slug = require('mongoose-slug-generator');
 mongoose.plugin(slug);
-
 // Name, Price, Description, Image Cover, Image, Category, Qty,
 const productSchema = mongoose.Schema(
 	{

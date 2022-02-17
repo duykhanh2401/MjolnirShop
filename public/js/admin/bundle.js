@@ -647,7 +647,6 @@ const deleteAuthor = async (id) => {
 
 const updateAuthor = async (id, data) => {
 	try {
-		data.slug = data.slug.replace(/ /g, '-');
 		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.patchDataAPI)(`author/${id}`, data);
 		if (res.status === 200) {
 			return true;
@@ -659,9 +658,9 @@ const updateAuthor = async (id, data) => {
 
 const renderAuthor = async () => {
 	const tableList = $('#table')[0];
-
+	const sort = document.querySelector('.filter').value;
 	const BuildPage = async () => {
-		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)('author');
+		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`author?sort=${sort}`);
 		const listAuthor = data.data;
 
 		const buildList = async (buildPagination, min, max) => {
@@ -754,23 +753,20 @@ const renderAuthor = async () => {
 		const item = $(e.relatedTarget).closest('.item-list');
 		const itemId = item.attr('data-id');
 		const itemName = item.find('.info')[0].innerText;
-		const itemSlug = item.find('.slug')[0].innerText;
 
 		// Set giá trị khi hiện modal update
 		$('#nameAuthorUpdate')[0].value = itemName;
-		$('#slugUpdate')[0].value = itemSlug;
 
 		const updateAuthorButton = $('.btn-update-author')[0];
 
 		updateAuthorButton.setAttribute('update-id', itemId);
-		updateAuthorButton.onclick = (e) => {
-			const deleteId = updateAuthorButton.getAttribute('update-id');
+		updateAuthorButton.onclick = async (e) => {
+			const updateId = updateAuthorButton.getAttribute('update-id');
 			const name = $('#nameAuthorUpdate')[0].value;
-			const slug = $('#slugUpdate')[0].value;
 			if (!name) {
 				return (0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', 'Vui lòng nhập tên tác giả');
 			}
-			const isSuccess = updateAuthor(deleteId, { name, slug });
+			const isSuccess = await updateAuthor(updateId, { name });
 
 			if (isSuccess) {
 				$('#updateModal').modal('hide');
@@ -852,9 +848,10 @@ const updateCategory = async (id, data) => {
 
 const renderCategory = async () => {
 	const tableList = $('#table')[0];
+	const sort = document.querySelector('.filter').value;
 
 	const BuildPage = async () => {
-		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)('category');
+		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`category?sort=${sort}`);
 		const listCategory = data.data;
 
 		const buildList = async (buildPagination, min, max) => {
@@ -952,24 +949,23 @@ const renderCategory = async () => {
 			const item = $(e.relatedTarget).closest('.item-list');
 			const itemId = item.attr('data-id');
 			const itemName = item.find('.info')[0].innerText;
-			const itemSlug = item.find('.slug')[0].innerText;
 
 			// Set giá trị khi hiện modal update
 			$('#nameCategoryUpdate')[0].value = itemName;
-			$('#slugUpdate')[0].value = itemSlug;
 
 			const updateCategoryButton = $('.btn-update-category')[0];
 
 			updateCategoryButton.setAttribute('update-id', itemId);
-			updateCategoryButton.onclick = (e) => {
+			updateCategoryButton.onclick = async (e) => {
 				const deleteId = updateCategoryButton.getAttribute('update-id');
 				const name = $('#nameCategoryUpdate')[0].value;
-				const slug = $('#slugUpdate')[0].value;
 				if (!name) {
 					return (0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', 'Vui lòng nhập tên danh mục');
 				}
 
-				const isSuccess = updateCategory(deleteId, { name, slug });
+				const isSuccess = await updateCategory(deleteId, {
+					name,
+				});
 
 				if (isSuccess) {
 					$('#updateModal').modal('hide');
@@ -1392,7 +1388,6 @@ const deleteProduct = async (id) => {
 
 const updateProduct = async (id, data) => {
 	try {
-		data.slug = data.slug.replace(/ /g, '-');
 		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.patchDataAPI)(`product/${id}`, data);
 		if (res.status === 200) {
 			return true;
@@ -1412,7 +1407,9 @@ const renderProduct = () => {
 
 	const BuildPage = async () => {
 		try {
-			const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)('product');
+			const sort = document.querySelector('.filter').value;
+
+			const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`product?sort=${sort}`);
 			const listProduct = data.data;
 			const buildList = async (buildPagination, min, max) => {
 				tableList.innerHTML =
@@ -1565,7 +1562,6 @@ const renderProduct = () => {
 		const item = $(e.relatedTarget).closest('.item-list');
 		const itemId = item.attr('data-id');
 		const itemName = item.find('.info')[0].innerText;
-		const itemSlug = item.find('.info .slug')[0].innerText;
 		const itemPrice = item.find('.price')[0].innerText.replace(/\D/g, '');
 		const itemQuantity = item.find('.quantity')[0].innerText;
 		const itemAuthor = item
@@ -1579,7 +1575,6 @@ const renderProduct = () => {
 
 		// Set giá trị khi hiện modal update
 		$('#nameProductUpdate')[0].value = itemName;
-		$('#slugProductUpdate')[0].value = itemSlug;
 		$('#priceProductUpdate')[0].value = itemPrice;
 		$('#quantityProductUpdate')[0].value = itemQuantity;
 		$('#descriptionProductUpdate')[0].value = itemDescription;
@@ -1611,7 +1606,6 @@ const renderProduct = () => {
 			const description = document.querySelector(
 				'#descriptionProductUpdate',
 			).value;
-			const slug = document.querySelector('#slugProductUpdate').value;
 			const image = document
 				.querySelector('.imgShowUpdate')
 				.getAttribute('src');
@@ -1623,8 +1617,7 @@ const renderProduct = () => {
 				!quantity ||
 				!author ||
 				!category ||
-				!description ||
-				!slug
+				!description
 			) {
 				return (0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', 'Vui lòng nhập đủ các trường');
 			}
@@ -1636,7 +1629,6 @@ const renderProduct = () => {
 				category,
 				description,
 				image,
-				slug,
 			});
 
 			// Clear form
@@ -1746,7 +1738,8 @@ const renderUser = async () => {
 	const tableList = $('#table')[0];
 
 	const BuildPage = async () => {
-		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)('user');
+		const sort = document.querySelector('.filter').value;
+		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`user?sort=${sort}`);
 		const listUser = data.data;
 
 		const buildList = async (buildPagination, min, max) => {
@@ -2275,13 +2268,22 @@ $(document).ready(function () {
 
 	if (category) {
 		(0,_category__WEBPACK_IMPORTED_MODULE_0__.renderCategory)();
+		document.querySelector('.filter').addEventListener('change', () => {
+			(0,_category__WEBPACK_IMPORTED_MODULE_0__.renderCategory)();
+		});
 	}
 	if (author) {
 		(0,_author__WEBPACK_IMPORTED_MODULE_1__.renderAuthor)();
+		document.querySelector('.filter').addEventListener('change', () => {
+			(0,_author__WEBPACK_IMPORTED_MODULE_1__.renderAuthor)();
+		});
 	}
 
 	if (user) {
 		(0,_user__WEBPACK_IMPORTED_MODULE_5__.renderUser)();
+		document.querySelector('.filter').addEventListener('change', () => {
+			(0,_user__WEBPACK_IMPORTED_MODULE_5__.renderUser)();
+		});
 	}
 
 	if (order) {
@@ -2293,6 +2295,9 @@ $(document).ready(function () {
 			no_results_text: 'Không có thông tin trùng khớp',
 		});
 		(0,_product__WEBPACK_IMPORTED_MODULE_2__.renderProduct)();
+		document.querySelector('.filter').addEventListener('change', () => {
+			(0,_product__WEBPACK_IMPORTED_MODULE_2__.renderProduct)();
+		});
 	}
 
 	if (loginPage) {

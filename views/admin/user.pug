@@ -5,6 +5,11 @@ block content
    section.content-main#user
     .content-header
       h2.content-title Danh sách người dùng
+      select.filter
+        option(value="name") Sắp xếp theo tên( A - Z)
+        option(value="-name") Sắp xếp theo tên( Z - A)
+        option(value="-createdAt") Sắp xếp theo mới nhất
+        option(value="createdAt") Sắp xếp theo cũ nhất
       button.btn-new(type='button' data-bs-toggle='modal' data-bs-target='#addNewModal')
         | Thêm mới
       

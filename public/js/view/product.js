@@ -17,16 +17,6 @@ const renderProduct = async () => {
 		}
 	});
 
-	document
-		.querySelector('.logout-button')
-		.addEventListener('click', async (e) => {
-			const res = await getDataAPI('user/logout');
-
-			if (res.status === 200) {
-				location.reload();
-			}
-		});
-
 	if (document.querySelector('.product-add-to-cart')) {
 		document
 			.querySelector('.product-add-to-cart')

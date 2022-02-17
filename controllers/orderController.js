@@ -106,6 +106,42 @@ exports.createOrder = catchAsync(async (req, res, next) => {
 		status: 'success',
 	});
 });
+exports.getDashboardData = async (req, res) => {
+	try {
+		const orderReceived = await Order.aggregate([
+			{
+				$match: { status: 'Order Received' },
+			},
+			{
+				$project: {
+					sales: '$priceTotal',
+					dateString: {
+						$dateToString: {
+							format: '%Y-%m-%d',
+							date: '$createdAt',
+						},
+					},
+				},
+			},
+			{
+				$group: {
+					_id: '$dateString',
+					numberOrder: { $sum: 1 },
+					total: { $sum: '$sales' },
+					dateSort: { $first: '$dateString' },
+				},
+			},
+
+			{
+				$sort: { dateSort: 1 },
+			},
+		]);
+
+		res.status(200).json(orderReceived);
+	} catch (err) {
+		res.status(500).json(err);
+	}
+};
 exports.getOrder = factory.getOne(Order);
 exports.getAllOrders = factory.getAll(Order);
 exports.updateOrder = factory.updateOne(Order);

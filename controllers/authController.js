@@ -51,7 +51,11 @@ exports.login = catchAsync(async function (req, res, next) {
 	const user = await User.findOne({ email }).select('+password');
 
 	if (!user || !(await user.correctPassword(password, user.password))) {
-		return next(new AppError('Incorrect email or password', 400));
+		return next(new AppError('Email hoặc mật khẩu không đúng', 400));
+	}
+
+	if (user.role === 'admin') {
+		return next(new AppError('Tài khoản không tồn tại', 400));
 	}
 
 	createSendToken(user, 200, res);
@@ -202,6 +206,15 @@ exports.isLoggedIn = async (req, res, next) => {
 			// if (currentUser.changedPasswordAfter(decode.iat)) {
 			// 	return next();
 			// }
+			if (currentUser.role === 'admin') {
+				console.log(1123);
+				res.cookie('jwt', 'logouttoken', {
+					httpOnly: true,
+					expires: new Date(Date.now() + 5000),
+				});
+				return next();
+			}
+
 			res.locals.user = currentUser;
 			req.user = currentUser;
 			return next();

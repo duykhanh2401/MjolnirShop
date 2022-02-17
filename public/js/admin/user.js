@@ -42,7 +42,8 @@ const renderUser = async () => {
 	const tableList = $('#table')[0];
 
 	const BuildPage = async () => {
-		const { data } = await getDataAPI('user');
+		const sort = document.querySelector('.filter').value;
+		const { data } = await getDataAPI(`user?sort=${sort}`);
 		const listUser = data.data;
 
 		const buildList = async (buildPagination, min, max) => {

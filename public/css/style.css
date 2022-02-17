@@ -433,3 +433,15 @@ pre {
 	padding: 0 12px;
 	cursor: pointer;
 }
+
+.name-cart {
+	font-size: 16px;
+	margin-bottom: 8px;
+	white-space: nowrap;
+	overflow: hidden !important;
+	/* text-overflow: ellipsis; */
+	-webkit-line-clamp: 2;
+
+	-webkit-box-orient: vertical;
+	white-space: normal;
+}

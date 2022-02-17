@@ -151,7 +151,7 @@ const renderCart = (products) => {
 				<th scope="col"></th>
 				<th scope="col">Tên Sản Phẩm</th>
 				<th scope="col">Giá</th>
-				<th scope="col">Số Lượng</th>
+				<th scope="col" style="width: 160px;">Số Lượng</th>
 				<th scope="col"> </th>
 			</tr>
 		</thead>
@@ -166,7 +166,7 @@ const renderCart = (products) => {
 							<img class="img-fluid img-thumbnail" src=${product.image} alt="Sheep" />
 							</a>
 							</td>
-							<td>${product.name}</td>
+							<td class="name-cart">${product.name}</td>
 							<td>${formatter.format(product.price)}</td>
 
 							<td class="qty quantity-control">
@@ -624,16 +624,6 @@ const renderProduct = async () => {
 		}
 	});
 
-	document
-		.querySelector('.logout-button')
-		.addEventListener('click', async (e) => {
-			const res = await getDataAPI('user/logout');
-
-			if (res.status === 200) {
-				location.reload();
-			}
-		});
-
 	if (document.querySelector('.product-add-to-cart')) {
 		document
 			.querySelector('.product-add-to-cart')
@@ -773,6 +763,16 @@ $(document).ready(async () => {
 		});
 
 		(0,_cart__WEBPACK_IMPORTED_MODULE_5__.renderCart)(productsRender);
+
+		document
+			.querySelector('.logout-button')
+			.addEventListener('click', async (e) => {
+				const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)('user/logout');
+
+				if (res.status === 200) {
+					location.reload();
+				}
+			});
 	} else {
 		// Render Cart
 		if (!checkCheckout) {

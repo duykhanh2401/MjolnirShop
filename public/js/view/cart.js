@@ -37,7 +37,7 @@ const renderCart = (products) => {
 				<th scope="col"></th>
 				<th scope="col">Tên Sản Phẩm</th>
 				<th scope="col">Giá</th>
-				<th scope="col">Số Lượng</th>
+				<th scope="col" style="width: 160px;">Số Lượng</th>
 				<th scope="col"> </th>
 			</tr>
 		</thead>
@@ -52,7 +52,7 @@ const renderCart = (products) => {
 							<img class="img-fluid img-thumbnail" src=${product.image} alt="Sheep" />
 							</a>
 							</td>
-							<td>${product.name}</td>
+							<td class="name-cart">${product.name}</td>
 							<td>${formatter.format(product.price)}</td>
 
 							<td class="qty quantity-control">

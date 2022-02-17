@@ -42,9 +42,10 @@ const updateCategory = async (id, data) => {
 
 const renderCategory = async () => {
 	const tableList = $('#table')[0];
+	const sort = document.querySelector('.filter').value;
 
 	const BuildPage = async () => {
-		const { data } = await getDataAPI('category');
+		const { data } = await getDataAPI(`category?sort=${sort}`);
 		const listCategory = data.data;
 
 		const buildList = async (buildPagination, min, max) => {
@@ -142,24 +143,23 @@ const renderCategory = async () => {
 			const item = $(e.relatedTarget).closest('.item-list');
 			const itemId = item.attr('data-id');
 			const itemName = item.find('.info')[0].innerText;
-			const itemSlug = item.find('.slug')[0].innerText;
 
 			// Set giá trị khi hiện modal update
 			$('#nameCategoryUpdate')[0].value = itemName;
-			$('#slugUpdate')[0].value = itemSlug;
 
 			const updateCategoryButton = $('.btn-update-category')[0];
 
 			updateCategoryButton.setAttribute('update-id', itemId);
-			updateCategoryButton.onclick = (e) => {
+			updateCategoryButton.onclick = async (e) => {
 				const deleteId = updateCategoryButton.getAttribute('update-id');
 				const name = $('#nameCategoryUpdate')[0].value;
-				const slug = $('#slugUpdate')[0].value;
 				if (!name) {
 					return toast('danger', 'Vui lòng nhập tên danh mục');
 				}
 
-				const isSuccess = updateCategory(deleteId, { name, slug });
+				const isSuccess = await updateCategory(deleteId, {
+					name,
+				});
 
 				if (isSuccess) {
 					$('#updateModal').modal('hide');

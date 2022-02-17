@@ -42,13 +42,22 @@ $(document).ready(function () {
 
 	if (category) {
 		renderCategory();
+		document.querySelector('.filter').addEventListener('change', () => {
+			renderCategory();
+		});
 	}
 	if (author) {
 		renderAuthor();
+		document.querySelector('.filter').addEventListener('change', () => {
+			renderAuthor();
+		});
 	}
 
 	if (user) {
 		renderUser();
+		document.querySelector('.filter').addEventListener('change', () => {
+			renderUser();
+		});
 	}
 
 	if (order) {
@@ -60,6 +69,9 @@ $(document).ready(function () {
 			no_results_text: 'Không có thông tin trùng khớp',
 		});
 		renderProduct();
+		document.querySelector('.filter').addEventListener('change', () => {
+			renderProduct();
+		});
 	}
 
 	if (loginPage) {

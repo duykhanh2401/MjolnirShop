@@ -31,7 +31,6 @@ const deleteAuthor = async (id) => {
 
 const updateAuthor = async (id, data) => {
 	try {
-		data.slug = data.slug.replace(/ /g, '-');
 		const res = await patchDataAPI(`author/${id}`, data);
 		if (res.status === 200) {
 			return true;
@@ -43,9 +42,9 @@ const updateAuthor = async (id, data) => {
 
 const renderAuthor = async () => {
 	const tableList = $('#table')[0];
-
+	const sort = document.querySelector('.filter').value;
 	const BuildPage = async () => {
-		const { data } = await getDataAPI('author');
+		const { data } = await getDataAPI(`author?sort=${sort}`);
 		const listAuthor = data.data;
 
 		const buildList = async (buildPagination, min, max) => {
@@ -138,23 +137,20 @@ const renderAuthor = async () => {
 		const item = $(e.relatedTarget).closest('.item-list');
 		const itemId = item.attr('data-id');
 		const itemName = item.find('.info')[0].innerText;
-		const itemSlug = item.find('.slug')[0].innerText;
 
 		// Set giá trị khi hiện modal update
 		$('#nameAuthorUpdate')[0].value = itemName;
-		$('#slugUpdate')[0].value = itemSlug;
 
 		const updateAuthorButton = $('.btn-update-author')[0];
 
 		updateAuthorButton.setAttribute('update-id', itemId);
-		updateAuthorButton.onclick = (e) => {
-			const deleteId = updateAuthorButton.getAttribute('update-id');
+		updateAuthorButton.onclick = async (e) => {
+			const updateId = updateAuthorButton.getAttribute('update-id');
 			const name = $('#nameAuthorUpdate')[0].value;
-			const slug = $('#slugUpdate')[0].value;
 			if (!name) {
 				return toast('danger', 'Vui lòng nhập tên tác giả');
 			}
-			const isSuccess = updateAuthor(deleteId, { name, slug });
+			const isSuccess = await updateAuthor(updateId, { name });
 
 			if (isSuccess) {
 				$('#updateModal').modal('hide');

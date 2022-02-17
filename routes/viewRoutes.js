@@ -1,22 +1,32 @@
 const router = require('express').Router();
 const viewController = require(`${__dirname}/../controllers/viewController`);
 
-const userController = require(`${__dirname}/../controllers/userController`);
 const authController = require(`${__dirname}/../controllers/authController`);
 
-// router.post('/login', authController.login);
-// router.post('/signup', authController.signup);
-
-router.use(authController.isLoggedIn);
-
-router.get('/product/:id', viewController.getProduct);
-router.get('/cart', viewController.getCart);
-router.get('/category/:category', viewController.getCategory);
-router.get('/category/author/:author', viewController.getAuthor);
-router.get('/category/:category/:id', viewController.getProduct);
-router.get('/checkout', viewController.checkOut);
-router.get('/search', viewController.search);
-router.get('/me', viewController.getMe);
-router.get('/', viewController.getOverview);
+router.get(
+	'/product/:id',
+	authController.isLoggedIn,
+	viewController.getProduct,
+);
+router.get('/cart', authController.isLoggedIn, viewController.getCart);
+router.get(
+	'/category/:category',
+	authController.isLoggedIn,
+	viewController.getCategory,
+);
+router.get(
+	'/category/author/:author',
+	authController.isLoggedIn,
+	viewController.getAuthor,
+);
+router.get(
+	'/category/:category/:id',
+	authController.isLoggedIn,
+	viewController.getProduct,
+);
+router.get('/checkout', authController.isLoggedIn, viewController.checkOut);
+router.get('/search', authController.isLoggedIn, viewController.search);
+router.get('/me', authController.isLoggedIn, viewController.getMe);
+router.get('/', authController.isLoggedIn, viewController.getOverview);
 
 module.exports = router;

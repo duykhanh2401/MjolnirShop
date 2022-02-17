@@ -32,7 +32,6 @@ const deleteProduct = async (id) => {
 
 const updateProduct = async (id, data) => {
 	try {
-		data.slug = data.slug.replace(/ /g, '-');
 		const res = await patchDataAPI(`product/${id}`, data);
 		if (res.status === 200) {
 			return true;
@@ -52,7 +51,9 @@ const renderProduct = () => {
 
 	const BuildPage = async () => {
 		try {
-			const { data } = await getDataAPI('product');
+			const sort = document.querySelector('.filter').value;
+
+			const { data } = await getDataAPI(`product?sort=${sort}`);
 			const listProduct = data.data;
 			const buildList = async (buildPagination, min, max) => {
 				tableList.innerHTML =
@@ -205,7 +206,6 @@ const renderProduct = () => {
 		const item = $(e.relatedTarget).closest('.item-list');
 		const itemId = item.attr('data-id');
 		const itemName = item.find('.info')[0].innerText;
-		const itemSlug = item.find('.info .slug')[0].innerText;
 		const itemPrice = item.find('.price')[0].innerText.replace(/\D/g, '');
 		const itemQuantity = item.find('.quantity')[0].innerText;
 		const itemAuthor = item
@@ -219,7 +219,6 @@ const renderProduct = () => {
 
 		// Set giá trị khi hiện modal update
 		$('#nameProductUpdate')[0].value = itemName;
-		$('#slugProductUpdate')[0].value = itemSlug;
 		$('#priceProductUpdate')[0].value = itemPrice;
 		$('#quantityProductUpdate')[0].value = itemQuantity;
 		$('#descriptionProductUpdate')[0].value = itemDescription;
@@ -251,7 +250,6 @@ const renderProduct = () => {
 			const description = document.querySelector(
 				'#descriptionProductUpdate',
 			).value;
-			const slug = document.querySelector('#slugProductUpdate').value;
 			const image = document
 				.querySelector('.imgShowUpdate')
 				.getAttribute('src');
@@ -263,8 +261,7 @@ const renderProduct = () => {
 				!quantity ||
 				!author ||
 				!category ||
-				!description ||
-				!slug
+				!description
 			) {
 				return toast('danger', 'Vui lòng nhập đủ các trường');
 			}
@@ -276,7 +273,6 @@ const renderProduct = () => {
 				category,
 				description,
 				image,
-				slug,
 			});
 
 			// Clear form

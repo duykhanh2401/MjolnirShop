@@ -42,6 +42,16 @@ $(document).ready(async () => {
 		});
 
 		renderCart(productsRender);
+
+		document
+			.querySelector('.logout-button')
+			.addEventListener('click', async (e) => {
+				const res = await getDataAPI('user/logout');
+
+				if (res.status === 200) {
+					location.reload();
+				}
+			});
 	} else {
 		// Render Cart
 		if (!checkCheckout) {

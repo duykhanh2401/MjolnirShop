@@ -1,6 +1,8 @@
 const AppError = require(`${__dirname}/../utils/appError`);
 const catchAsync = require(`${__dirname}/../utils/catchAsync`);
 const APIFeatures = require(`${__dirname}/../utils/apiFeatures`);
+const getSlug = require('speakingurl');
+
 exports.deleteOne = (Model) =>
 	catchAsync(async (req, res, next) => {
 		const tour = await Model.findByIdAndDelete(req.params.id);
@@ -24,18 +26,30 @@ exports.createOne = (Model) =>
 
 exports.updateOne = (Model) =>
 	catchAsync(async (req, res, next) => {
-		const data = await Model.findByIdAndUpdate(req.params.id, req.body, {
-			new: true,
-			runValidators: true,
-		});
+		const data = await Model.findById(req.params.id);
+		if (data) {
+			if (data.slug) {
+				req.body.slug = getSlug(req.body.name);
+				console.log(req.body);
+			}
+
+			const result = await Model.findByIdAndUpdate(
+				req.params.id,
+				req.body,
+				{
+					new: true,
+					runValidators: true,
+				},
+			);
+			res.status(200).json({
+				status: 'success',
+				data: result,
+			});
+		}
 
 		if (!data) {
 			return next(AppError('Not found document in Database', 404));
 		}
-		res.status(200).json({
-			status: 'success',
-			data,
-		});
 	});
 
 exports.getOne = (Model, popOptions) =>

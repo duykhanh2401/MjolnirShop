@@ -5,6 +5,11 @@ block content
    section.content-main#product
     .content-header
       h2.content-title Danh Mục Sản Phẩm
+      select.filter
+        option(value="name") Sắp xếp theo tên( A - Z)
+        option(value="-name") Sắp xếp theo tên( Z - A)
+        option(value="-createdAt") Sắp xếp theo mới nhất
+        option(value="createdAt") Sắp xếp theo cũ nhất
       button.btn-new(type='button' data-bs-toggle='modal' data-bs-target='#addNewModal')
         | Thêm Mới
       
@@ -96,9 +101,7 @@ block content
               .mb-3
                 label.form-label(for='quantityProductUpdate') Số Lượng
                 input#quantityProductUpdate.form-control(type='number')
-              .mb-3
-                label.form-label(for='slugProductUpdate') Slug
-                input#slugProductUpdate.form-control(type='text')
+             
               .mb-3
                 label.form-label(for='authorSelectUpdate') Tác Giả
                 select#authorSelectUpdate.chosen-select(data-placeholder='Chọn tên phân loại' multiple='' name='test')

@@ -5,6 +5,11 @@ block content
    section.content-main#category
     .content-header
       h2.content-title Danh sách danh mục
+      select.filter
+        option(value="name") Sắp xếp theo tên( A - Z)
+        option(value="-name") Sắp xếp theo tên( Z - A)
+        option(value="-createdAt") Sắp xếp theo mới nhất
+        option(value="createdAt") Sắp xếp theo cũ nhất
       button.btn-new(type='button' data-bs-toggle='modal' data-bs-target='#addNewModal')
         | Thêm mới
       
@@ -55,9 +60,6 @@ block content
                 .mb-3
                   label.form-label(for='nameCategoryUpdate') Tên Danh Mục
                   input#nameCategoryUpdate.form-control(type='text')
-                .mb-3
-                  label.form-label(for='slugUpdate') Slug
-                  input#slugUpdate.form-control(type='text')
                 
               .modal-footer
                 button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
