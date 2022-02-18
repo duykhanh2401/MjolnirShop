@@ -1,19 +1,15 @@
 const router = require('express').Router();
 const orderController = require(`${__dirname}/../controllers/orderController`);
+const adminController = require(`${__dirname}/../controllers/adminController`);
 const authController = require(`${__dirname}/../controllers/authController`);
 router.get(
 	'/income',
-	authController.protect,
-	authController.restrictTo('admin'),
+	adminController.protect,
 	orderController.getDashboardData,
 );
 router
 	.route('/')
-	.get(
-		authController.protect,
-		authController.restrictTo('admin'),
-		orderController.getAllOrders,
-	)
+	.get(adminController.protect, orderController.getAllOrders)
 	.post(
 		authController.protect,
 		authController.restrictTo('user'),
@@ -22,15 +18,7 @@ router
 router
 	.route('/:id')
 	.get(orderController.getOrder)
-	.patch(
-		authController.protect,
-		authController.restrictTo('admin'),
-		orderController.updateOrder,
-	)
-	.delete(
-		authController.protect,
-		authController.restrictTo('admin'),
-		orderController.deleteOrder,
-	);
+	.patch(adminController.protect, orderController.updateOrder)
+	.delete(adminController.protect, orderController.deleteOrder);
 
 module.exports = router;

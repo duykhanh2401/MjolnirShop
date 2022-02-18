@@ -169,7 +169,7 @@ exports.loginAdmin = catchAsync(async function (req, res, next) {
 
 	const token = createToken(user._id);
 
-	res.cookie('jwt', token, {
+	res.cookie('jwt_admin', token, {
 		httpOnly: true,
 		secure: process.env.NODE_ENV === 'production',
 		expires: new Date(
@@ -207,7 +207,6 @@ exports.isLoggedIn = async (req, res, next) => {
 			// 	return next();
 			// }
 			if (currentUser.role === 'admin') {
-				console.log(1123);
 				res.cookie('jwt', 'logouttoken', {
 					httpOnly: true,
 					expires: new Date(Date.now() + 5000),

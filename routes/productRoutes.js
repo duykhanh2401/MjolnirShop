@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const productController = require(`${__dirname}/../controllers/productController`);
 const authController = require(`${__dirname}/../controllers/authController`);
+const adminController = require(`${__dirname}/../controllers/adminController`);
 
 router
 	.route('/')
@@ -9,14 +10,6 @@ router
 router
 	.route('/:id')
 	.get(productController.getProduct)
-	.patch(
-		authController.protect,
-		authController.restrictTo('admin'),
-		productController.updateProduct,
-	)
-	.delete(
-		authController.protect,
-		authController.restrictTo('admin'),
-		productController.deleteProduct,
-	);
+	.patch(adminController.protect, productController.updateProduct)
+	.delete(adminController.protect, productController.deleteProduct);
 module.exports = router;

@@ -37,8 +37,9 @@ exports.getOverview = async (req, res, next) => {
 exports.protect = async (req, res, next) => {
 	try {
 		let token;
-		if (req.cookies.jwt) {
-			token = req.cookies.jwt;
+		if (req.cookies.jwt_admin) {
+			token = req.cookies.jwt_admin;
+			console.log(token);
 		}
 		if (!token) {
 			return res.redirect(`/admin/login`);
@@ -67,13 +68,13 @@ exports.protect = async (req, res, next) => {
 exports.login = async (req, res, next) => {
 	try {
 		let token;
-		if (req.cookies.jwt) {
-			token = req.cookies.jwt;
+		if (req.cookies.jwt_admin) {
+			token = req.cookies.jwt_admin;
 		}
 		if (!token) {
 			return res.status(200).render('admin/login');
 		}
-		const decode = await promisify(jwt.verify)(
+		const decode = await promisify(jwt_admin.verify)(
 			token,
 			process.env.JWT_SECRET,
 		);
