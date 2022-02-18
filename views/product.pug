@@ -47,12 +47,9 @@ block content
                         if user
                             .product-add-to-cart
                                 | Thêm vào giỏ hàng
-                            a(href="/checkout").product-order Thanh toán
                         else
                             .add-to-cart-no-user.login-button(data-bs-toggle='modal' data-bs-target='#FormLoginRegister')
                                 | Thêm vào giỏ hàng
-                            .product-order.login-button(data-bs-toggle='modal' data-bs-target='#FormLoginRegister')
-                                | Thanh toán
                 else
                     .add-to-cart-no-user Đã hết hàng
                     

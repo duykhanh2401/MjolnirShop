@@ -58,7 +58,6 @@ exports.getProduct = async (req, res, next) => {
 			product.reviews.forEach((review) => {
 				review.timeReview = review.createdAt.toLocaleDateString('vi');
 			});
-			console.log(product);
 			return res.status(200).render('product', { product });
 		}
 	}
@@ -67,15 +66,7 @@ exports.getProduct = async (req, res, next) => {
 
 exports.getCart = async (req, res, next) => {
 	if (req.user) {
-		const { products } = await Cart.findOne({ user: req.user._id });
-		let totalPrice = 0;
-		products.forEach(
-			(product) =>
-				(totalPrice += product.product.price * product.quantity),
-		);
-		totalPrice = formatter.format(totalPrice);
-		console.log(products);
-		return res.status(200).render('cart', { products, totalPrice });
+		return res.status(200).render('cart');
 	}
 
 	return res.redirect('/');

@@ -33,9 +33,11 @@ const renderProduct = async () => {
 
 	renderCart(productsRender);
 
-	document.querySelector('.product-order').addEventListener('click', () => {
-		addProductUser();
-	});
+	document
+		.querySelector('.product-order')
+		.addEventListener('click', async () => {
+			await addProductUser();
+		});
 };
 
 export { renderProduct };
