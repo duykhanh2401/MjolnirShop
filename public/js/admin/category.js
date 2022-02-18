@@ -6,6 +6,8 @@ import {
 } from '../util/fetchAPI';
 import { pagination } from '../util/pagination';
 import { toast } from './../util/toastify';
+import { convert } from '../util/convertString';
+
 const createCategory = async (name) => {
 	try {
 		const res = await postDataAPI('category', { name });
@@ -30,7 +32,6 @@ const deleteCategory = async (id) => {
 
 const updateCategory = async (id, data) => {
 	try {
-		data.slug = data.slug.replace(/ /g, '-');
 		const res = await patchDataAPI(`category/${id}`, data);
 		if (res.status === 200) {
 			return true;
@@ -42,12 +43,18 @@ const updateCategory = async (id, data) => {
 
 const renderCategory = async () => {
 	const tableList = $('#table')[0];
-	const sort = document.querySelector('.filter').value;
 
 	const BuildPage = async () => {
+		const sort = document.querySelector('.filter').value;
+		let search = document.querySelector('.search').value;
 		const { data } = await getDataAPI(`category?sort=${sort}`);
 		const listCategory = data.data;
-
+		if (!search) {
+			search = '';
+		}
+		const listRender = listCategory.filter((item) =>
+			convert(item.name).includes(convert(search)),
+		);
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>
@@ -59,7 +66,7 @@ const renderCategory = async () => {
 					</tr>
 				</thead>
 				<tbody >` +
-				listCategory
+				listRender
 					.slice(min, max)
 					.map((category) => {
 						return `
@@ -78,12 +85,14 @@ const renderCategory = async () => {
 					.join('') +
 				`</tbody>`;
 
-			buildPagination(listCategory.length);
+			buildPagination(listRender.length);
 		};
 
 		pagination(buildList);
 	};
-
+	document.querySelector('.search').addEventListener('change', function () {
+		BuildPage();
+	});
 	// Add New Category
 	$('#addNewModal').on('shown.bs.modal', function (e) {
 		try {

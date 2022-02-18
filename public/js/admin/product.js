@@ -7,6 +7,7 @@ import {
 import { pagination } from '../util/pagination';
 import { toast } from '../util/toastify';
 import { uploadImage } from '../util/uploadImage';
+import { convert } from '../util/convertString';
 
 const createProduct = async (data) => {
 	try {
@@ -52,9 +53,16 @@ const renderProduct = () => {
 	const BuildPage = async () => {
 		try {
 			const sort = document.querySelector('.filter').value;
+			let search = document.querySelector('.search').value;
 
 			const { data } = await getDataAPI(`product?sort=${sort}`);
 			const listProduct = data.data;
+			if (!search) {
+				search = '';
+			}
+			const listRender = listProduct.filter((item) =>
+				convert(item.name).includes(convert(search)),
+			);
 			const buildList = async (buildPagination, min, max) => {
 				tableList.innerHTML =
 					`<thead>
@@ -67,7 +75,7 @@ const renderProduct = () => {
 				</tr>
 			</thead>
 	<tbody >` +
-					listProduct
+					listRender
 						.slice(min, max)
 						.map((product) => {
 							return `
@@ -99,7 +107,7 @@ const renderProduct = () => {
 						})
 						.join('');
 
-				buildPagination(listProduct.length);
+				buildPagination(listRender.length);
 			};
 
 			pagination(buildList);
@@ -107,7 +115,9 @@ const renderProduct = () => {
 			toast('danger', error.response.data.message);
 		}
 	};
-
+	document.querySelector('.search').addEventListener('change', function () {
+		BuildPage();
+	});
 	// Add New
 	$('#addNewModal').on('shown.bs.modal', function (e) {
 		const addProductButton = $('.btn-addProduct')[0];

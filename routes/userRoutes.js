@@ -6,14 +6,22 @@ const adminController = require(`${__dirname}/../controllers/adminController`);
 router.post('/login', authController.login);
 router.post('/register', authController.register);
 router.get('/logout', authController.logout);
+router.get('/logoutAdmin', adminController.logoutAdmin);
 router.post('/loginAdmin', authController.loginAdmin);
 
-router.use(authController.protect);
-
-router.post('/updateMyPassword', authController.updateMyPassword);
-router.post('/updateMe', userController.updateMe);
-router.get('/me', userController.getMe, userController.getUser);
-router.delete('/deleteMe', userController.deleteMe);
+router.post(
+	'/updateMyPassword',
+	authController.protect,
+	authController.updateMyPassword,
+);
+router.post('/updateMe', authController.protect, userController.updateMe);
+router.get(
+	'/me',
+	authController.protect,
+	userController.getMe,
+	userController.getUser,
+);
+router.delete('/deleteMe', authController.protect, userController.deleteMe);
 
 router.use(adminController.protect);
 router

@@ -26,7 +26,7 @@ $(document).ready(function () {
 
 	if (mainPage) {
 		$('.logout')[0].addEventListener('click', async () => {
-			const res = await getDataAPI('user/logout');
+			const res = await getDataAPI('user/logoutAdmin');
 
 			if (res.status === 200) {
 				location.reload();

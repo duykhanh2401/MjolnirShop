@@ -97,7 +97,6 @@ const renderCart = (products) => {
 					const qty = $(
 						`.dash-product[data-id=${e.currentTarget.dataset.id}] ~ .qty-cart-page`,
 					)[0].innerHTML;
-					console.log(qty);
 					if (qty * 1 == 1) {
 						removeProduct(e);
 					} else {

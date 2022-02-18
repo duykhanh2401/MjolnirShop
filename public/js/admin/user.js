@@ -6,6 +6,8 @@ import {
 } from '../util/fetchAPI';
 import { pagination } from '../util/pagination';
 import { toast } from './../util/toastify';
+import { convert } from '../util/convertString';
+
 const createUser = async (data) => {
 	try {
 		const res = await postDataAPI('user', data);
@@ -43,9 +45,16 @@ const renderUser = async () => {
 
 	const BuildPage = async () => {
 		const sort = document.querySelector('.filter').value;
+		let search = document.querySelector('.search').value;
+
 		const { data } = await getDataAPI(`user?sort=${sort}`);
 		const listUser = data.data;
-
+		if (!search) {
+			search = '';
+		}
+		const listRender = listUser.filter((item) =>
+			convert(item.name).includes(convert(search)),
+		);
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>
@@ -58,7 +67,7 @@ const renderUser = async () => {
 					</tr>
 				</thead>
 				<tbody >` +
-				listUser
+				listRender
 					.slice(min, max)
 					.map((user) => {
 						return `
@@ -86,12 +95,14 @@ const renderUser = async () => {
 					.join('') +
 				`</tbody>`;
 
-			buildPagination(listUser.length);
+			buildPagination(listRender.length);
 		};
 
 		pagination(buildList);
 	};
-
+	document.querySelector('.search').addEventListener('change', function () {
+		BuildPage();
+	});
 	// Add New Category
 	$('#addNewModal').on('shown.bs.modal', function (e) {
 		try {

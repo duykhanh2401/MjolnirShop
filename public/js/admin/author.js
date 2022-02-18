@@ -6,6 +6,7 @@ import {
 } from '../util/fetchAPI';
 import { pagination } from '../util/pagination';
 import { toast } from './../util/toastify';
+import { convert } from '../util/convertString';
 
 const createAuthor = async (name) => {
 	try {
@@ -42,11 +43,17 @@ const updateAuthor = async (id, data) => {
 
 const renderAuthor = async () => {
 	const tableList = $('#table')[0];
-	const sort = document.querySelector('.filter').value;
 	const BuildPage = async () => {
+		const sort = document.querySelector('.filter').value;
+		let search = document.querySelector('.search').value;
+		if (!search) {
+			search = '';
+		}
 		const { data } = await getDataAPI(`author?sort=${sort}`);
 		const listAuthor = data.data;
-
+		const listRender = listAuthor.filter((item) =>
+			convert(item.name).includes(convert(search)),
+		);
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>
@@ -58,7 +65,7 @@ const renderAuthor = async () => {
 					</tr>
 				</thead>
 		<tbody >` +
-				listAuthor
+				listRender
 					.slice(min, max)
 					.map((author) => {
 						return `
@@ -82,12 +89,14 @@ const renderAuthor = async () => {
 					.join('') +
 				`</tbody>`;
 
-			buildPagination(listAuthor.length);
+			buildPagination(listRender.length);
 		};
 
 		pagination(buildList);
 	};
-
+	document.querySelector('.search').addEventListener('change', function () {
+		BuildPage();
+	});
 	// Add New Category
 	$('#addNewModal').on('shown.bs.modal', function (e) {
 		const addAuthorButton = $('.btn-addAuthor')[0];

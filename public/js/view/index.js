@@ -33,7 +33,6 @@ $(document).ready(async () => {
 
 	if (checkLogin) {
 		const res = await getDataAPI('cart');
-		console.log(res.data.data);
 		const productsRender = res.data.data.map((productItem) => {
 			const { product } = productItem;
 			product.qty = productItem.quantity;

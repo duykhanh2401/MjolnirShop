@@ -127,7 +127,6 @@ exports.search = async (req, res, next) => {
 	if (search) {
 		const arr = products.filter((item) => {
 			return removeAccents(item.name).includes(removeAccents(search));
-			// return item.name.toLowerCase().includes(search.toLowerCase());
 		});
 		arr.forEach((el) => {
 			el.priceFormat = formatter.format(el.price);

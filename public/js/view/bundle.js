@@ -211,7 +211,6 @@ const renderCart = (products) => {
 					const qty = $(
 						`.dash-product[data-id=${e.currentTarget.dataset.id}] ~ .qty-cart-page`,
 					)[0].innerHTML;
-					console.log(qty);
 					if (qty * 1 == 1) {
 						removeProduct(e);
 					} else {
@@ -640,9 +639,11 @@ const renderProduct = async () => {
 
 	(0,_cart__WEBPACK_IMPORTED_MODULE_0__.renderCart)(productsRender);
 
-	document.querySelector('.product-order').addEventListener('click', () => {
-		(0,_cart__WEBPACK_IMPORTED_MODULE_0__.addProductUser)();
-	});
+	document
+		.querySelector('.product-order')
+		.addEventListener('click', async () => {
+			await (0,_cart__WEBPACK_IMPORTED_MODULE_0__.addProductUser)();
+		});
 };
 
 
@@ -754,7 +755,6 @@ $(document).ready(async () => {
 
 	if (checkLogin) {
 		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)('cart');
-		console.log(res.data.data);
 		const productsRender = res.data.data.map((productItem) => {
 			const { product } = productItem;
 			product.qty = productItem.quantity;

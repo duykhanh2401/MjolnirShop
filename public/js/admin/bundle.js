@@ -619,6 +619,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/fetchAPI */ "./public/js/util/fetchAPI.js");
 /* harmony import */ var _util_pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/pagination */ "./public/js/util/pagination.js");
 /* harmony import */ var _util_toastify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../util/toastify */ "./public/js/util/toastify.js");
+/* harmony import */ var _util_convertString__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../util/convertString */ "./public/js/util/convertString.js");
+
 
 
 
@@ -658,11 +660,17 @@ const updateAuthor = async (id, data) => {
 
 const renderAuthor = async () => {
 	const tableList = $('#table')[0];
-	const sort = document.querySelector('.filter').value;
 	const BuildPage = async () => {
+		const sort = document.querySelector('.filter').value;
+		let search = document.querySelector('.search').value;
+		if (!search) {
+			search = '';
+		}
 		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`author?sort=${sort}`);
 		const listAuthor = data.data;
-
+		const listRender = listAuthor.filter((item) =>
+			(0,_util_convertString__WEBPACK_IMPORTED_MODULE_3__.convert)(item.name).includes((0,_util_convertString__WEBPACK_IMPORTED_MODULE_3__.convert)(search)),
+		);
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>
@@ -674,7 +682,7 @@ const renderAuthor = async () => {
 					</tr>
 				</thead>
 		<tbody >` +
-				listAuthor
+				listRender
 					.slice(min, max)
 					.map((author) => {
 						return `
@@ -698,12 +706,14 @@ const renderAuthor = async () => {
 					.join('') +
 				`</tbody>`;
 
-			buildPagination(listAuthor.length);
+			buildPagination(listRender.length);
 		};
 
 		(0,_util_pagination__WEBPACK_IMPORTED_MODULE_1__.pagination)(buildList);
 	};
-
+	document.querySelector('.search').addEventListener('change', function () {
+		BuildPage();
+	});
 	// Add New Category
 	$('#addNewModal').on('shown.bs.modal', function (e) {
 		const addAuthorButton = $('.btn-addAuthor')[0];
@@ -809,6 +819,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/fetchAPI */ "./public/js/util/fetchAPI.js");
 /* harmony import */ var _util_pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/pagination */ "./public/js/util/pagination.js");
 /* harmony import */ var _util_toastify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../util/toastify */ "./public/js/util/toastify.js");
+/* harmony import */ var _util_convertString__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../util/convertString */ "./public/js/util/convertString.js");
+
+
 
 
 
@@ -836,7 +849,6 @@ const deleteCategory = async (id) => {
 
 const updateCategory = async (id, data) => {
 	try {
-		data.slug = data.slug.replace(/ /g, '-');
 		const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.patchDataAPI)(`category/${id}`, data);
 		if (res.status === 200) {
 			return true;
@@ -848,12 +860,18 @@ const updateCategory = async (id, data) => {
 
 const renderCategory = async () => {
 	const tableList = $('#table')[0];
-	const sort = document.querySelector('.filter').value;
 
 	const BuildPage = async () => {
+		const sort = document.querySelector('.filter').value;
+		let search = document.querySelector('.search').value;
 		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`category?sort=${sort}`);
 		const listCategory = data.data;
-
+		if (!search) {
+			search = '';
+		}
+		const listRender = listCategory.filter((item) =>
+			(0,_util_convertString__WEBPACK_IMPORTED_MODULE_3__.convert)(item.name).includes((0,_util_convertString__WEBPACK_IMPORTED_MODULE_3__.convert)(search)),
+		);
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>
@@ -865,7 +883,7 @@ const renderCategory = async () => {
 					</tr>
 				</thead>
 				<tbody >` +
-				listCategory
+				listRender
 					.slice(min, max)
 					.map((category) => {
 						return `
@@ -884,12 +902,14 @@ const renderCategory = async () => {
 					.join('') +
 				`</tbody>`;
 
-			buildPagination(listCategory.length);
+			buildPagination(listRender.length);
 		};
 
 		(0,_util_pagination__WEBPACK_IMPORTED_MODULE_1__.pagination)(buildList);
 	};
-
+	document.querySelector('.search').addEventListener('change', function () {
+		BuildPage();
+	});
 	// Add New Category
 	$('#addNewModal').on('shown.bs.modal', function (e) {
 		try {
@@ -1359,6 +1379,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _util_pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/pagination */ "./public/js/util/pagination.js");
 /* harmony import */ var _util_toastify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util/toastify */ "./public/js/util/toastify.js");
 /* harmony import */ var _util_uploadImage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../util/uploadImage */ "./public/js/util/uploadImage.js");
+/* harmony import */ var _util_convertString__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../util/convertString */ "./public/js/util/convertString.js");
+
 
 
 
@@ -1408,9 +1430,16 @@ const renderProduct = () => {
 	const BuildPage = async () => {
 		try {
 			const sort = document.querySelector('.filter').value;
+			let search = document.querySelector('.search').value;
 
 			const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`product?sort=${sort}`);
 			const listProduct = data.data;
+			if (!search) {
+				search = '';
+			}
+			const listRender = listProduct.filter((item) =>
+				(0,_util_convertString__WEBPACK_IMPORTED_MODULE_4__.convert)(item.name).includes((0,_util_convertString__WEBPACK_IMPORTED_MODULE_4__.convert)(search)),
+			);
 			const buildList = async (buildPagination, min, max) => {
 				tableList.innerHTML =
 					`<thead>
@@ -1423,7 +1452,7 @@ const renderProduct = () => {
 				</tr>
 			</thead>
 	<tbody >` +
-					listProduct
+					listRender
 						.slice(min, max)
 						.map((product) => {
 							return `
@@ -1455,7 +1484,7 @@ const renderProduct = () => {
 						})
 						.join('');
 
-				buildPagination(listProduct.length);
+				buildPagination(listRender.length);
 			};
 
 			(0,_util_pagination__WEBPACK_IMPORTED_MODULE_1__.pagination)(buildList);
@@ -1463,7 +1492,9 @@ const renderProduct = () => {
 			(0,_util_toastify__WEBPACK_IMPORTED_MODULE_2__.toast)('danger', error.response.data.message);
 		}
 	};
-
+	document.querySelector('.search').addEventListener('change', function () {
+		BuildPage();
+	});
 	// Add New
 	$('#addNewModal').on('shown.bs.modal', function (e) {
 		const addProductButton = $('.btn-addProduct')[0];
@@ -1699,6 +1730,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/fetchAPI */ "./public/js/util/fetchAPI.js");
 /* harmony import */ var _util_pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/pagination */ "./public/js/util/pagination.js");
 /* harmony import */ var _util_toastify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../util/toastify */ "./public/js/util/toastify.js");
+/* harmony import */ var _util_convertString__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../util/convertString */ "./public/js/util/convertString.js");
+
+
 
 
 
@@ -1739,9 +1773,16 @@ const renderUser = async () => {
 
 	const BuildPage = async () => {
 		const sort = document.querySelector('.filter').value;
+		let search = document.querySelector('.search').value;
+
 		const { data } = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.getDataAPI)(`user?sort=${sort}`);
 		const listUser = data.data;
-
+		if (!search) {
+			search = '';
+		}
+		const listRender = listUser.filter((item) =>
+			(0,_util_convertString__WEBPACK_IMPORTED_MODULE_3__.convert)(item.name).includes((0,_util_convertString__WEBPACK_IMPORTED_MODULE_3__.convert)(search)),
+		);
 		const buildList = async (buildPagination, min, max) => {
 			tableList.innerHTML =
 				`<thead>
@@ -1754,7 +1795,7 @@ const renderUser = async () => {
 					</tr>
 				</thead>
 				<tbody >` +
-				listUser
+				listRender
 					.slice(min, max)
 					.map((user) => {
 						return `
@@ -1782,12 +1823,14 @@ const renderUser = async () => {
 					.join('') +
 				`</tbody>`;
 
-			buildPagination(listUser.length);
+			buildPagination(listRender.length);
 		};
 
 		(0,_util_pagination__WEBPACK_IMPORTED_MODULE_1__.pagination)(buildList);
 	};
-
+	document.querySelector('.search').addEventListener('change', function () {
+		BuildPage();
+	});
 	// Add New Category
 	$('#addNewModal').on('shown.bs.modal', function (e) {
 		try {
@@ -1895,6 +1938,46 @@ const renderUser = async () => {
 	BuildPage();
 };
 
+
+
+
+/***/ }),
+
+/***/ "./public/js/util/convertString.js":
+/*!*****************************************!*\
+  !*** ./public/js/util/convertString.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "convert": () => (/* binding */ convert)
+/* harmony export */ });
+const convert = (str) => {
+	var AccentsMap = [
+		'aàảãáạăằẳẵắặâầẩẫấậ',
+		'AÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬ',
+		'dđ',
+		'DĐ',
+		'eèẻẽéẹêềểễếệ',
+		'EÈẺẼÉẸÊỀỂỄẾỆ',
+		'iìỉĩíị',
+		'IÌỈĨÍỊ',
+		'oòỏõóọôồổỗốộơờởỡớợ',
+		'OÒỎÕÓỌÔỒỔỖỐỘƠỜỞỠỚỢ',
+		'uùủũúụưừửữứự',
+		'UÙỦŨÚỤƯỪỬỮỨỰ',
+		'yỳỷỹýỵ',
+		'YỲỶỸÝỴ',
+	];
+	for (var i = 0; i < AccentsMap.length; i++) {
+		var re = new RegExp('[' + AccentsMap[i].substr(1) + ']', 'g');
+		var char = AccentsMap[i][0];
+		str = str.replace(re, char);
+	}
+	return str.toLowerCase();
+};
 
 
 
@@ -2252,7 +2335,7 @@ $(document).ready(function () {
 
 	if (mainPage) {
 		$('.logout')[0].addEventListener('click', async () => {
-			const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_4__.getDataAPI)('user/logout');
+			const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_4__.getDataAPI)('user/logoutAdmin');
 
 			if (res.status === 200) {
 				location.reload();

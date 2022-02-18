@@ -34,6 +34,17 @@ exports.getOverview = async (req, res, next) => {
 	res.status(200).render('admin/overview');
 };
 
+exports.logoutAdmin = (req, res, next) => {
+	res.cookie('jwt_admin', 'logouttoken', {
+		httpOnly: true,
+		expires: new Date(Date.now() + 5000),
+	});
+
+	res.status(200).json({
+		status: 'success',
+	});
+};
+
 exports.protect = async (req, res, next) => {
 	try {
 		let token;
@@ -74,7 +85,7 @@ exports.login = async (req, res, next) => {
 		if (!token) {
 			return res.status(200).render('admin/login');
 		}
-		const decode = await promisify(jwt_admin.verify)(
+		const decode = await promisify(jwt.verify)(
 			token,
 			process.env.JWT_SECRET,
 		);
