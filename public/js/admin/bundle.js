@@ -1900,7 +1900,6 @@ const renderUser = async () => {
 
 		document.querySelector('#nameUserUpdate').value = itemName;
 		document.querySelector('#emailUserUpdate').value = itemEmail;
-		document.querySelector('#roleUserUpdate').value = itemRole;
 		const updateUserButton = $('.btn-update-user')[0];
 
 		updateUserButton.setAttribute('update-id', itemId);
@@ -1908,9 +1907,8 @@ const renderUser = async () => {
 			const updateId = updateUserButton.getAttribute('update-id');
 			const name = document.querySelector('#nameUserUpdate').value;
 			const email = document.querySelector('#emailUserUpdate').value;
-			const role = document.querySelector('#roleUserUpdate').value;
 
-			const isSuccess = await updateUser(updateId, { name, email, role });
+			const isSuccess = await updateUser(updateId, { name, email });
 
 			if (isSuccess) {
 				$('#updateModal').modal('hide');
