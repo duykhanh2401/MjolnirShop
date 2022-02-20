@@ -139,28 +139,44 @@ const renderMe = () => {
 	document
 		.querySelector('.button-update-name')
 		.addEventListener('click', async () => {
-			const name = document.querySelector('.user-name-update').value;
-			const res = await postDataAPI('user/updateMe', { name });
-			if (res.status === 200) {
-				location.reload();
+			try {
+				const name = document.querySelector('.user-name-update').value;
+				if (!name) {
+					return toast('danger', 'Vui lòng nhập tên');
+				}
+				const res = await postDataAPI('user/updateMe', { name });
+				if (res.status === 200) {
+					location.reload();
+					toast('success', 'Cập nhật thành công');
+				}
+			} catch (error) {
+				toast('danger', error.response.data.message);
 			}
 		});
 
 	document
 		.querySelector('.button-password-update')
 		.addEventListener('click', async () => {
-			const passwordCurrent =
-				document.querySelector('.password-current').value;
-			const password = document.querySelector('.password-new').value;
-			const passwordConfirm =
-				document.querySelector('.password-confirm').value;
-			const res = await postDataAPI('user/updateMyPassword', {
-				passwordCurrent,
-				password,
-				passwordConfirm,
-			});
-			if (res.status === 200) {
-				location.reload();
+			try {
+				const passwordCurrent =
+					document.querySelector('.password-current').value;
+				const password = document.querySelector('.password-new').value;
+				const passwordConfirm =
+					document.querySelector('.password-confirm').value;
+				if (!passwordCurrent || !passwordConfirm || !password) {
+					return toast('danger', 'Vui lòng nhập tất cả các trường');
+				}
+				const res = await postDataAPI('user/updateMyPassword', {
+					passwordCurrent,
+					password,
+					passwordConfirm,
+				});
+				if (res.status === 200) {
+					location.reload();
+					toast('success', 'Cập nhật thành công');
+				}
+			} catch (error) {
+				toast('danger', error.response.data.message);
 			}
 		});
 };
