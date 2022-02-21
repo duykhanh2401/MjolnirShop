@@ -88,7 +88,12 @@ const renderUser = async () => {
 								}</td>
 								<td class="col-lg-2 col-sm-2 col-4 col-action text-end">
 									<div class="btn btn-sm font-sm rounded btn-brand" data-bs-toggle="modal" data-bs-target="#updateModal"><i class="bi bi-pencil"></i>Sửa</div>
-									<div class="btn btn-sm font-sm btn-light rounded btn btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i>Xoá</div>
+									${
+										user.role == 'admin'
+											? ''
+											: '<div class="btn btn-sm font-sm btn-light rounded btn btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i>Xoá</div>'
+									}
+									
 								</td>
 							</tr>`;
 					})
