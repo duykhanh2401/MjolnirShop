@@ -27,9 +27,9 @@ const renderData = (products) => {
 				.join('');
 		});
 
-		document.querySelector(
-			'.subtotal-price',
-		).innerHTML = `${formatter.format(totalPrice)}`;
+		document.querySelector('.subtotal-price').innerHTML = `${formatter.format(
+			totalPrice,
+		)}`;
 
 		document.querySelector(
 			'.order-total-price ',
@@ -61,8 +61,10 @@ const checkout = async () => {
 				const email = document.querySelector('#emailUser').value;
 				const phone = document.querySelector('#phoneNumberUser').value;
 				const address = document.querySelector('#addressUser').value;
-				const idUser =
-					document.querySelector('#emailUser').dataset.idUser;
+				const idUser = document.querySelector('#emailUser').dataset.idUser;
+				if (phone.length != 10) {
+					return toast('danger', 'Vui lòng nhập đúng số điện thoại');
+				}
 				const res = await postDataAPI('order', {
 					name,
 					email,
@@ -82,7 +84,8 @@ const checkout = async () => {
 					await deleteDataAPI('cart/removeAllProducts');
 				}
 			} catch (error) {
-				toast('danger', error.response.data.message);
+				console.log(error);
+				toast('danger', error.response);
 			}
 		});
 };

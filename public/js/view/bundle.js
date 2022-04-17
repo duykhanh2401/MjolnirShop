@@ -344,9 +344,9 @@ const renderData = (products) => {
 				.join('');
 		});
 
-		document.querySelector(
-			'.subtotal-price',
-		).innerHTML = `${formatter.format(totalPrice)}`;
+		document.querySelector('.subtotal-price').innerHTML = `${formatter.format(
+			totalPrice,
+		)}`;
 
 		document.querySelector(
 			'.order-total-price ',
@@ -378,8 +378,10 @@ const checkout = async () => {
 				const email = document.querySelector('#emailUser').value;
 				const phone = document.querySelector('#phoneNumberUser').value;
 				const address = document.querySelector('#addressUser').value;
-				const idUser =
-					document.querySelector('#emailUser').dataset.idUser;
+				const idUser = document.querySelector('#emailUser').dataset.idUser;
+				if (phone.length != 10) {
+					return (0,_util_toastify__WEBPACK_IMPORTED_MODULE_1__.toast)('danger', 'Vui lòng nhập đúng số điện thoại');
+				}
 				const res = await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.postDataAPI)('order', {
 					name,
 					email,
@@ -399,7 +401,8 @@ const checkout = async () => {
 					await (0,_util_fetchAPI__WEBPACK_IMPORTED_MODULE_0__.deleteDataAPI)('cart/removeAllProducts');
 				}
 			} catch (error) {
-				(0,_util_toastify__WEBPACK_IMPORTED_MODULE_1__.toast)('danger', error.response.data.message);
+				console.log(error);
+				(0,_util_toastify__WEBPACK_IMPORTED_MODULE_1__.toast)('danger', error.response);
 			}
 		});
 };
