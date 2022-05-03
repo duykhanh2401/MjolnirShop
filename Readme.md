@@ -13,7 +13,7 @@
 > - Quản lý người dùng.
 > - Phân quyền người dùng và admin
 
-## Demo http://store.duykhanhdev.codes/
+## Demo https://mjolnirshop.up.railway.app/
 
 ## Tác giả: Vũ Duy Khánh
 
