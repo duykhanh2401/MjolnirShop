@@ -1,6 +1,6 @@
 # Website Thương mại điện tử
 
-## Website sử dụng JavaScript + JWT + ExpressJS + Server render
+## Website sử dụng JavaScript + JWT + ExpressJS + Server render + REST API
 
 > - Đăng nhập, đăng ký bằng Email.
 > - Cập nhật thông tin người dùng.
